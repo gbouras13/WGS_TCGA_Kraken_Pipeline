@@ -32,5 +32,5 @@ snakemake -c 16 -s wgs_runner.smk --use-conda --config Reads=Bams/
 * You will need to cd to the pipeline directory in your jobscript before running if you want to run this offline (to use the premade conda envs)
 
 ```console
-snakemake -c 16 -s wgs_runner.smk --config Reads=Bams/  --profile wgs_tcga
+snakemake -c 16 -s wgs_runner.smk --config Reads=Bams/ Output=my_output_dir/  --profile wgs_tcga
 ```
