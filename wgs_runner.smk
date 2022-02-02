@@ -2,9 +2,9 @@
 The snakefile that runs the pipeline.
 Manual launch example:
 
-snakemake -c 1 -s wgs_runner.smk --use-conda --config Reads=Bams/ --conda-create-envs-only --conda-frontend conda
+snakemake -c 1 -s wgs_runner.smk --use-conda --config Reads=Bams/  --conda-create-envs-only --conda-frontend conda
 compute node
-snakemake -c 16 -s wgs_runner.smk --use-conda --config Reads=Bams/
+snakemake -c 16 -s wgs_runner.smk --use-conda --config Reads=Bams/ Output=out/
 """
 
 
@@ -16,16 +16,16 @@ BigJobCpu = config["BigJobCpu"]
 
 ### DIRECTORIES
 include: "rules/directories.smk"
-READS = config['Reads']
 
+# get if needed
+READS = config['Reads']
+OUTPUT = config['Output']
 
 # Parse the samples and read files
 include: "rules/samples.smk"
 sampleReads = parseSamples(READS)
 SAMPLES = sampleReads.keys()
 
-# define dirs
-TMP = 'tmp'
 LOGS = 'logs'
 
 # Import rules and functions

@@ -7,7 +7,6 @@ and the addHost script.
 
 DBDIR = 'Databases'
 
-
 ### OUTPUT DIRECTORY
 if config['Output'] is None:
     OUTPUT = 'wgs_tcga_out'
@@ -32,7 +31,7 @@ POLYMICRODB = os.path.join(DBDIR, "nt", "virus_secondary_nt")
 ### OUTPUT DIRs
 RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
-TMPDIR = os.path.join(WORKDIR, 'TMP')
+TMP = os.path.join(WORKDIR, 'TMP')
 STDERR = os.path.join(OUTPUT, 'STDERR')
 BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
 SUMDIR = os.path.join('hecatomb_report')
