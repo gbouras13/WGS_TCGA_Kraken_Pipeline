@@ -9,7 +9,7 @@ rule run_kraken:
     params:
         os.path.join(DBDIR, 'standard')
     log:
-        os.path.join(RESULTS,"{sample}.kraken.stderr")
+        os.path.join(LOGS,"{sample}.kraken.log")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
