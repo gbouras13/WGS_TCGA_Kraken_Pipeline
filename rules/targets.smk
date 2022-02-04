@@ -4,8 +4,8 @@ All target output files for Hecatomb are declared here
 
 # Preprocessing files
 PreprocessingFiles = [
-    os.path.join(RESULTS, "test.txt"),
-    os.path.join(RESULTS, "test_2.txt")
+    os.path.join(LOGS, "test.txt"),
+    os.path.join(LOGS, "test_2.txt")
 ]
 
 # if skipAssembly:

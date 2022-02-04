@@ -90,7 +90,7 @@ rule test:
     output:
         os.path.join(LOGS, "test.txt")
     threads:
-        BigJobCpu
+        1
     resources:
         mem_mb=BigJobMem
     shell:
