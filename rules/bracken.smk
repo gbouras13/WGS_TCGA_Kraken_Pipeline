@@ -5,8 +5,8 @@ rule bracken:
     params:
         os.path.join(DBDIR, 'standard')
     output:
-        os.path.join(RESULTS,"{sample}_report_bracken_species.txt"),
-        os.path.join(RESULTS,"{sample}_report_bracken_genuses.txt")
+        os.path.join(RESULTS,"{sample}.kraken_bracken_genuses.rep"),
+        os.path.join(RESULTS,"{sample}.kraken_bracken_species.rep")
     conda:
         os.path.join('..', 'envs','bracken.yaml')
     shell:
@@ -20,8 +20,8 @@ rule bracken:
 
 rule biom:
     input:
-        expand(os.path.join(RESULTS,"{sample}_report_bracken_genuses.txt"), sample = SAMPLES),
-        expand(os.path.join(RESULTS,"{sample}_report_bracken_species.txt"), sample = SAMPLES)
+        expand(os.path.join(RESULTS,"{sample}.kraken_bracken_genuses.rep"), sample = SAMPLES),
+        expand(os.path.join(RESULTS,"{sample}.kraken_bracken_species.rep"), sample = SAMPLES)
     output:
         os.path.join(BIOM,"bracken_genus.biom"),
         os.path.join(BIOM,"bracken_species.biom")
