@@ -8,7 +8,7 @@ rule bracken:
         os.path.join(RESULTS,"{sample}.kraken_bracken_genuses.rep"),
         os.path.join(RESULTS,"{sample}.kraken_bracken_species.rep")
     conda:
-        os.path.join('..', 'envs','bracken.yaml')
+        os.path.join('..', 'envs','kraken2.yaml')
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {input[0]}  -r 50 -l S -w {output[1]}
@@ -26,7 +26,7 @@ rule biom:
         os.path.join(BIOM,"bracken_genus.biom"),
         os.path.join(BIOM,"bracken_species.biom")
     conda:
-        os.path.join('..', 'envs','bracken.yaml')
+        os.path.join('..', 'envs','kraken2.yaml')
     shell:
         '''
         kraken-biom {input[0]} -o {output[0]}  --fmt json
