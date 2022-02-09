@@ -11,8 +11,8 @@ rule bracken:
         os.path.join('..', 'envs','bracken.yaml')
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]} -o {input[0]}  -r 50 -l S -w {input[1]}
-        bracken -d {params[0]} -i {input[1]}  -o {input[0]} -r 50 -l G -w {input[0]}
+        bracken -d {params[0]} -i {input[1]} -o {input[0]}  -r 50 -l S -w {output[1]}
+        bracken -d {params[0]} -i {input[1]}  -o {input[0]} -r 50 -l G -w {output[0]}
         '''
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50
