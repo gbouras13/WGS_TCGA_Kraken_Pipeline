@@ -11,8 +11,8 @@ rule bracken:
         os.path.join('..', 'envs','bracken.yaml')
     shell:
         '''
-        bracken -d {params.kraken_db} -i {input.report} -o {input.total} -r 50 -l S
-        bracken -d {params.kraken_db} -i {input.report} -o {input.total} -r 50 -l G
+        bracken -d {params[0]} -i {input[1]} -o {input[0]}  -r 50 -l S
+        bracken -d {params[0]} -i {input[1]}  -o {input[0]} -r 50 -l G
         '''
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50

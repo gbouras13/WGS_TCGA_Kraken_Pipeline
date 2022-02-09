@@ -46,7 +46,7 @@ rule test2:
     input:
         expand(os.path.join(LOGS,"{sample}.kraken.log"), sample = SAMPLES)
     output:
-        os.path.join(LOGS, "test_2.txt")
+        os.path.join(LOGS, "aggr_kraken.txt")
     threads:
         1
     resources:
