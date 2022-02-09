@@ -31,6 +31,10 @@ rule bracken_g:
         bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
         '''
 
+##### add biom for the bracken reports next - script with glob
+
+
+
 # combine_bracken_outputs.py --files kraken/*total.txt -o bracken_species_all
 # kraken-biom bracken/*_report_bracken_species.txt -o bracken_species.biom --fmt json
 
