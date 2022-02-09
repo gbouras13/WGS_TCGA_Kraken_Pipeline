@@ -32,7 +32,7 @@ LOGS = 'logs'
 include: "rules/targets.smk"
 include: "rules/bam_to_fastq.smk"
 include: "rules/kraken.smk"
-
+include: "rules/bracken.smk"
 
 rule all:
     input:
