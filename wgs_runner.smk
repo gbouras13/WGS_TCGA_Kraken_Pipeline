@@ -26,8 +26,6 @@ include: "rules/samples.smk"
 sampleReads = parseSamples(READS)
 SAMPLES = sampleReads.keys()
 
-LOGS = 'logs'
-
 # Import rules and functions
 include: "rules/targets.smk"
 include: "rules/bam_to_fastq.smk"
