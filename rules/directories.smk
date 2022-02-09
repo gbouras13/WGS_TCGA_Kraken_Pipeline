@@ -33,8 +33,7 @@ RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
 TMP = os.path.join(WORKDIR, 'TMP')
 LOGS = os.path.join(OUTPUT, 'LOGS')
-BIOM = LOGS = os.path.join(RESULTS, 'BIOM')
-
+BIOM = os.path.join(RESULTS, 'BIOM')
 
 
 BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
