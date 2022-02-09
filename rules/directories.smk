@@ -33,7 +33,7 @@ RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
 TMP = os.path.join(WORKDIR, 'TMP')
 LOGS = os.path.join(OUTPUT, 'LOGS')
-BIOM = LOGS = os.path.join(OUTPUT, 'BIOM')
+BIOM = LOGS = os.path.join(RESULTS, 'BIOM')
 
 
 
@@ -42,6 +42,3 @@ SUMDIR = os.path.join('hecatomb_report')
 ASSEMBLY = os.path.join(WORKDIR, 'ASSEMBLY')
 MAPPING = os.path.join(WORKDIR, 'MAPPING')
 STATS = os.path.join(WORKDIR, 'STATS')
-
-if not os.path.exists(LOGS):
-    os.makedirs(LOGS)
