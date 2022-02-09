@@ -34,7 +34,9 @@ WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
 TMP = os.path.join(WORKDIR, 'TMP')
 LOGS = os.path.join(OUTPUT, 'LOGS')
 BIOM = os.path.join(RESULTS, 'BIOM')
-
+KRAKEN_S = os.path.join(RESULTS, 'KRAKEN_S')
+KRAKEN_G = os.path.join(RESULTS, 'KRAKEN_G')
+BRACKEN = os.path.join(RESULTS, 'BRACKEN')
 
 BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
 SUMDIR = os.path.join('hecatomb_report')
