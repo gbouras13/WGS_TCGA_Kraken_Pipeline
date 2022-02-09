@@ -5,8 +5,8 @@ rule bracken:
     params:
         os.path.join(DBDIR, 'standard')
     output:
-        os.path.join(RESULTS,"{sample}._report_bracken_species.txt"),
-        os.path.join(RESULTS,"{sample}._report_bracken_genuses.txt")
+        os.path.join(RESULTS,"{sample}_report_bracken_species.txt"),
+        os.path.join(RESULTS,"{sample}_report_bracken_genuses.txt")
     conda:
         os.path.join('..', 'envs','bracken.yaml')
     shell:
