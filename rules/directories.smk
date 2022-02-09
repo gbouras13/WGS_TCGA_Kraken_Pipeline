@@ -33,16 +33,15 @@ RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
 TMP = os.path.join(WORKDIR, 'TMP')
 LOGS = os.path.join(OUTPUT, 'LOGS')
+BIOM = LOGS = os.path.join(OUTPUT, 'BIOM')
+
+
+
 BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
 SUMDIR = os.path.join('hecatomb_report')
 ASSEMBLY = os.path.join(WORKDIR, 'ASSEMBLY')
 MAPPING = os.path.join(WORKDIR, 'MAPPING')
 STATS = os.path.join(WORKDIR, 'STATS')
 
-
-# MMSEQS OUTPUT DIRs
-PRIMARY_AA_OUT = os.path.join(RESULTS, "MMSEQS_AA_PRIMARY")
-SECONDARY_AA_OUT = os.path.join(RESULTS, "MMSEQS_AA_SECONDARY")
-PRIMARY_NT_OUT = os.path.join(RESULTS, "MMSEQS_NT_PRIMARY")
-SECONDARY_NT_OUT = os.path.join(RESULTS, "MMSEQS_NT_SECONDARY")
-
+if not os.path.exists(LOGS):
+    os.makedirs(LOGS)
