@@ -11,10 +11,11 @@ rule bracken:
         os.path.join('..', 'envs','bracken.yaml')
     shell:
         '''
-        bracken -d {params.kraken_db} -i {input.report} -o {input.total} -r 1450 -l S
-        bracken -d {params.kraken_db} -i {input.report} -o {input.total} -r 1450 -l G
+        bracken -d {params.kraken_db} -i {input.report} -o {input.total} -r 50 -l S
+        bracken -d {params.kraken_db} -i {input.report} -o {input.total} -r 50 -l G
         '''
-
+# https://github.com/jenniferlu717/Bracken/issues/81
+# use 50
 
 rule aggr_bracken:
     """aggregated"""
