@@ -44,7 +44,7 @@ rule run_kraken:
 rule test2:
     """Index a .bam file for rapid access with samtools."""
     input:
-        expand(os.path.join(RESULTS,"{sample}.kraken.txt"), sample = SAMPLES)
+        expand(os.path.join(LOGS,"{sample}.kraken.log"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "test_2.txt")
     threads:
