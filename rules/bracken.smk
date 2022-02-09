@@ -20,10 +20,10 @@ rule bracken:
 
 rule biom:
     input:
-        expand(os.path.join(RESULTS,"{sample}_report_bracken_genuses.txt"), sample = SAMPLES)
+        expand(os.path.join(RESULTS,"{sample}_report_bracken_genuses.txt"), sample = SAMPLES),
         expand(os.path.join(RESULTS,"{sample}_report_bracken_species.txt"), sample = SAMPLES)
     output:
-        os.path.join(BIOM,"bracken_genus.biom")
+        os.path.join(BIOM,"bracken_genus.biom"),
         os.path.join(BIOM,"bracken_species.biom")
     conda:
         os.path.join('..', 'envs','bracken.yaml')
