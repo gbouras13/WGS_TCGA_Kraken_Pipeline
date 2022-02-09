@@ -11,8 +11,8 @@ rule bracken:
         os.path.join('..', 'envs','bracken.yaml')
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]} -o {input[0]}  -r 50 -l S
-        bracken -d {params[0]} -i {input[1]}  -o {input[0]} -r 50 -l G
+        bracken -d {params[0]} -i {input[1]} -o {input[0]}  -r 50 -l S -w
+        bracken -d {params[0]} -i {input[1]}  -o {input[0]} -r 50 -l G -w
         '''
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50
@@ -30,7 +30,7 @@ rule biom:
     shell:
         '''
         kraken-biom {input[0]} -o {output[0]}  --fmt json
-         kraken-biom {input[1]}  -o {output[1]} --fmt json
+        kraken-biom {input[1]}  -o {output[1]} --fmt json
         '''
 
 
