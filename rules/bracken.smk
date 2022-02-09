@@ -30,7 +30,7 @@ rule biom:
     shell:
         '''
         kraken-biom {input[0]} -o {output[0]}  --fmt json
-         kraken-biom {input[1]}  -o {output[1]}--fmt json
+         kraken-biom {input[1]}  -o {output[1]} --fmt json
         '''
 
 
