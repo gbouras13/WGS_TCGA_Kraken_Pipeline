@@ -12,7 +12,7 @@ rule bracken:
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[1]}  -r 50 -l S 
-        bracken -d {params[0]} -i {input[1]}  -o {input[0]} -r 50 -l G 
+        bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
         '''
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50
