@@ -77,7 +77,8 @@ rule bracken_g:
 rule aggr_bracken:
     """aggregated"""
     input:
-        expand(os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genuses.txt"), sample = SAMPLES)
+        expand(os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genuses.txt"), sample = SAMPLES),
+        expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
     threads:
