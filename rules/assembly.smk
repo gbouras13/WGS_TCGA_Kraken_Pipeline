@@ -32,7 +32,7 @@ rule megahit:
     output:
         os.path.join(MEGAHIT,"{sample}/checkpoints.txt")
     params:
-        os.path.join(MEGAHIT,"{sample}")
+        MEGAHIT
     log:
         os.path.join(LOGS,"{sample}.megahit.log")
     conda:
@@ -43,7 +43,7 @@ rule megahit:
         mem_mb=BigJobMem
     shell:
         """
-        megahit -1 {input[0]} -2 {input[1]} -o {params[0]} 
+        megahit -1 {input[0]} -2 {input[1]} -o {params[0]}/{wildcards.sample} 
         """
 
 rule aggr_assembly:
