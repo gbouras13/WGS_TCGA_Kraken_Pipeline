@@ -30,7 +30,7 @@ rule megahit:
         os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
         os.path.join(TMP,"{sample}_bacteria_R2.fastq")
     output:
-        os.path.join(MEGAHIT,"{sample}/checkpoints.txt")
+        os.path.join(MEGAHIT,"{sample}/final.contigs.fa")
     params:
         MEGAHIT
     log:
