@@ -15,20 +15,20 @@ rule bracken_s:
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50
 
-rule bracken_g:
-    input:
-        os.path.join(KRAKEN_G,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_G,"{sample}.kraken.rep")
-    params:
-        os.path.join(DBDIR, 'standard')
-    output:
-        os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genuses.txt")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    shell:
-        '''
-        bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
-        '''
+# rule bracken_g:
+#     input:
+#         os.path.join(KRAKEN_G,"{sample}.kraken.txt"),
+#         os.path.join(KRAKEN_G,"{sample}.kraken.rep")
+#     params:
+#         os.path.join(DBDIR, 'standard')
+#     output:
+#         os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genuses.txt")
+#     conda:
+#         os.path.join('..', 'envs','kraken2.yaml')
+#     shell:
+#         '''
+#         bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
+#         '''
 
 ##### add biom for the bracken reports next - script with glob
 
@@ -76,8 +76,9 @@ rule bracken_g:
 rule aggr_bracken:
     """aggregated"""
     input:
-        expand(os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genuses.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES)
+        expand(os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genuses.txt"), sample = SAMPLES)
+        # ,
+        # expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
     threads:
