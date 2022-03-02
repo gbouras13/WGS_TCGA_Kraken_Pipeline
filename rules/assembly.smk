@@ -15,7 +15,7 @@ rule extract_bact_fastqs:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
-        BigJobCpu
+        1
     resources:
         mem_mb=BigJobMem
     shell:
@@ -38,7 +38,7 @@ rule megahit:
     conda:
         os.path.join('..', 'envs','assembly.yaml')
     threads:
-        BigJobCpu
+        1
     resources:
         mem_mb=BigJobMem
     shell:
