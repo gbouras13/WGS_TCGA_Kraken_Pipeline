@@ -6,6 +6,7 @@ and the addHost script.
 
 
 DBDIR = 'Databases'
+KRAKENTOOLSDIR = 'Kraken_Tools'
 
 ### OUTPUT DIRECTORY
 if config['Output'] is None:
@@ -21,13 +22,6 @@ TABLES = os.path.join(DBDIR, "tables")
 HOSTPATH = os.path.join(DBDIR, "host")
 
 
-### MMSEQS DBs
-UNIVIRDB = os.path.join(DBDIR, "aa", "virus_primary_aa")
-UNIREF50VIR = os.path.join(DBDIR, "aa", "virus_secondary_aa")
-NCBIVIRDB = os.path.join(DBDIR, "nt", "virus_primary_nt")
-POLYMICRODB = os.path.join(DBDIR, "nt", "virus_secondary_nt")
-
-
 ### OUTPUT DIRs
 RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
@@ -37,6 +31,7 @@ BIOM = os.path.join(RESULTS, 'BIOM')
 KRAKEN_S = os.path.join(RESULTS, 'KRAKEN_S')
 KRAKEN_G = os.path.join(RESULTS, 'KRAKEN_G')
 BRACKEN = os.path.join(RESULTS, 'BRACKEN')
+MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
 
 BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
 SUMDIR = os.path.join('hecatomb_report')

@@ -52,7 +52,7 @@ rule run_kraken_s:
 #                 --confidence 0.05 --report {output[1]} 2> {log}
 #         """
 
-# python3 ../../WGS_TCGA_Kraken_Pipeline/Kraken_Tools/extract_kraken_reads.py -k TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted.kraken.txt -s1 ../PROCESSING/TMP/TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted_R1.fastq.gz -s1 ../PROCESSING/TMP/TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted_R2.fastq.gz -o test_out.fastq -r TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted.kraken.rep  -t 2 --include-children  --fastq-output
+# python3 ../../WGS_TCGA_Kraken_Pipeline/Kraken_Tools/extract_kraken_reads.py -k TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted.kraken.txt -s1 ../PROCESSING/TMP/TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted_R1.fastq.gz -s2 ../PROCESSING/TMP/TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted_R2.fastq.gz -o test_out.fastq -r TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted.kraken.rep  -t 2 --include-children  --fastq-output
 
 # python3 ../../WGS_TCGA_Kraken_Pipeline/Kraken_Tools/extract_kraken_reads.py -k TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted.kraken.txt -s1 ../PROCESSING/TMP/TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted_R1.fastq.gz -s2 ../PROCESSING/TMP/TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted_R2.fastq.gz -o test_out_R1.fastq -o2 test_out_R2.fastq -r TCGA-CN-5361-01A-01D-1431_120418_SN1222_0098_BD0T68ACXX_s_2_rg.sorted.kraken.rep  -t 2 --include-children  --fastq-output
 
