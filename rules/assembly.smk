@@ -53,7 +53,7 @@ rule aggr_assembly:
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
     threads:
-        1
+        BigJobCpu
     resources:
         mem_mb=BigJobMem
     shell:
