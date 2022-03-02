@@ -33,6 +33,11 @@ KRAKEN_G = os.path.join(RESULTS, 'KRAKEN_G')
 BRACKEN = os.path.join(RESULTS, 'BRACKEN')
 MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
 
+
+# needs to be created before megahit is run
+if not os.path.exists(MEGAHIT):
+  os.makedirs(MEGAHIT)
+
 BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
 SUMDIR = os.path.join('hecatomb_report')
 ASSEMBLY = os.path.join(WORKDIR, 'ASSEMBLY')
