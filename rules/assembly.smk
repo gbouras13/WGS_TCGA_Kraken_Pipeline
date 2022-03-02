@@ -30,9 +30,9 @@ rule megahit:
         os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
         os.path.join(TMP,"{sample}_bacteria_R2.fastq")
     output:
-        os.path.join(MEGAHIT,"{sample}/final.contigs.fa")
+        os.path.join(ASSEMBLY, "{sample}", "final.contigs.fa")
     params:
-        MEGAHIT
+        directory(os.path.join(MEGAHIT, '{sample}'))
     log:
         os.path.join(LOGS,"{sample}.megahit.log")
     conda:
@@ -43,13 +43,13 @@ rule megahit:
         mem_mb=BigJobMem
     shell:
         """
-        megahit -1 {input[0]} -2 {input[1]} -o {params[0]}/{wildcards.sample} 
+        megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
 rule aggr_assembly:
     """aggr"""
     input:
-        expand(os.path.join(MEGAHIT,"{sample}/final.contigs.fa"), sample = SAMPLES)
+        expand(os.path.join(ASSEMBLY, "{sample}", "final.contigs.fa"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
     threads:
