@@ -1,4 +1,4 @@
-rule extract_fastas:
+rule extract_bact_fastqs:
     """Extract Fastas."""
     input:
         os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
