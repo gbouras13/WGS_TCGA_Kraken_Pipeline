@@ -49,7 +49,7 @@ rule megahit:
 rule aggr_assembly:
     """aggr"""
     input:
-        expand(os.path.join(MEGAHIT,"{sample}/checkpoints.txt"), sample = SAMPLES)
+        expand(os.path.join(MEGAHIT,"{sample}/final.contigs.fa"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
     threads:
