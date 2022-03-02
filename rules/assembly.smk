@@ -38,7 +38,7 @@ rule megahit:
     conda:
         os.path.join('..', 'envs','assembly.yaml')
     threads:
-        1
+        BigJobCpu
     resources:
         mem_mb=BigJobMem
     shell:
@@ -86,7 +86,7 @@ rule megahit_fuso:
     conda:
         os.path.join('..', 'envs','assembly.yaml')
     threads:
-        1
+        BigJobCpu
     resources:
         mem_mb=BigJobMem
     shell:
