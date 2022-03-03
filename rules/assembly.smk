@@ -30,7 +30,7 @@ rule megahit:
         os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
         os.path.join(TMP,"{sample}_bacteria_R2.fastq")
     output:
-        os.path.join(ASSEMBLY, "{sample}", "final.contigs.fa")
+        os.path.join(MEGAHIT, "{sample}", "final.contigs.fa")
     params:
         directory(os.path.join(MEGAHIT, '{sample}'))
     log:
@@ -104,7 +104,7 @@ rule megahit_fuso:
         os.path.join(TMP,"{sample}_fuso_R1.fastq"),
         os.path.join(TMP,"{sample}_fuso_R2.fastq")
     output:
-        os.path.join(ASSEMBLY, "{sample}_Fuso", "final.contigs.fa")
+        os.path.join(MEGAHIT, "{sample}_Fuso", "final.contigs.fa")
     params:
         directory(os.path.join(MEGAHIT, '{sample}_Fuso'))
     log:
@@ -148,8 +148,8 @@ rule megahit_strep:
 rule aggr_assembly:
     """aggr"""
     input:
-        expand(os.path.join(ASSEMBLY, "{sample}", "final.contigs.fa"), sample = SAMPLES),
-        expand(os.path.join(ASSEMBLY, "{sample}_Fuso", "final.contigs.fa"), sample = SAMPLES),
+        expand(os.path.join(MEGAHIT, "{sample}", "final.contigs.fa"), sample = SAMPLES),
+        expand(os.path.join(MEGAHIT, "{sample}_Fuso", "final.contigs.fa"), sample = SAMPLES),
         expand(os.path.join(MEGAHIT, "{sample}_Strep", "final.contigs.fa"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
