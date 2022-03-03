@@ -43,6 +43,7 @@ rule megahit:
         mem_mb=BigJobMem
     shell:
         """
+	rm -rf {params[0]}
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
@@ -117,6 +118,7 @@ rule megahit_fuso:
         mem_mb=BigJobMem
     shell:
         """
+	rm -rf {params[0]}
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
