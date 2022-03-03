@@ -95,7 +95,7 @@ rule extract_fuso_strep:
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
-        -o {output[0]} -o2 {output[1]} -r {input[1]} -t 1314 --include-children  --fastq-output
+        -o {output[0]} -o2 {output[1]} -r {input[1]} -t 1301 --include-children  --fastq-output
         """
 
 rule megahit_fuso:
