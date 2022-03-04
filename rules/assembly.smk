@@ -24,11 +24,33 @@ rule extract_bact_fastqs:
         -o {output[0]} -o2 {output[1]} -r {input[1]} -t 2 --include-children  --fastq-output
         """
 
-rule megahit:
-    """run megahit."""
+rule fastp_trim:
+    """remove adapters etc """
     input:
         os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
         os.path.join(TMP,"{sample}_bacteria_R2.fastq")
+    output:
+        os.path.join(TMP,"{sample}_bacteria_trim_R1.fastq"),
+        os.path.join(TMP,"{sample}_bacteria_trim_R2.fastq")
+    log:
+        os.path.join(LOGS,"{sample}_fastp.log")
+    conda:
+        os.path.join('..', 'envs','assembly.yaml')
+    threads:
+        BigJobCpu
+    resources:
+        mem_mb=BigJobMem
+    shell:
+        """
+        fastp -i {input[0]} -I {input[1]} -o {output[0]} -O {output[1]} -w {threads}
+        """
+
+
+rule megahit:
+    """run megahit."""
+    input:
+        os.path.join(TMP,"{sample}_bacteria_trim_R1.fastq"),
+        os.path.join(TMP,"{sample}_bacteria_trim_R2.fastq")
     output:
         os.path.join(MEGAHIT, "{sample}", "final.contigs.fa")
     params:
@@ -43,7 +65,7 @@ rule megahit:
         mem_mb=BigJobMem
     shell:
         """
-	rm -rf {params[0]}
+	    rm -rf {params[0]}
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
@@ -118,7 +140,7 @@ rule megahit_fuso:
         mem_mb=BigJobMem
     shell:
         """
-	rm -rf {params[0]}
+	    rm -rf {params[0]}
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
