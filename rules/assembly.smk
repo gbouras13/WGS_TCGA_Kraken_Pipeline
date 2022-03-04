@@ -95,8 +95,8 @@ rule extract_fuso_fastqs:
         -o {output[0]} -o2 {output[1]} -r {input[1]} -t 848 --include-children  --fastq-output
         """
         
-rule extract_fuso_strep:
-    """Extract Fuso Fastas - taxid 848."""
+rule extract_strep_fastqs:
+    """Extract Strep Fastas - taxid 1301."""
     input:
         os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
         os.path.join(KRAKEN_S,"{sample}.kraken.rep"),
@@ -121,6 +121,33 @@ rule extract_fuso_strep:
         -o {output[0]} -o2 {output[1]} -r {input[1]} -t 1301 --include-children  --fastq-output
         """
 
+rule extract_prevotella_fastqs:
+    """Extract Fuso Fastas - taxid 838."""
+    input:
+        os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN_S,"{sample}.kraken.rep"),
+        os.path.join(TMP,"{sample}_R1.fastq.gz"),
+        os.path.join(TMP,"{sample}_R2.fastq.gz")
+    output:
+        os.path.join(TMP,"{sample}_prev_R1.fastq"),
+        os.path.join(TMP,"{sample}_prev_R2.fastq")
+    params:
+        os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
+    log:
+        os.path.join(LOGS,"{sample}.extract_kraken_reads.log")
+    conda:
+        os.path.join('..', 'envs','kraken2.yaml')
+    threads:
+        1
+    resources:
+        mem_mb=BigJobMem
+    shell:
+        """
+        python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
+        -o {output[0]} -o2 {output[1]} -r {input[1]} -t 838 --include-children  --fastq-output
+        """
+
+	
 rule megahit_fuso:
     """run megahit_fuso."""
     input:
@@ -144,6 +171,28 @@ rule megahit_fuso:
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
+rule megahit_prev:
+    """run megahit_prev."""
+    input:
+        os.path.join(TMP,"{sample}_prev_R1.fastq"),
+        os.path.join(TMP,"{sample}_prev_R2.fastq")
+    output:
+        os.path.join(MEGAHIT, "{sample}_Prev", "final.contigs.fa")
+    params:
+        directory(os.path.join(MEGAHIT, '{sample}_Prev'))
+    log:
+        os.path.join(LOGS,"{sample}.megahit_prev.log")
+    conda:
+        os.path.join('..', 'envs','assembly.yaml')
+    threads:
+        BigJobCpu
+    resources:
+        mem_mb=BigJobMem
+    shell:
+        """
+	    rm -rf {params[0]}
+        megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
+        """
 
 rule megahit_strep:
     """run megahit_strep."""
@@ -174,7 +223,8 @@ rule aggr_assembly:
     input:
         expand(os.path.join(MEGAHIT, "{sample}", "final.contigs.fa"), sample = SAMPLES),
         expand(os.path.join(MEGAHIT, "{sample}_Fuso", "final.contigs.fa"), sample = SAMPLES),
-        expand(os.path.join(MEGAHIT, "{sample}_Strep", "final.contigs.fa"), sample = SAMPLES)
+        expand(os.path.join(MEGAHIT, "{sample}_Strep", "final.contigs.fa"), sample = SAMPLES),
+	expand(os.path.join(MEGAHIT, "{sample}_Prev", "final.contigs.fa"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
     threads:
