@@ -37,7 +37,7 @@ process SPADES {
         metaspades.py \
             ${params.spades_options} \
             --threads "${task.cpus}" \
-            --memory $maxmem \
+            --memory ${maxmem} \
             --pe1-1 ${reads[0]} \
             --pe1-2 ${reads[1]} \
             -o spades
