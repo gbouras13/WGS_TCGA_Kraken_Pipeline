@@ -5,8 +5,8 @@
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
-#SBATCH --err="wgs_tcga_snk.err"
-#SBATCH --output="wgs_tcga_snk.out"
+#SBATCH --err="wgs_tcga_snk_single.err"
+#SBATCH --output="wgs_tcga_snk_single.out"
 
 # Resources allocation request parameters
 #SBATCH -p batch
