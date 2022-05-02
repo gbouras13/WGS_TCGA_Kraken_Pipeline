@@ -84,7 +84,7 @@ rule aggr_bracken:
     threads:
         1
     resources:
-        mem_mb=BigJobMem
+        SmallJobMem
     shell:
         """
         touch {output[0]}

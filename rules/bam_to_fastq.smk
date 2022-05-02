@@ -14,28 +14,10 @@ rule bam_index:
     threads:
         BigJobCpu
     resources:
-        mem_mb=BigJobMem
+        MediumJobMem
     shell:
         """
         samtools index -@ {threads} {input[0]} {output[0]} 2> {log}
-        """
-rule bam_unmap:
-    """Get unmapped reads"""
-    input:
-        os.path.join(READS, "{sample}.bam")
-    output:
-        os.path.join(TMP,"{sample}_unmap.bam")
-    log:
-        os.path.join(LOGS,"{sample}.bam_unmap.log")
-    conda:
-        os.path.join('..', 'envs','samtools.yaml')
-    threads:
-        BigJobCpu
-    resources:
-        mem_mb=BigJobMem
-    shell:
-        """
-        samtools view -u -f 12 -F 256 -@ {threads} {input[0]} > {output[0]} 2> {log}
         """
 
 rule bam_unmap_sort_fastq:
@@ -52,7 +34,7 @@ rule bam_unmap_sort_fastq:
     threads:
         BigJobCpu
     resources:
-        mem_mb=BigJobMem
+        MediumJobMem
     shell:
         """
         samtools view -u -f 12 -F 256 -@ {threads} {input[0]} | samtools sort -@ {threads} |   
@@ -61,7 +43,6 @@ rule bam_unmap_sort_fastq:
         -2 {output[1]} \
         -0 /dev/null -s /dev/null -n 2> {log}
         """
-
 
 #### aggregation rule
 
@@ -75,7 +56,7 @@ rule test:
     threads:
         1
     resources:
-        mem_mb=BigJobMem
+        SmallJobMem
     shell:
         """
         touch {output[0]}

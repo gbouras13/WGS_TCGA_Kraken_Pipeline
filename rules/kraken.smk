@@ -15,14 +15,14 @@ rule run_kraken_s:
     threads:
         BigJobCpu
     resources:
-        mem_mb=BigJobMem
+        MediumJobMem
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
                 --threads {threads} --db {params[0]} --output {output[0]} \
                 --paired \
                 --report-minimizer-data \
-                --confidence 0.05 --report {output[1]} 2> {log}
+                --confidence 0.25 --report {output[1]} 2> {log}
         """
 
 # rule run_kraken_g:
@@ -79,7 +79,7 @@ rule aggr_kraken:
     threads:
         1
     resources:
-        mem_mb=BigJobMem
+        SmallJobMem
     shell:
         """
         touch {output[0]}
