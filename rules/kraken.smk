@@ -13,7 +13,7 @@ rule run_kraken_s:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
-        BigJobCpu
+        mem_mb=BigJobCpu
     resources:
         MediumJobMem
     shell:
@@ -79,7 +79,7 @@ rule aggr_kraken:
     threads:
         1
     resources:
-        SmallJobMem
+        mem_mb=SmallJobMem
     shell:
         """
         touch {output[0]}
