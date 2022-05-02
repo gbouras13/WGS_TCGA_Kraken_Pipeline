@@ -15,7 +15,7 @@ rule run_kraken_s:
     threads:
         BigJobCpu
     resources:
-        mem_mb=MediumJobMem
+        mem_mb=BigJobMem
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
