@@ -13,6 +13,8 @@ configfile: os.path.join(workflow.basedir,  'config', 'config.yaml')
 
 BigJobMem = config["BigJobMem"]
 BigJobCpu = config["BigJobCpu"]
+MediumJobMem = config["MediumJobMem"]
+SmallJobMem = config["SmallJobMem"]
 
 ### DIRECTORIES
 include: "rules/directories.smk"
