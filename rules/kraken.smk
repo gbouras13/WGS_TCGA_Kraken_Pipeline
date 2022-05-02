@@ -13,9 +13,9 @@ rule run_kraken_s:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
-        mem_mb=BigJobCpu
+        BigJobCpu
     resources:
-        MediumJobMem
+        mem_mb=MediumJobMem
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
