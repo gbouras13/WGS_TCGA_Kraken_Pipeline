@@ -1,5 +1,4 @@
 #### if you want to only look at the unmapped READS
-#### I have decided to look at them all for now
 
 rule bam_index:
     """Index a .bam file for rapid access with samtools."""

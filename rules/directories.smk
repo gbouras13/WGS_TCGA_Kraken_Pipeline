@@ -15,13 +15,6 @@ else:
     OUTPUT = config['Output']
 
 
-### DATABASE SUBDIRs
-CONPATH = os.path.join(DBDIR, "contaminants")
-TAX = os.path.join(DBDIR, "tax", "taxonomy")
-TABLES = os.path.join(DBDIR, "tables")
-HOSTPATH = os.path.join(DBDIR, "host")
-
-
 ### OUTPUT DIRs
 RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
@@ -38,8 +31,3 @@ MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
 if not os.path.exists(MEGAHIT):
   os.makedirs(MEGAHIT)
 
-BENCH = os.path.join(OUTPUT, 'BENCHMARKS')
-SUMDIR = os.path.join('hecatomb_report')
-ASSEMBLY = os.path.join(WORKDIR, 'ASSEMBLY')
-MAPPING = os.path.join(WORKDIR, 'MAPPING')
-STATS = os.path.join(WORKDIR, 'STATS')
