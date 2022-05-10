@@ -13,7 +13,7 @@ rule bam_index:
     threads:
         BigJobCpu
     resources:
-        mem_mb=MediumJobMem
+        mem_mb=BigJobMem
     shell:
         """
         samtools index -@ {threads} {input[0]} {output[0]} 2> {log}
@@ -33,7 +33,7 @@ rule bam_unmap_sort_fastq:
     threads:
         BigJobCpu
     resources:
-        mem_mb=MediumJobMem
+        mem_mb=BigJobMem
     shell:
         """
         samtools view -u -f 12 -F 256 -@ {threads} {input[0]} | samtools sort -@ {threads} |   
