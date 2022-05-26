@@ -7,6 +7,7 @@ and the addHost script.
 
 DBDIR = 'Databases'
 KRAKENTOOLSDIR = 'Kraken_Tools'
+TRUST4DIR = 'Trust_4_Files'
 
 ### OUTPUT DIRECTORY
 if config['Output'] is None:
