@@ -24,6 +24,8 @@ cd $SNK_DIR
 module load Anaconda3/2020.07
 conda activate snakemake_clean_env
 
-snakemake  -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/wgs_runner.smk  --config Reads=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Total_Bams/ Output=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Output_Final  --profile wgs_tcga
+snakemake  -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/wgs_runner.smk \
+--config Reads=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Total_Bams/ Output=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Output_Final \
+--profile $PROF_DIR/wgs_tcga
 
 conda deactivate
