@@ -4,7 +4,7 @@ rule trust4:
         os.path.join(TMP,"{sample}_R2.fastq.gz")
     params:
         os.path.join(TRUST4,"{sample}"),
-        TRUSTDIR
+        os.path.join('..', 'Trust_4_Files')
     output:
         os.path.join(TRUST4,"{sample}", "{sample}_final.out")
     conda:
