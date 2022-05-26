@@ -3,7 +3,8 @@ rule trust4:
         os.path.join(TMP,"{sample}_R1.fastq.gz"),
         os.path.join(TMP,"{sample}_R2.fastq.gz")
     params:
-        os.path.join(TRUST4,"{sample}")
+        os.path.join(TRUST4,"{sample}"),
+        TRUSTDIR
     output:
         os.path.join(TRUST4,"{sample}", "{sample}_final.out")
     conda:
@@ -14,7 +15,7 @@ rule trust4:
         mem_mb=MediumJobMem
     shell:
         '''
-        run-trust4 -f human_IMGT+C.fa --ref hg38_bcrtcr.fa -t {threads} \
+        run-trust4 -f {params[1]}/human_IMGT+C.fa --ref {params[1]}/hg38_bcrtcr.fa -t {threads} \
          -1 {input[0]} -2 {input[1]} -o {params[0]}  
         '''
 
