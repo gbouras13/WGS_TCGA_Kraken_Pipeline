@@ -35,7 +35,9 @@ rule bracken_s:
 
 
 # combine_bracken_outputs.py --files kraken/*total.txt -o bracken_species_all
-# kraken-biom bracken/*_report_bracken_species.txt -o bracken_species.biom --fmt json
+# kraken-biom bracken/*_report_bracken_species.rep -o bracken_species.biom --fmt json
+
+# kraken-biom *kraken2_bracken -o bracken_species.biom --fmt json
 
 ##### do this 
 
