@@ -8,6 +8,7 @@ and the addHost script.
 DBDIR = 'Databases'
 KRAKENTOOLSDIR = 'Kraken_Tools'
 TRUST4DIR = 'Trust_4_Files'
+CONTAMINANTS = 'contaminants'
 
 ### OUTPUT DIRECTORY
 if config['Output'] is None:
@@ -27,6 +28,7 @@ KRAKEN_G = os.path.join(RESULTS, 'KRAKEN_G')
 BRACKEN = os.path.join(RESULTS, 'BRACKEN')
 MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
 TRUST4 = os.path.join(RESULTS, 'TRUST4')
+
 
 
 # needs to be created before megahit is run
