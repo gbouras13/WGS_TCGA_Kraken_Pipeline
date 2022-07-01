@@ -84,7 +84,7 @@ rule test:
         expand(os.path.join(TMP,"{sample}_fastp_R1.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(TMP,"{sample}_fastp_R2.fastq.gz"), sample = SAMPLES)
     output:
-        os.path.join(LOGS, "test.txt")
+        os.path.join(LOGS, "aggr_fastq.txt")
     threads:
         1
     resources:
