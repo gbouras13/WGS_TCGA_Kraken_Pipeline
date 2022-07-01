@@ -67,7 +67,7 @@ rule fastp:
         -I {input[1]} \
         -o {output[0]} \
         -O {output[1]}  \
-        -z \
+        -z 4 \
         --length_required 40 \
         --adapter_fasta {params[0]} \
         --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
