@@ -14,7 +14,7 @@ PreprocessingFiles = [
     expand(os.path.join(TMP,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
     expand(os.path.join(TMP,"{sample}_bacteria_R2.fastq"), sample = SAMPLES),
     expand(os.path.join(TMP,"{sample}_virus_R1.fastq"), sample = SAMPLES),
-    expand(os.path.join(TMP,"{sample}_virus_R2.fastq"), sample = SAMPLES)
+    expand(os.path.join(TMP,"{sample}_virus_R2.fastq"), sample = SAMPLES),
     expand(os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"), sample = SAMPLES),
     expand(os.path.join(TMP,"{sample}_bacteria_fastp_R2.fastq.gz"), sample = SAMPLES)
 
