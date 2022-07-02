@@ -92,7 +92,7 @@ rule bracken_s_second_pass:
 rule aggr_bracken:
     """aggregated"""
     input:
-        expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES)
+        expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
         expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species_second_pass.txt"), sample = SAMPLES)
         # ,
         # expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES)
