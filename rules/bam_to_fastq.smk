@@ -43,37 +43,6 @@ rule bam_unmap_sort_fastq:
         -0 /dev/null -s /dev/null -n 2> {log}
         """
 
-rule fastp:
-    """use fastp to qc files"""
-    input:
-        os.path.join(TMP,"{sample}_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_R2.fastq.gz")
-    output:
-        os.path.join(TMP,"{sample}_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_fastp_R2.fastq.gz")
-    log:
-        os.path.join(LOGS,"{sample}.fastp.log")
-    conda:
-        os.path.join('..', 'envs','fastp.yaml')
-    params:
-        os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
-    threads:
-        BigJobCpu
-    resources:
-        mem_mb=BigJobMem
-    shell:
-        """
-        fastp -i {input[0]} \
-        -I {input[1]} \
-        -o {output[0]} \
-        -O {output[1]}  \
-        -z 1 \
-        --length_required 40 \
-        --adapter_fasta {params[0]} \
-        --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
-        --dedup --dup_calc_accuracy 4   --trim_poly_x 
-        --thread {threads}
-        """
 
 
 #### aggregation rule
@@ -81,8 +50,8 @@ rule fastp:
 rule test:
     """Index a .bam file for rapid access with samtools."""
     input:
-        expand(os.path.join(TMP,"{sample}_fastp_R1.fastq.gz"), sample = SAMPLES),
-        expand(os.path.join(TMP,"{sample}_fastp_R2.fastq.gz"), sample = SAMPLES)
+        expand(os.path.join(TMP,"{sample}_R1.fastq.gz"), sample = SAMPLES),
+        expand(os.path.join(TMP,"{sample}_R2.fastq.gz"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_fastq.txt")
     threads:
