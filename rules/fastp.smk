@@ -33,7 +33,7 @@ rule fastp:
 rule aggr_fastp:
     """aggr"""
     input:
-        expand(os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq"), sample = SAMPLES),
+        expand(os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"), sample = SAMPLES),
     output:
         os.path.join(LOGS, "aggr_fastp.txt")
     threads:
