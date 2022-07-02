@@ -51,7 +51,7 @@ rule bam_unmap_sort_fastq:
 rule test:
     """Index a .bam file for rapid access with samtools."""
     input:
-        expand(os.path.join(TMP,"{sample}_R1.fastq.gz"), sample = SAMPLES),
+        expand(os.path.join(READS,"{sample}.bam.bai") sample = SAMPLES),
         expand(os.path.join(TMP,"{sample}_R2.fastq.gz"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_fastq.txt")
