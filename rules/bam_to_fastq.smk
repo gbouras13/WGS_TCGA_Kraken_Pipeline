@@ -22,8 +22,7 @@ rule bam_index:
 rule bam_unmap_sort_fastq:
     """converted unmapped reads to fastq"""
     input:
-        os.path.join(READS, "{sample}.bam"),
-        os.path.join(READS,"{sample}.bam.bai")
+        os.path.join(READS, "{sample}.bam")
     output:
         os.path.join(TMP,"{sample}_R1.fastq.gz"),
         os.path.join(TMP,"{sample}_R2.fastq.gz")
