@@ -22,8 +22,8 @@ PreprocessingFiles = [
     os.path.join(LOGS, "aggr_fastq.txt"),
     os.path.join(LOGS, "aggr_kraken.txt"),
     os.path.join(LOGS, "aggr_assembly.txt"),
+    os.path.join(LOGS, "aggr_fastp.txt"),
     #os.path.join(LOGS, "aggr_kraken_second_pass.txt"),
-    #os.path.join(LOGS, "aggr_fastp.txt"),
     #os.path.join(LOGS, "aggr_bracken.txt"),
 
 ]

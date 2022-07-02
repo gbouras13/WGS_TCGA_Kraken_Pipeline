@@ -34,8 +34,8 @@ include: "rules/bam_to_fastq.smk"
 include: "rules/kraken.smk"
 include: "rules/assembly.smk"
 include: "rules/fastp.smk"
-include: "rules/kraken_second_pass.smk"
-include: "rules/bracken.smk"
+#include: "rules/kraken_second_pass.smk"
+#include: "rules/bracken.smk"
 print(SAMPLES)
 # print(PreprocessingFiles)
 rule all:
