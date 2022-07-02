@@ -1,8 +1,8 @@
 rule run_kraken_s:
     """Index a .bam file for rapid access with samtools."""
     input:
-        os.path.join(TMP,"{sample}_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_fastp_R2.fastq.gz")
+        os.path.join(TMP,"{sample}_R1.fastq.gz"),
+        os.path.join(TMP,"{sample}_R2.fastq.gz")
     output:
         os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
         os.path.join(KRAKEN_S,"{sample}.kraken.rep")
