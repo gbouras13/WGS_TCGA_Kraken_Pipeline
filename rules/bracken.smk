@@ -1,17 +1,17 @@
-rule bracken_s:
-    input:
-        os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_S,"{sample}.kraken.rep")
-    params:
-        os.path.join(DBDIR, 'standard')
-    output:
-        os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    shell:
-        '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
-        '''
+# rule bracken_s:
+#     input:
+#         os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
+#         os.path.join(KRAKEN_S,"{sample}.kraken.rep")
+#     params:
+#         os.path.join(DBDIR, 'standard')
+#     output:
+#         os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt")
+#     conda:
+#         os.path.join('..', 'envs','kraken2.yaml')
+#     shell:
+#         '''
+#         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
+#         '''
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50
 
