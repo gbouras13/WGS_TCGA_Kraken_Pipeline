@@ -37,6 +37,7 @@ include: "rules/assembly.smk"
 include: "rules/fastp.smk"
 include: "rules/kraken_second_pass.smk"
 print(SAMPLES)
+print(PreprocessingFiles)
 rule all:
     input:
         ## Preprocessing
