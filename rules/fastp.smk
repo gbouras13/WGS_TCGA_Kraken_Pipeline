@@ -1,8 +1,8 @@
 rule fastp:
     """use fastp to qc files"""
     input:
-        os.path.join(TMP,"{sample}_bacteria_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_R2.fastq.gz")
+        os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
+        os.path.join(TMP,"{sample}_bacteria_R2.fastq")
     output:
         os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"),
         os.path.join(TMP,"{sample}_bacteria_fastp_R2.fastq.gz")
