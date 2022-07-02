@@ -99,8 +99,6 @@ rule run_kraken_s_second_pass:
 rule aggr_kraken:
     """Index a .bam file for rapid access with samtools."""
     input:
-        expand(os.path.join(KRAKEN_S,"{sample}.kraken.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_S,"{sample}.kraken.rep"), sample = SAMPLES),
         expand(os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.txt"), sample = SAMPLES),
         expand(os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.rep"), sample = SAMPLES)
     output:
