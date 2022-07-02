@@ -25,8 +25,7 @@ rule bam_unmap_sort_fastq:
         os.path.join(READS,"{sample}.bam")
     output:
         os.path.join(TMP,"{sample}_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_R2.fastq.gz"),
-        os.path.join(TMP,"{sample}.txt")
+        os.path.join(TMP,"{sample}_R2.fastq.gz")
     log:
         os.path.join(LOGS,"{sample}.bam_unmap_sort_fastq.log")
     conda:
@@ -42,7 +41,6 @@ rule bam_unmap_sort_fastq:
         -1 {output[0]} \
         -2 {output[1]} \
         -0 /dev/null -s /dev/null -n 2> {log}
-        touch {output[2]}
         """
 
 
@@ -53,8 +51,7 @@ rule test:
     """Index a .bam file for rapid access with samtools."""
     input:
         expand(os.path.join(READS,"{sample}.bam.bai"), sample = SAMPLES),
-        expand(os.path.join(TMP,"{sample}_R2.fastq.gz"), sample = SAMPLES),
-        expand(os.path.join(TMP,"{sample}.txt"), sample = SAMPLES)
+        expand(os.path.join(TMP,"{sample}_R2.fastq.gz"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_fastq.txt")
     threads:
