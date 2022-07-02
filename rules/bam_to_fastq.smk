@@ -19,7 +19,7 @@ rule bam_index:
         samtools index -@ {threads} {input[0]} {output[0]} 2> {log}
         """
 
-rule bam_unmap_sort_fastq:
+checkpoint bam_unmap_sort_fastq:
     """converted unmapped reads to fastq"""
     input:
         os.path.join(READS, "{sample}.bam")
