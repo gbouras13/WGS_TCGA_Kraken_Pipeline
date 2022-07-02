@@ -34,7 +34,7 @@ include: "rules/bam_to_fastq.smk"
 include: "rules/kraken.smk"
 include: "rules/bracken.smk"
 include: "rules/assembly.smk"
-
+print(SAMPLES)
 rule all:
     input:
         ## Preprocessing
