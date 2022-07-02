@@ -24,39 +24,6 @@ rule extract_bact_fastqs:
         -o {output[0]} -o2 {output[1]} -r {input[1]} -t 2 --include-children  --fastq-output
         """
 
-rule fastp:
-    """use fastp to qc files"""
-    input:
-        os.path.join(TMP,"{sample}_bacteria_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_R2.fastq.gz")
-    output:
-        os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_fastp_R2.fastq.gz")
-    log:
-        os.path.join(LOGS,"{sample}.fastp.log")
-    conda:
-        os.path.join('..', 'envs','fastp.yaml')
-    params:
-        os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
-    threads:
-        BigJobCpu
-    resources:
-        mem_mb=BigJobMem
-    shell:
-        """
-        fastp -i {input[0]} \
-        -I {input[1]} \
-        -o {output[0]} \
-        -O {output[1]}  \
-        -z 1 \
-        --length_required 40 \
-        --adapter_fasta {params[0]} \
-        --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
-        --dedup --dup_calc_accuracy 4   --trim_poly_x 
-        --thread {threads}
-        """
-        
-        
 
 # rule extract_plasmid_fastqs:
 #     """Extract Fastas."""
@@ -161,7 +128,7 @@ rule extract_virus_fastqs:
 rule aggr_assembly:
     """aggr"""
     input:
-        expand(os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq"), sample = SAMPLES),
+        expand(os.path.join(TMP,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
         expand(os.path.join(TMP,"{sample}_virus_R1.fastq"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
