@@ -13,7 +13,7 @@ rule fastp:
     params:
         os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
     threads:
-        BigJobCpu
+        16
     resources:
         mem_mb=BigJobMem
     shell:
