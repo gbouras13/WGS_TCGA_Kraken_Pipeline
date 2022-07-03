@@ -26,6 +26,7 @@ conda activate snakemake_clean_env
 
 snakemake  -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/wgs_runner.smk \
 --config Reads=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Total_Bams/ Output=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Output_Final \
---profile $PROF_DIR/wgs_tcga
+--profile $PROF_DIR/wgs_tcga \
+--keep-going
 
 conda deactivate
