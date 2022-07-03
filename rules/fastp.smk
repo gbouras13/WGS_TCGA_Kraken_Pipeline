@@ -26,7 +26,7 @@ rule fastp:
         --length_required 40 \
         --adapter_fasta {params[0]} \
         --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
-        --dedup --dup_calc_accuracy 4   --trim_poly_x 
+        --dedup --dup_calc_accuracy 4   --trim_poly_x \
         --thread {threads}
         """
         
