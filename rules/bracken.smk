@@ -19,12 +19,12 @@ rule bracken_s:
 
 rule bracken_g:
     input:
-        os.path.join(KRAKEN_G,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_G,"{sample}.kraken.rep")
+        os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN_S,"{sample}.kraken.rep")
     params:
         os.path.join(DBDIR, 'standard')
     output:
-        os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genus_first_pass.txt")
+        os.path.join(KRAKEN_S,"{sample}.kraken_bracken_genus_first_pass.txt")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
@@ -135,8 +135,8 @@ rule aggr_bracken:
         expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
         expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species_second_pass.txt"), sample = SAMPLES),
         expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_genus_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_G,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_G,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES)
+        expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES)
         # ,
         # expand(os.path.join(KRAKEN_S,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES)
     output:
