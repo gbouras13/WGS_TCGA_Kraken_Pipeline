@@ -10,8 +10,6 @@ rule bracken_s:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
@@ -31,8 +29,6 @@ rule bracken_g:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem
     shell:
         '''
         bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
@@ -94,8 +90,6 @@ rule bracken_s_second_pass:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
@@ -113,8 +107,6 @@ rule bracken_g_second_pass:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l G 
@@ -132,8 +124,6 @@ rule bracken_f_second_pass:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l F 
