@@ -1,8 +1,8 @@
 rule run_kraken_s_second_pass:
     """run kraken on the bacterial fastp."""
     input:
-        os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_fastp_R2.fastq.gz")
+        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
+        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
     output:
         os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.txt"),
         os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.rep")
@@ -24,7 +24,6 @@ rule run_kraken_s_second_pass:
                 --report-minimizer-data \
                 --confidence 0.15 --report {output[1]} 2> {log}
         """
-
 
 rule aggr_kraken_second_pass:
     """Index a .bam file for rapid access with samtools."""
