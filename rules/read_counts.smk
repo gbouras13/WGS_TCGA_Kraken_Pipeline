@@ -9,7 +9,7 @@ rule bam_counts_all:
     threads:
         8
     resources:
-        mem_mb=BigJobMem,
+        mem_mb=MediumJobMem,
         time=60
     shell:
         """
@@ -27,7 +27,7 @@ rule bam_counts_unmapped:
     threads:
         8
     resources:
-        mem_mb=BigJobMem,
+        mem_mb=MediumJobMem,
         time=60
     shell:
         """
