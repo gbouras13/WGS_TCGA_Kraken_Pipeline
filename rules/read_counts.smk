@@ -7,13 +7,13 @@ rule bam_counts_all:
     conda:
         os.path.join('..', 'envs','samtools.yaml')
     threads:
-        1
+        8
     resources:
-        mem_mb=MediumJobMem,
-        time=30
+        mem_mb=BigJobMem,
+        time=60
     shell:
         """
-        samtools view -c {input[0]} > {output[0]}
+        samtools view -c -@ {threads} {input[0]} > {output[0]}
         """
 
 rule bam_counts_unmapped:
@@ -25,13 +25,13 @@ rule bam_counts_unmapped:
     conda:
         os.path.join('..', 'envs','samtools.yaml')
     threads:
-        1
+        8
     resources:
-        mem_mb=MediumJobMem,
-        time=30
+        mem_mb=BigJobMem,
+        time=60
     shell:
         """
-        samtools view -c -F 256 {input[0]} > {output[0]}
+        samtools view -c -F 256 -@ {threads} {input[0]} > {output[0]}
         """
 
 rule aggr_read_counts:
