@@ -23,7 +23,7 @@ rule extract_bact_fastqs:
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
         -o {output[0]} -o2 {output[1]} -r {input[1]} -t 2 --include-children  --fastq-output
         """
-s
+
 
 rule extract_virus_fastqs:
     """Extract Fastas."""
@@ -52,8 +52,6 @@ rule extract_virus_fastqs:
         """
 
 
-
-
 rule megahit:
     """run megahit."""
     input:
@@ -77,7 +75,6 @@ rule megahit:
 	    rm -rf {params[0]}
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
-
 
 
 rule aggr_assembly:
