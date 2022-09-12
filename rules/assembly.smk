@@ -25,32 +25,6 @@ rule extract_bact_fastqs:
         """
 
 
-rule extract_toxiplasma_fastqs:
-    """Extract Fastas."""
-    input:
-        os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_S,"{sample}.kraken.rep"),
-        os.path.join(TMP,"{sample}_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_R2.fastq.gz")
-    output:
-        os.path.join(TMP,"{sample}_toxiplasma_R1.fastq"),
-        os.path.join(TMP,"{sample}_toxiplasma_R2.fastq")
-    params:
-        os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
-    log:
-        os.path.join(LOGS,"{sample}.extract_kraken_reads.log")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    threads:
-        1
-    resources:
-        mem_mb=BigJobMem
-    shell:
-        """
-        python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
-        -o {output[0]} -o2 {output[1]} -r {input[1]} -t 5811 --include-children  --fastq-output
-        """
-
 rule extract_virus_fastqs:
     """Extract Fastas."""
     input:
@@ -80,33 +54,11 @@ rule extract_virus_fastqs:
 
 
 
-# rule fastp_trim:
-#     """remove adapters etc """
-#     input:
-#         os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
-#         os.path.join(TMP,"{sample}_bacteria_R2.fastq")
-#     output:
-#         os.path.join(TMP,"{sample}_bacteria_trim_R1.fastq"),
-#         os.path.join(TMP,"{sample}_bacteria_trim_R2.fastq")
-#     log:
-#         os.path.join(LOGS,"{sample}_fastp.log")
-#     conda:
-#         os.path.join('..', 'envs','assembly.yaml')
-#     threads:
-#         BigJobCpu
-#     resources:
-#         mem_mb=BigJobMem
-#     shell:
-#         """
-#         fastp -i {input[0]} -I {input[1]} -o {output[0]} -O {output[1]} -w {threads}
-#         """
-
-
 rule megahit:
     """run megahit."""
     input:
-        os.path.join(TMP,"{sample}_toxiplasma_R1.fastq"),
-        os.path.join(TMP,"{sample}_toxiplasma_R2.fastq")
+        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
+        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
     output:
         os.path.join(MEGAHIT, "{sample}", "final.contigs.fa")
     params:
