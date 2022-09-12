@@ -27,7 +27,7 @@ KRAKEN_S = os.path.join(RESULTS, 'KRAKEN_S')
 KRAKEN_G = os.path.join(RESULTS, 'KRAKEN_G')
 BRACKEN = os.path.join(RESULTS, 'BRACKEN')
 MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
-READCOUNT = = os.path.join(RESULTS, 'READCOUNT')
+READCOUNT = os.path.join(RESULTS, 'READCOUNT')
 
 
 
