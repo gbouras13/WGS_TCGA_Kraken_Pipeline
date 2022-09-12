@@ -10,7 +10,7 @@ rule bam_counts_all:
         8
     resources:
         mem_mb=MediumJobMem,
-        time=60
+        time=600
     shell:
         """
         samtools view -c -@ {threads} {input[0]} > {output[0]}
@@ -28,7 +28,7 @@ rule bam_counts_unmapped:
         8
     resources:
         mem_mb=MediumJobMem,
-        time=60
+        time=600
     shell:
         """
         samtools view -c -F 256 -@ {threads} {input[0]} > {output[0]}
