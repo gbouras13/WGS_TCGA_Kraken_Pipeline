@@ -76,13 +76,38 @@ rule megahit:
         megahit -1 {input[0]} -2 {input[1]} -o {params[0]}
         """
 
+rule megahit_kraken:
+    """run megahit."""
+    input:
+        os.path.join(MEGAHIT, "{sample}", "final.contigs.fa")
+    output:
+        os.path.join(MEGAHIT,"{sample}.kraken_megahit.txt"),
+        os.path.join(MEGAHIT,"{sample}.kraken_megahit.rep")
+    params:
+        os.path.join(DBDIR, 'standard')
+    conda:
+        os.path.join('..', 'envs','kraken2.yaml')
+    threads:
+        8
+    resources:
+        mem_mb=BigJobMem,
+        time=30
+    shell:
+        """
+        kraken2 {input[0]} \
+        --threads {threads} --db {params[0]} --output {output[0]} \
+        --report-minimizer-data \
+        --confidence 0.15 --report {output[1]} 
+        """
+
 
 rule aggr_assembly:
     """aggr"""
     input:
         expand(os.path.join(TMP,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
         expand(os.path.join(TMP,"{sample}_virus_R1.fastq"), sample = SAMPLES),
-        expand(os.path.join(MEGAHIT, "{sample}", "final.contigs.fa"), sample = SAMPLES)
+        expand(os.path.join(MEGAHIT, "{sample}", "final.contigs.fa"), sample = SAMPLES),
+        expand(os.path.join(MEGAHIT,"{sample}.kraken_megahit.rep"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_assembly.txt")
     threads:

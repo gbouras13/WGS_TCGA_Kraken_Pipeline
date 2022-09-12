@@ -8,8 +8,6 @@ rule run_kraken_s_second_pass:
         os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.rep")
     params:
         os.path.join(DBDIR, 'standard')
-    log:
-        os.path.join(LOGS,"{sample}.kraken_s_second_pass.log")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
@@ -22,7 +20,7 @@ rule run_kraken_s_second_pass:
                 --threads {threads} --db {params[0]} --output {output[0]} \
                 --paired \
                 --report-minimizer-data \
-                --confidence 0.15 --report {output[1]} 2> {log}
+                --confidence 0.15 --report {output[1]} 
         """
 
 rule aggr_kraken_second_pass:
