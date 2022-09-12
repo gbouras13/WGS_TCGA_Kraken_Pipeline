@@ -1,0 +1,52 @@
+rule bam_counts_all:
+    """Get read count from bam file."""
+    input:
+        os.path.join(READS, "{sample}.bam")
+    output:
+        os.path.join(READCOUNT,"{sample}_readcount_all.txt")
+    conda:
+        os.path.join('..', 'envs','samtools.yaml')
+    threads:
+        1
+    resources:
+        mem_mb=MediumJobMem,
+        time=30
+    shell:
+        """
+        samtools view -c {input[0]} > {output[0]}
+        """
+
+rule bam_counts_unmapped:
+    """Get unmapped read count from bam file."""
+    input:
+        os.path.join(READS, "{sample}.bam")
+    output:
+        os.path.join(READCOUNT,"{sample}_readcount_unmapped.txt")
+    conda:
+        os.path.join('..', 'envs','samtools.yaml')
+    threads:
+        1
+    resources:
+        mem_mb=MediumJobMem,
+        time=30
+    shell:
+        """
+        samtools view -c -F 256 {input[0]} > {output[0]}
+        """
+
+rule aggr_read_counts:
+    """Aggregates Read Count."""
+    input:
+        expand(os.path.join(READCOUNT,"{sample}_readcount_all.txt"), sample = SAMPLES),
+        expand(os.path.join(READCOUNT,"{sample}_readcount_unmapped.txt"), sample = SAMPLES)
+    output:
+        os.path.join(LOGS, "aggr_read_count.txt")
+    threads:
+        1
+    resources:
+        mem_mb=SmallJobMem,
+        time=5
+    shell:
+        """
+        touch {output[0]}
+        """
