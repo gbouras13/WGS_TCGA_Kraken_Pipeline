@@ -16,29 +16,11 @@ rule bam_counts_all:
         samtools view -c -@ {threads} {input[0]} > {output[0]}
         """
 
-rule bam_counts_unmapped:
-    """Get unmapped read count from bam file."""
-    input:
-        os.path.join(READS, "{sample}.bam")
-    output:
-        os.path.join(READCOUNT,"{sample}_readcount_unmapped.txt")
-    conda:
-        os.path.join('..', 'envs','samtools.yaml')
-    threads:
-        8
-    resources:
-        mem_mb=MediumJobMem,
-        time=600
-    shell:
-        """
-        samtools view -c -F 256 -@ {threads} {input[0]} > {output[0]}
-        """
 
 rule aggr_read_counts:
     """Aggregates Read Count."""
     input:
-        expand(os.path.join(READCOUNT,"{sample}_readcount_all.txt"), sample = SAMPLES),
-        expand(os.path.join(READCOUNT,"{sample}_readcount_unmapped.txt"), sample = SAMPLES)
+        expand(os.path.join(READCOUNT,"{sample}_readcount_all.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_read_count.txt")
     threads:
