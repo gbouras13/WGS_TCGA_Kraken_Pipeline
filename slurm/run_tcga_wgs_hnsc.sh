@@ -24,14 +24,14 @@ cd $SNK_DIR
 module load Anaconda3/2020.07
 conda activate snakemake_clean_env
 
-snakemake  -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/extract_unaligned_fastq.smk \
+snakemake  -c 1 -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/extract_unaligned_fastq.smk \
 --config Bams=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Total_Bams/ Output=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Output_Final \
 --profile $PROF_DIR/wgs_tcga \
 --keep-going
 
 # only need the output directory after extract_unaligned_fastq.smk has been run
 
-snakemake  -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/wgs_runner.smk \
+snakemake  -c 1 -s /hpcfs/users/a1667917/Kevin/WGS_TCGA_Kraken_Pipeline/wgs_runner.smk \
 --config Output=/hpcfs/users/a1667917/Kevin/TCGA_WGS_Output_Final \
 --profile $PROF_DIR/wgs_tcga \
 --keep-going
