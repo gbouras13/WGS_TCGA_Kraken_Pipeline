@@ -1,8 +1,8 @@
 rule extract_bact_fastqs:
     """Extract Fastas."""
     input:
-        os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_S,"{sample}.kraken.rep"),
+        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep"),
         os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
         os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
     output:
@@ -26,8 +26,8 @@ rule extract_bact_fastqs:
 rule extract_virus_fastqs:
     """Extract Fastas."""
     input:
-        os.path.join(KRAKEN_S,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_S,"{sample}.kraken.rep"),
+        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep"),
         os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
         os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
     output:
