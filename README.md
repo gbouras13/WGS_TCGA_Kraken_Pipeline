@@ -5,7 +5,7 @@ Snakemake Pipeline to Mine TCGA WGS Data for Contaminant Reads
 
 * Some code (namely, the sample parsing in samples.smk) and inspiration for the general structure has been borrowed from https://github.com/shandley/hecatomb
 * Inputs required are the relevant Bam files, which all must be placed in a certain directory - ideally in the Bams/ directory, but can be anywhere (the directory they are in must be specified with Reads={directory}).
-* Only software requirement is that snakemake be in the $PATH.
+* Only software requirement is that snakemake be in the $PATH. The rest should install.
 * extract_reads.py has been borrowed from KrakenTools https://github.com/jenniferlu717/KrakenTools#extract_kraken_readspy
 
 # Usage
