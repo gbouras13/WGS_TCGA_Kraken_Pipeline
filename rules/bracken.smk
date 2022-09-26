@@ -132,11 +132,11 @@ rule bracken_second_pass_family:
 rule aggr_bracken:
     """aggregated"""
     input:
-        expand(os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_bracken_species_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_bracken_genus_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_species_second_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_genus_second_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES),
         os.path.join(BIOM,"bracken_species_first_pass.biom")
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
