@@ -55,12 +55,12 @@ rule aggr_extraction:
         expand(os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
         expand(os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq"), sample = SAMPLES)
     output:
-        os.path.join(LOGS, "aggr_extraction.txt"),
-        time=5
+        os.path.join(LOGS, "aggr_extraction.txt")
     threads:
         1
     resources:
-        mem_mb=SmallJobMem
+        mem_mb=SmallJobMem,
+        time=5
     shell:
         """
         touch {output[0]}
