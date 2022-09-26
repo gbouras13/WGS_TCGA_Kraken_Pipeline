@@ -8,12 +8,6 @@ Snakemake Pipeline to Mine TCGA WGS Data for Contaminant Reads
 * Only software requirement is that snakemake be in the $PATH.
 * extract_reads.py has been borrowed from KrakenTools https://github.com/jenniferlu717/KrakenTools#extract_kraken_readspy
 
-#### To be added
-
-* Assembly module
-* BLAST/mmseqs the assemblies to a bacterial db
-* Bracken
-
 # Usage
 
 1. Download the Kraken2 DB
@@ -23,21 +17,25 @@ Snakemake Pipeline to Mine TCGA WGS Data for Contaminant Reads
 snakemake -c 1 -s DownloadDB.smk
 ```
 
-2. For offline use (e.g. Adelaide Uni HPC) - the conda envs need to be installed first on the login node in the pipeline directory
+2. Next the unaligned reads need to be extracted from teh TCGA bams
 
 ```console
-snakemake -c 1 -s wgs_runner.smk --use-conda --config Reads=Bams/ --conda-create-envs-only --conda-frontend conda
+snakemake -c 1 -s extract_unaligned_fastq --use-conda --config Bams=Bams/ Output=TCGA_Output/  --conda-frontend conda
 ```
 
 3. Run the pipeline
 
 ```console
-snakemake -c 16 -s wgs_runner.smk --use-conda --config Reads=Bams/ Output=my_output_dir/
+snakemake -c 16 -s wgs_runner.smk --use-conda --config Output=my_output_dir/
+```
+
+Other Notes
+======
+
+* For offline use (e.g. Adelaide Uni HPC) - the conda envs need to be installed first on the login node in the pipeline directory
+
+```console
+snakemake -c 1 -s wgs_runner.smk --use-conda --config Output=my_output_dir/ --conda-create-envs-only --conda-frontend conda
 ```
 
 * With a Slurm profile (see https://snakemake.readthedocs.io/en/stable/executing/cli.html https://github.com/Snakemake-Profiles/slurm https://fame.flinders.edu.au/blog/2021/08/02/snakemake-profiles-updated)
-* You will need to cd to the pipeline directory in your jobscript before running if you want to run this offline (to use the premade conda envs)
-
-```console
-snakemake -c 1 -s wgs_runner.smk --config Reads=Bams/ Output=my_output_dir/  --profile wgs_tcga
-```

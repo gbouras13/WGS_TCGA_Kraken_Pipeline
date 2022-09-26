@@ -1,13 +1,10 @@
 """
-Database and output locations for Hecatomb
-Ensures consistent variable names and file locations for the pipeline, the database download script,
-and the addHost script.
+Consistent output directory locations
 """
 
 
 DBDIR = 'Databases'
 KRAKENTOOLSDIR = 'Kraken_Tools'
-TRUST4DIR = 'Trust_4_Files'
 CONTAMINANTS = 'contaminants'
 
 ### OUTPUT DIRECTORY
@@ -20,18 +17,38 @@ else:
 ### OUTPUT DIRs
 RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
-TMP = os.path.join(WORKDIR, 'TMP')
+# fastq dirs
+UNALIGNED_FASTQ  = os.path.join(WORKDIR, 'UNALIGNED_FASTQ')
+BACT_FASTQ_FIRST_PASS = os.path.join(WORKDIR, 'BACT_FASTQ_FIRST_PASS')
+VIR_FASTQ_FIRST_PASS = os.path.join(WORKDIR, 'VIR_FASTQ_FIRST_PASS')
+CONCAT_FASTQ = os.path.join(WORKDIR, 'CONCAT_FASTQ')
+
+# dir for flags
 LOGS = os.path.join(OUTPUT, 'LOGS')
 BIOM = os.path.join(RESULTS, 'BIOM')
-KRAKEN_S = os.path.join(RESULTS, 'KRAKEN_S')
-KRAKEN_G = os.path.join(RESULTS, 'KRAKEN_G')
-BRACKEN = os.path.join(RESULTS, 'BRACKEN')
+
+# kraken dirs 
+
+KRAKEN_FIRST_PASS = os.path.join(RESULTS, 'KRAKEN_FIRST_PASS')
+KRAKEN_SECOND_PASS = os.path.join(RESULTS, 'KRAKEN_SECOND_PASS')
+
+# bracken dirs 
+
+BRACKEN_FIRST_PASS = os.path.join(RESULTS, 'BRACKEN_FIRST_PASS') 
+BRACKEN_SECOND_PASS = os.path.join(RESULTS, 'BRACKEN_SECOND_PASS') 
+
+# MEGAHIT
 MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
+# needs to be created before megahit is run for some reason
+if not os.path.exists(MEGAHIT):
+  os.makedirs(MEGAHIT)
+
+
+
+# get readcount of bams
 READCOUNT = os.path.join(RESULTS, 'READCOUNT')
 
 
 
-# needs to be created before megahit is run
-if not os.path.exists(MEGAHIT):
-  os.makedirs(MEGAHIT)
+
 

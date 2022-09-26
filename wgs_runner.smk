@@ -1,10 +1,12 @@
 """
 The snakefile that runs the pipeline.
-Manual launch example:
+
+extract_unaligned_fastq.smk needs to be run first.
 
 snakemake -c 1 -s wgs_runner.smk --use-conda --config Reads=Bams/  --conda-create-envs-only --conda-frontend conda
 compute node
-snakemake -c 16 -s wgs_runner.smk --use-conda --config Reads=Bams/ Output=out/
+snakemake -c 16 -s wgs_runner.smk --use-conda --config Output=out/
+
 """
 
 
@@ -20,38 +22,24 @@ SmallJobMem = config["SmallJobMem"]
 include: "rules/directories.smk"
 
 # get if needed
-READS = config['Reads']
 OUTPUT = config['Output']
 
 # Parse the samples and read files
-include: "rules/samples.smk"
-sampleReads = parseSamples(READS)
+include: "rules/samples_from_output.smk"
+sampleReads = parseSamples(UNALIGNED_FASTQ)
 SAMPLES = sampleReads.keys()
 
 # Import rules and functions
 include: "rules/targets.smk"
-include: "rules/bam_to_fastq.smk"
-include: "rules/kraken.smk"
-include: "rules/assembly.smk"
+include: "rules/kraken_first_pass.smk"
+include: "rules/extract_bact_vir_reads.smk"
 include: "rules/fastp.smk"
 include: "rules/kraken_second_pass.smk"
 include: "rules/bracken.smk"
-include: "rules/read_counts.smk"
-#print(SAMPLES)
-# print(PreprocessingFiles)
+
+
+
 rule all:
     input:
-        ## Preprocessing
-        PreprocessingFiles
-        # ## Assembly
-        # AssemblyFiles,
-        # ## Translated (nt-to-aa) search
-        # SecondarySearchFilesAA,
-        # ## Untranslated (nt-to-nt) search
-        # SecondarySearchFilesNT,
-        # ## Contig annotation
-        # ContigAnnotFiles,
-        # ## Mapping (read-based contig id)
-        # MappingFiles,
-        # ## Summary
-        # SummaryFiles
+        OutputFiles
+

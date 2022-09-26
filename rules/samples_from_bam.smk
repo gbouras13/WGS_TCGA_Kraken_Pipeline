@@ -1,5 +1,5 @@
 """
-Function for parsing the 'Reads' config and identifying samples and read files
+Function for parsing the 'Bams' config and identifying samples and Bam files
 """
 
 from itertools import chain
@@ -24,7 +24,7 @@ def samplesFromDirectory(dir):
             sys.exit(1)
     return outDict
 
-def parseSamples(readFileDir):
+def parseSamplesBam(readFileDir):
     """Parse samples from a directory"""
     if os.path.isdir(readFileDir):
         sampleDict = samplesFromDirectory(readFileDir)
@@ -40,9 +40,3 @@ def parseSamples(readFileDir):
         sys.exit(1)
     return sampleDict
 
-def writeSamplesTsv(dict, outfh):
-    """Write the samples to a TSV file"""
-    with open(outfh, 'w') as out:
-        for sample in dict.keys():
-            out.write(f'{sample}\t{dict[sample]["bam"]}\n')
-    return None

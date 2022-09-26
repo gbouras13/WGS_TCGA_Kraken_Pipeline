@@ -1,13 +1,19 @@
-rule fastp:
-    """use fastp to qc files"""
+rule fastp_bact:
+    """use fastp to qc extracted bacteria files files. Contaminants file.
+    Taken substantially from
+    https://github.com/shandley/hecatomb/blob/main/snakemake/workflow/rules/01_preprocessing.smk
+
+    fastp_preprocessing rule
+
+    In particular, extracts off phi174 reads
+    
+    """
     input:
-        os.path.join(TMP,"{sample}_bacteria_R1.fastq"),
-        os.path.join(TMP,"{sample}_bacteria_R2.fastq")
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq"),
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R2.fastq")
     output:
-        os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_fastp_R2.fastq.gz")
-    log:
-        os.path.join(LOGS,"{sample}.fastp.log")
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_fastp_R1.fastq.gz"),
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_fastp_R2.fastq.gz")
     conda:
         os.path.join('..', 'envs','fastp.yaml')
     params:
@@ -33,13 +39,11 @@ rule fastp:
 rule fastp_virus:
     """use fastp to qc files"""
     input:
-        os.path.join(TMP,"{sample}_virus_R1.fastq"),
-        os.path.join(TMP,"{sample}_virus_R2.fastq")
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq"),
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R2.fastq")
     output:
-        os.path.join(TMP,"{sample}_virus_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_virus_fastp_R2.fastq.gz")
-    log:
-        os.path.join(LOGS,"{sample}.fastp_virus.log")
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_fastp_R1.fastq.gz"),
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_fastp_R2.fastq.gz")
     conda:
         os.path.join('..', 'envs','fastp.yaml')
     params:
@@ -65,19 +69,18 @@ rule fastp_virus:
 rule concat_fastp:
     """concat fastp"""
     input:
-        os.path.join(TMP,"{sample}_bacteria_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_fastp_R2.fastq.gz"),
-        os.path.join(TMP,"{sample}_virus_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_virus_fastp_R2.fastq.gz")
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_fastp_R1.fastq.gz"),
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_fastp_R2.fastq.gz"),
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_fastp_R1.fastq.gz"),
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_fastp_R2.fastq.gz")
     output:
-        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
-    log:
-        os.path.join(LOGS,"{sample}.concat_fastp.log")
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
     threads:
         1
     resources:
-        mem_mb=SmallJobMem
+        mem_mb=SmallJobMem,
+        time=5
     shell:
         """
         cat {input[0]} {input[2]} > {output[0]}
@@ -87,14 +90,15 @@ rule concat_fastp:
 rule aggr_fastp:
     """aggr"""
     input:
-        expand(os.path.join(TMP,"{sample}_bacteria_virus_fastp_R1.fastq.gz"), sample = SAMPLES),
-        expand(os.path.join(TMP,"{sample}_bacteria_virus_fastp_R2.fastq.gz"), sample = SAMPLES)
+        expand(os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R1.fastq.gz"), sample = SAMPLES),
+        expand(os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R2.fastq.gz"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_fastp.txt")
     threads:
         1
     resources:
-        mem_mb=SmallJobMem
+        mem_mb=SmallJobMem,
+        time=5
     shell:
         """
         touch {output[0]}

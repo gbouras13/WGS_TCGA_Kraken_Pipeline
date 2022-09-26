@@ -1,11 +1,11 @@
 rule run_kraken_s_second_pass:
-    """run kraken on the bacterial fastp."""
+    """run kraken on the fastq files that have been cleaned with fastp."""
     input:
-        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
-        os.path.join(TMP,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
     output:
-        os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.txt"),
-        os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.rep")
+        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.txt"),
+        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.rep")
     params:
         os.path.join(DBDIR, 'standard')
     conda:
@@ -13,7 +13,8 @@ rule run_kraken_s_second_pass:
     threads:
         BigJobCpu
     resources:
-        mem_mb=BigJobMem
+        mem_mb=BigJobMem,
+        time=120
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
@@ -26,14 +27,15 @@ rule run_kraken_s_second_pass:
 rule aggr_kraken_second_pass:
     """Index a .bam file for rapid access with samtools."""
     input:
-        expand(os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(KRAKEN_S,"{sample}.kraken_second_pass.rep"), sample = SAMPLES)
+        expand(os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.rep"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_kraken_second_pass.txt")
     threads:
         1
     resources:
-        mem_mb=SmallJobMem
+        mem_mb=SmallJobMem,
+        time=5
     shell:
         """
         touch {output[0]}
