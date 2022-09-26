@@ -27,7 +27,7 @@ def samplesFromDirectoryUnaligned(dir):
 def parseSamplesFastq(readFileDir):
     """Parse _R1.fastq.gz samples from a directory"""
     if os.path.isdir(readFileDir):
-        sampleDict = samplesFromDirectory(readFileDir)
+        sampleDict = samplesFromDirectoryUnaligned(readFileDir)
     else:
         sys.stderr.write("\n"
                          f"    FATAL: {readFileDir} is neither a file nor directory.\n"
