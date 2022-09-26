@@ -26,7 +26,7 @@ OUTPUT = config['Output']
 
 # Parse the samples and read files
 include: "rules/samples_from_output.smk"
-sampleReads = parseSamples(UNALIGNED_FASTQ)
+sampleReads = parseSamplesFastq(UNALIGNED_FASTQ)
 SAMPLES = sampleReads.keys()
 
 # Import rules and functions
