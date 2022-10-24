@@ -15,7 +15,7 @@ rule bracken_first_pass_species:
         time=60
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
+        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 75 -l S 
         '''
 # https://github.com/jenniferlu717/Bracken/issues/81
 # use 50
@@ -37,7 +37,7 @@ rule bracken_first_pass_genus:
         time=60
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
+        bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 75 -l G 
         '''
 
 ##### add biom for the bracken reports next - script with glob
@@ -86,7 +86,7 @@ rule bracken_second_pass_species:
         1
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
+        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 75 -l S 
         '''
         
 rule bracken_second_pass_genus:
@@ -106,7 +106,7 @@ rule bracken_second_pass_genus:
         1
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l G 
+        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 75 -l G 
         '''
         
 rule bracken_second_pass_family:
@@ -126,7 +126,7 @@ rule bracken_second_pass_family:
         1
     shell:
         '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l F 
+        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 75 -l F 
         '''
 
 rule aggr_bracken:
