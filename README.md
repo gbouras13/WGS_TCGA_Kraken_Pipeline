@@ -3,8 +3,8 @@ Snakemake Pipeline to Mine WGS Data for Contaminant Reads
 
 **This is a Work in Progress.**
 
-* This is not TCGA specific, but it does require WGS reads mapped against a host genome - it should work for all non bacterial/virus hosts.
-* Some code (namely, the sample parsing in samples.smk and fastp.smk) has been borrowed and modified from https://github.com/shandley/hecatomb.
+* This pipeline is not actually TCGA specific, but it does require as input WGS short reads reads mapped against a host genome in .bam format - it should actually work for all non bacterial/virus hosts.
+* Some code (namely, the sample parsing in samples.smk and decontamination in fastp.smk) has been borrowed and modified from https://github.com/shandley/hecatomb.
 * The only input required are the relevant Bam files, which all must be placed in a certain directory specified as "Bams"
 * Only software requirement is conda, and that snakemake be in the $PATH. The rest of the required programs should install via conda
 * extract_reads.py has been taken from KrakenTools https://github.com/jenniferlu717/KrakenTools#extract_kraken_readspy
@@ -18,16 +18,16 @@ Snakemake Pipeline to Mine WGS Data for Contaminant Reads
 snakemake -c 1 -s DownloadDB.smk
 ```
 
-1. Next the unaligned reads need to be extracted from the bams.
+2. Next the unaligned reads need to be extracted from the bams.
 
-* This was split from the main pipeline due to the massive data size of the input data files (and so can be run independently of the main pipeline, allowing you to delete the raw BAMs).
-* All you need to specify is the Bams directory, and an output directory
+* This was split from the main pipeline due to the massive data size of the input data files (and so can be run independently of the main pipeline, allowing you to delete the raw BAMs once the unaligned reads have been extracted).
+* All you need to specify is the Bams directory, and an output directory.
 
 ```console
 snakemake -c 1 -s extract_unaligned_fastq --use-conda --config Bams=Bams/ Output=TCGA_Output/ 
 ```
 
-1. Run the pipeline
+3. Run the pipeline
 
 ```console
 snakemake -c 16 -s wgs_runner.smk --use-conda --config Output=my_output_dir/
