@@ -1,6 +1,11 @@
 # WGS_TCGA_Pipeline
 Snakemake Pipeline to Mine WGS Data for Contaminant Reads
 
+<p align="center">
+  <img src="img/kraken_workflow.png" alt="pharokka Workflow" height=600>
+</p>
+
+
 **This is a Work in Progress.**
 
 * This pipeline is not actually TCGA specific, but it does require as input WGS short reads reads mapped against a host genome in .bam format - it should actually work for all non bacterial/virus hosts.
@@ -24,10 +29,11 @@ snakemake -c 1 -s DownloadDB.smk
 * All you need to specify is the Bams directory, and an output directory.
 
 ```console
-snakemake -c 1 -s extract_unaligned_fastq --use-conda --config Bams=Bams/ Output=TCGA_Output/ 
+snakemake -c 16 -s extract_unaligned_fastq --use-conda --config Bams=Bams/ Output=TCGA_Output/ 
 ```
 
 3. Run the pipeline
+* -c will modify the number of cores given to snakemake. 
 
 ```console
 snakemake -c 16 -s wgs_runner.smk --use-conda --config Output=my_output_dir/
@@ -36,7 +42,7 @@ snakemake -c 16 -s wgs_runner.smk --use-conda --config Output=my_output_dir/
 Other Notes
 ======
 
-* For offline use (e.g. Adelaide Uni HPC) - the conda envs need to be installed first on the login node in the pipeline directory
+* For offline only use (e.g. Adelaide Uni HPC) - the conda envs need to be installed first on the login node in the pipeline directory before running step 3. above.
 
 ```console
 snakemake -c 1 -s wgs_runner.smk --use-conda --config Output=my_output_dir/ --conda-create-envs-only --conda-frontend conda
