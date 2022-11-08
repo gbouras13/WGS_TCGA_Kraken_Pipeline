@@ -4,8 +4,8 @@ rule run_kraken_first_pass:
     https://www.biorxiv.org/content/10.1101/2022.04.27.489753v1.full.pdf
     """
     input:
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
+        os.path.join(UNALIGNED_FASTQ,"{sample}.R1.trimmed.fastq.gz"),
+        os.path.join(UNALIGNED_FASTQ,"{sample}.R1.trimmed.fastq.gz")
     output:
         os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
         os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep")
