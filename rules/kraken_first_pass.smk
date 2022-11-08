@@ -5,7 +5,7 @@ rule run_kraken_first_pass:
     """
     input:
         os.path.join(UNALIGNED_FASTQ,"{sample}.R1.trimmed.fastq.gz"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}.R1.trimmed.fastq.gz")
+        os.path.join(UNALIGNED_FASTQ,"{sample}.R2.trimmed.fastq.gz")
     output:
         os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
         os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep")
