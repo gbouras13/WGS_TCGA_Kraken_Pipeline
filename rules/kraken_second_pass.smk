@@ -1,8 +1,8 @@
 rule run_kraken_s_second_pass:
     """run kraken on the fastq files that have been cleaned with fastp."""
     input:
-        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
-        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_fastp_R1.fastq.gz"),
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_fastp_R2.fastq.gz")
     output:
         os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.txt"),
         os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.rep")
@@ -13,7 +13,7 @@ rule run_kraken_s_second_pass:
     resources:
         mem_mb=BigJobMem,
         time=120,
-        th=BigJobCpu
+        th=2
     shell:
         """
         kraken2 {input[0]} {input[1]}  \

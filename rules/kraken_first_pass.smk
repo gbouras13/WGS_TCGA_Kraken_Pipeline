@@ -16,7 +16,7 @@ rule run_kraken_first_pass:
     resources:
         mem_mb=BigJobMem,
         time=120,
-        th=BigJobCpu
+        th=2
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
