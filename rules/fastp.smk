@@ -18,10 +18,9 @@ rule fastp_bact:
         os.path.join('..', 'envs','fastp.yaml')
     params:
         os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
-    threads:
-        16
     resources:
-        mem_mb=BigJobMem
+        mem_mb=BigJobMem,
+        th=32
     shell:
         """
         fastp -i {input[0]} \
@@ -33,7 +32,7 @@ rule fastp_bact:
         --adapter_fasta {params[0]} \
         --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
         --dedup --dup_calc_accuracy 4   --trim_poly_x \
-        --thread {threads}
+        --thread {resources.th}
         """
         
 rule fastp_virus:
@@ -48,10 +47,9 @@ rule fastp_virus:
         os.path.join('..', 'envs','fastp.yaml')
     params:
         os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
-    threads:
-        16
     resources:
-        mem_mb=BigJobMem
+        mem_mb=BigJobMem,
+        th=32
     shell:
         """
         fastp -i {input[0]} \
@@ -63,7 +61,7 @@ rule fastp_virus:
         --adapter_fasta {params[0]} \
         --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
         --dedup --dup_calc_accuracy 4   --trim_poly_x \
-        --thread {threads}
+        --thread {resources.th}
         """
         
         
@@ -79,10 +77,9 @@ rule fastp_fungi:
         os.path.join('..', 'envs','fastp.yaml')
     params:
         os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
-    threads:
-        16
     resources:
-        mem_mb=BigJobMem
+        mem_mb=BigJobMem,
+        th=32
     shell:
         """
         fastp -i {input[0]} \
@@ -94,7 +91,7 @@ rule fastp_fungi:
         --adapter_fasta {params[0]} \
         --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
         --dedup --dup_calc_accuracy 4   --trim_poly_x \
-        --thread {threads}
+        --thread {resources.th}
         """
         
 rule concat_fastp:
@@ -109,11 +106,10 @@ rule concat_fastp:
     output:
         os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R1.fastq.gz"),
         os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R2.fastq.gz")
-    threads:
-        1
     resources:
         mem_mb=SmallJobMem,
-        time=5
+        time=5,
+        th=1
     shell:
         """
         cat {input[0]} {input[2]} {input[4]} > {output[0]}
@@ -127,11 +123,10 @@ rule aggr_fastp:
         expand(os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fastp_R2.fastq.gz"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_fastp.txt")
-    threads:
-        1
     resources:
         mem_mb=SmallJobMem,
-        time=5
+        time=5,
+        th=1
     shell:
         """
         touch {output[0]}

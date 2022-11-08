@@ -12,11 +12,10 @@ rule extract_bact_fastqs:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
-    threads:
-        1
     resources:
         mem_mb=BigJobMem,
-        time=180
+        time=180,
+        th=1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -37,11 +36,10 @@ rule extract_virus_fastqs:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
-    threads:
-        1
     resources:
         mem_mb=BigJobMem,
-        time=120
+        time=120,
+        th=1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -63,11 +61,10 @@ rule extract_hpv_fastqs:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
-    threads:
-        1
     resources:
         mem_mb=BigJobMem,
-        time=120
+        time=120,
+        th=1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -88,11 +85,10 @@ rule extract_fung_fastqs:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
-    threads:
-        1
     resources:
         mem_mb=BigJobMem,
-        time=180
+        time=180,
+        th=1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -109,11 +105,10 @@ rule aggr_extraction:
         expand(os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_hpv_R1.fastq"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_extraction.txt")
-    threads:
-        1
     resources:
         mem_mb=SmallJobMem,
-        time=5
+        time=5,
+        th=1
     shell:
         """
         touch {output[0]}

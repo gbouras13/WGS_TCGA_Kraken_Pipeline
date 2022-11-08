@@ -101,9 +101,8 @@ rule bracken_second_pass_genus:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=SmallJobMem,
-        time=60
-    threads:
-        1
+        time=60,
+        th=1
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l G 
@@ -121,9 +120,8 @@ rule bracken_second_pass_family:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=SmallJobMem,
-        time=60
-    threads:
-        1
+        time=60,
+        th=1
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l F 
@@ -140,11 +138,10 @@ rule aggr_bracken:
         os.path.join(BIOM,"bracken_species_first_pass.biom")
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
-    threads:
-        1
     resources:
         mem_mb=SmallJobMem,
-        time=5
+        time=5,
+        th=1
     shell:
         """
         touch {output[0]}

@@ -6,14 +6,13 @@ rule bam_counts_all:
         os.path.join(READCOUNT,"{sample}_readcount_all.txt")
     conda:
         os.path.join('..', 'envs','samtools.yaml')
-    threads:
-        16
     resources:
         mem_mb=MediumJobMem,
-        time=600
+        time=600,
+        th=16
     shell:
         """
-        samtools view -c -@ {threads} {input[0]} > {output[0]}
+        samtools view -c -@ {resources.th} {input[0]} > {output[0]}
         """
 
 
@@ -23,11 +22,10 @@ rule aggr_read_counts:
         expand(os.path.join(READCOUNT,"{sample}_readcount_all.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_read_count.txt")
-    threads:
-        1
     resources:
         mem_mb=SmallJobMem,
-        time=5
+        time=5,
+        th=1
     shell:
         """
         touch {output[0]}
