@@ -21,14 +21,14 @@ rule concat__pre_fastp:
         cat {input[1]} {input[3]} {input[4]} > {output[1]}
         """
 
-rule fastp_fungi:
+rule fastp_all:
     """use fastp to qc files"""
     input:
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_bacteria_virus_fungi_R1.fastq"),
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_bacteria_virus_fungi_R2.fastq")
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R1.fastq"),
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R2.fastq")
     output:
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_bacteria_virus_fungi_fastp_R1.fastq.gz"),
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_bacteria_virus_fungi_fastp_R2.fastq.gz")
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_fastp_R1.fastq.gz"),
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_fastp_R2.fastq.gz")
     conda:
         os.path.join('..', 'envs','fastp.yaml')
     params:
