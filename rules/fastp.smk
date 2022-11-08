@@ -2,15 +2,15 @@
 rule concat__pre_fastp:
     """concat before fastp"""
     input:
-        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq.gz"),
-        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R2.fastq.gz"),
-        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq.gz"),
-        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R2.fastq.gz"),
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R1.fastq.gz"),
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R2.fastq.gz")
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq"),
+        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R2.fastq"),
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq"),
+        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R2.fastq"),
+        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R1.fastq"),
+        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R2.fastq")
     output:
-        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R1.fastq.gz"),
-        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R2.fastq.gz")
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R1.fastq"),
+        os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R2.fastq")
     resources:
         mem_mb=SmallJobMem,
         time=5,
