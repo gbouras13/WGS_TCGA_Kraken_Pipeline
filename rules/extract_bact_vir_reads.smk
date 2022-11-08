@@ -104,7 +104,7 @@ rule aggr_extraction:
     """aggr"""
     input:
         expand(os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
-        expand(os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R1.fastq"), sample = SAMPLES)
+        expand(os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R1.fastq"), sample = SAMPLES),
         expand(os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq"), sample = SAMPLES),
         expand(os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_hpv_R1.fastq"), sample = SAMPLES)
     output:
