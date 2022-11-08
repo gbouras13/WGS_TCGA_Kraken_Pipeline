@@ -35,7 +35,7 @@ rule fastp_all:
         os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
     resources:
         mem_mb=BigJobMem,
-        th=32
+        th=16
     shell:
         """
         fastp -i {input[0]} \
