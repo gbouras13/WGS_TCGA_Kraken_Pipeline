@@ -12,7 +12,7 @@ def samplesFromDirectoryUnaligned(dir):
     samples2 = chain(*samples)
     for sample in samples2:
         outDict[sample] = {}
-        fastq = os.path.join(dir,f'{sample}_R1.fastq.gz')
+        fastq = os.path.join(dir,f'{sample}.R1.trimmed.fastq.gz')
         if os.path.isfile(fastq):
             outDict[sample]['fastq'] = fastq
         else:
