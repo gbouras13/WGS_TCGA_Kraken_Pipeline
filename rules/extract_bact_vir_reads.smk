@@ -14,8 +14,9 @@ rule extract_bact_fastqs:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=BigJobMem,
-        time=180,
-        th=1
+        time=180
+    threads:
+        1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -38,8 +39,9 @@ rule extract_virus_fastqs:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=BigJobMem,
-        time=120,
-        th=1
+        time=120
+    threads:
+        1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -63,8 +65,9 @@ rule extract_hpv_fastqs:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=BigJobMem,
-        time=120,
-        th=1
+        time=120
+    threads:
+        1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -87,8 +90,9 @@ rule extract_fung_fastqs:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=BigJobMem,
-        time=180,
-        th=1
+        time=180
+    threads:
+        1
     shell:
         """
         python3 {params[0]} -k {input[0]} -s1 {input[2]} -s2 {input[3]} \
@@ -107,8 +111,9 @@ rule aggr_extraction:
         os.path.join(LOGS, "aggr_extraction.txt")
     resources:
         mem_mb=SmallJobMem,
-        time=5,
-        th=1
+        time=5
+    threads:
+        1
     shell:
         """
         touch {output[0]}

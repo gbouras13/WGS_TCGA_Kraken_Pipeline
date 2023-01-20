@@ -12,12 +12,13 @@ rule run_kraken_s_second_pass:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=BigJobMem,
-        time=120,
-        th=2
+        time=120
+    threads:
+        2
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
-                --threads {resources.th} --db {params[0]} --output {output[0]} \
+                --threads {threads} --db {params[0]} --output {output[0]} \
                 --paired \
                 --report-minimizer-data \
                 --confidence 0.15 --report {output[1]} 
@@ -32,8 +33,9 @@ rule aggr_kraken_second_pass:
         os.path.join(LOGS, "aggr_kraken_second_pass.txt")
     resources:
         mem_mb=SmallJobMem,
-        time=5,
-        th=1
+        time=5
+    threads:
+        1
     shell:
         """
         touch {output[0]}

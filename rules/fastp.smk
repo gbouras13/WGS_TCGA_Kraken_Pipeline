@@ -13,8 +13,9 @@ rule concat__pre_fastp:
         os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_R2.fastq")
     resources:
         mem_mb=SmallJobMem,
-        time=5,
-        th=1
+        time=5
+    threads:
+        1
     shell:
         """
         cat {input[0]} {input[2]} {input[4]} > {output[0]}
@@ -34,9 +35,10 @@ rule fastp_all:
     params:
         os.path.join(CONTAMINANTS, 'vector_contaminants.fa')
     resources:
-        mem_mb=16000,
-        th=16,
-        time=3000
+        mem_mb=16000
+        time=2800
+    threads:
+        16
     shell:
         """
         fastp -i {input[0]} \
@@ -48,7 +50,7 @@ rule fastp_all:
         --adapter_fasta {params[0]} \
         --cut_tail --cut_tail_window_size 25 --cut_tail_mean_quality 15  \
         --dedup --dup_calc_accuracy 4   --trim_poly_x \
-        --thread {resources.th}
+        --thread {threads}
         """
         
 rule aggr_fastp:
@@ -60,8 +62,9 @@ rule aggr_fastp:
         os.path.join(LOGS, "aggr_fastp.txt")
     resources:
         mem_mb=SmallJobMem,
-        time=5,
-        th=1
+        time=5
+    threads:
+        1
     shell:
         """
         touch {output[0]}

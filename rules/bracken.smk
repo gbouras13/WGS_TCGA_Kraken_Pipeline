@@ -51,23 +51,25 @@ rule bracken_first_pass_genus:
 # combine_bracken_outputs.py --files kraken/*total.txt -o bracken_species_all
 # kraken-biom bracken/*_report_bracken_species.txt -o bracken_species.biom --fmt json
 
-rule biom:
-    input:
-        expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES)
-    output:
-        os.path.join(BIOM,"bracken_genus_first_pass.biom"),
-        os.path.join(BIOM,"bracken_species_first_pass.biom")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    resources:
-        mem_mb=SmallJobMem,
-        time=60
-    shell:
-        '''
-        kraken-biom {input[0]} -o {output[0]}  --fmt json
-        kraken-biom {input[1]} -o {output[1]}  --fmt json
-        '''
+# rule biom:
+#     input:
+#         expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
+#         expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES)
+#     output:
+#         os.path.join(BIOM,"bracken_genus_first_pass.biom"),
+#         os.path.join(BIOM,"bracken_species_first_pass.biom")
+#     conda:
+#         os.path.join('..', 'envs','kraken2.yaml')
+#     resources:
+#         mem_mb=SmallJobMem,
+#         time=60
+#     threads:
+#         1
+#     shell:
+#         '''
+#         kraken-biom {input[0]} -o {output[0]}  --fmt json
+#         kraken-biom {input[1]} -o {output[1]}  --fmt json
+#         '''
 
 rule bracken_second_pass_species:
     input:
@@ -101,8 +103,9 @@ rule bracken_second_pass_genus:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=SmallJobMem,
-        time=60,
-        th=1
+        time=60
+    threads:
+        1
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l G 
@@ -120,8 +123,9 @@ rule bracken_second_pass_family:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
         mem_mb=SmallJobMem,
-        time=60,
-        th=1
+        time=60
+    threads:
+        1
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l F 
@@ -134,14 +138,14 @@ rule aggr_bracken:
         expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
         expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_species_second_pass.txt"), sample = SAMPLES),
         expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_genus_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES),
-        os.path.join(BIOM,"bracken_species_first_pass.biom")
+        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
     resources:
         mem_mb=SmallJobMem,
-        time=5,
-        th=1
+        time=5
+    threads:
+        1
     shell:
         """
         touch {output[0]}
