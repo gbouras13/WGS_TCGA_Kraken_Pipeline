@@ -8,11 +8,11 @@ def samplesFromDirectoryUnaligned(dir):
     """Parse samples from a directory"""
     outDict = {}
     # https://stackoverflow.com/questions/11860476/how-to-unnest-a-nested-list
-    samples= glob_wildcards(os.path.join(dir,'{sample}.R1.trimmed.fastq.gz'))
+    samples= glob_wildcards(os.path.join(dir,'{sample}_R1.fastq.gz'))
     samples2 = chain(*samples)
     for sample in samples2:
         outDict[sample] = {}
-        fastq = os.path.join(dir,f'{sample}.R1.trimmed.fastq.gz')
+        fastq = os.path.join(dir,f'{sample}_R1.fastq.gz')
         if os.path.isfile(fastq):
             outDict[sample]['fastq'] = fastq
         else:
