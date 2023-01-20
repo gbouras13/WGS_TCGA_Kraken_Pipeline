@@ -13,7 +13,7 @@ rule extract_bact_fastqs:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
-        mem_mb=BigJobMem,
+        mem_mb=SmallJobMem,
         time=180
     threads:
         1
@@ -38,7 +38,7 @@ rule extract_virus_fastqs:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
-        mem_mb=BigJobMem,
+        mem_mb=SmallJobMem,
         time=120
     threads:
         1
@@ -64,7 +64,7 @@ rule extract_hpv_fastqs:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
-        mem_mb=BigJobMem,
+        mem_mb=SmallJobMem,
         time=120
     threads:
         1
@@ -89,7 +89,7 @@ rule extract_fung_fastqs:
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
-        mem_mb=BigJobMem,
+        mem_mb=SmallJobMem,
         time=180
     threads:
         1
