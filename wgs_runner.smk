@@ -18,6 +18,11 @@ BigJobCpu = config["BigJobCpu"]
 MediumJobMem = config["MediumJobMem"]
 SmallJobMem = config["SmallJobMem"]
 
+DBDIR = "Databases"
+# host FA
+HOSTFA = os.path.join(DBDIR, 'host', 'masked_ref.fa.gz')
+HOSTINDEX = f"{HOSTFA}.idx"
+
 ### DIRECTORIES
 include: "rules/directories.smk"
 
@@ -31,10 +36,10 @@ SAMPLES = sampleReads.keys()
 
 # Import rules and functions
 include: "rules/targets.smk"
-include: "rules/kraken_first_pass.smk"
+include: "rules/kraken.smk"
 include: "rules/extract_bact_vir_reads.smk"
 include: "rules/fastp.smk"
-include: "rules/kraken_second_pass.smk"
+include: "rules/remove_host_reads.smk"
 include: "rules/bracken.smk"
 
 

@@ -17,33 +17,26 @@ else:
 ### OUTPUT DIRs
 RESULTS = os.path.join(OUTPUT, 'RESULTS')
 WORKDIR = os.path.join(OUTPUT, 'PROCESSING')
+
 # fastq dirs
 UNALIGNED_FASTQ  = os.path.join(WORKDIR, 'UNALIGNED_FASTQ')
-BACT_FASTQ_FIRST_PASS = os.path.join(WORKDIR, 'BACT_FASTQ_FIRST_PASS')
-VIR_FASTQ_FIRST_PASS = os.path.join(WORKDIR, 'VIR_FASTQ_FIRST_PASS')
-FUNGI_FASTQ_FIRST_PASS = os.path.join(WORKDIR, 'FUNGI_FASTQ_FIRST_PASS')
+HOST_UNMAPPED_FASTQ  = os.path.join(WORKDIR, 'HOST_UNMAPPED_FASTQ')
+HOST_UNMAPPED_FASTQ_FASTP = os.path.join(WORKDIR, 'HOST_UNMAPPED_FASTQ_FASTP')
+BACT_FASTQ = os.path.join(WORKDIR, 'BACT_FASTQ')
+VIR_FASTQ = os.path.join(WORKDIR, 'VIR_FASTQ')
+FUNGI_FASTQ = os.path.join(WORKDIR, 'FUNGI_FASTQ')
 CONCAT_FASTQ = os.path.join(WORKDIR, 'CONCAT_FASTQ')
+
 
 # dir for flags
 LOGS = os.path.join(OUTPUT, 'LOGS')
 BIOM = os.path.join(RESULTS, 'BIOM')
 
 # kraken dirs 
-
-KRAKEN_FIRST_PASS = os.path.join(RESULTS, 'KRAKEN_FIRST_PASS')
-KRAKEN_SECOND_PASS = os.path.join(RESULTS, 'KRAKEN_SECOND_PASS')
+KRAKEN = os.path.join(RESULTS, 'KRAKEN')
 
 # bracken dirs 
-
-BRACKEN_FIRST_PASS = os.path.join(RESULTS, 'BRACKEN_FIRST_PASS') 
-BRACKEN_SECOND_PASS = os.path.join(RESULTS, 'BRACKEN_SECOND_PASS') 
-
-# MEGAHIT
-MEGAHIT = os.path.join(RESULTS, 'MEGAHIT')
-# needs to be created before megahit is run for some reason
-if not os.path.exists(MEGAHIT):
-  os.makedirs(MEGAHIT)
-
+BRACKEN = os.path.join(RESULTS, 'BRACKEN') 
 
 
 # get readcount of bams

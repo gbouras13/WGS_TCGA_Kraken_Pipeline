@@ -8,7 +8,8 @@ OutputFiles = [
     os.path.join(LOGS, "aggr_extraction.txt"),
     os.path.join(LOGS, "aggr_fastp.txt"),
     os.path.join(LOGS, "aggr_kraken_second_pass.txt"),
-    os.path.join(LOGS, "aggr_bracken.txt")
+    os.path.join(LOGS, "aggr_bracken.txt"),
+    os.path.join(LOGS, "aggr_host_removal.txt")
 
 ]
 

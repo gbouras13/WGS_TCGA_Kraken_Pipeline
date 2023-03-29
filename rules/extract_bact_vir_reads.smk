@@ -1,13 +1,13 @@
 rule extract_bact_fastqs:
     """Extract Fastas."""
     input:
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
+        os.path.join(KRAKEN,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN,"{sample}.kraken.rep"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R1.unmapped.fastq"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R2.unmapped.fastq")
     output:
-        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq"),
-        os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R2.fastq")
+        os.path.join(BACT_FASTQ,"{sample}_bacteria_R1.fastq"),
+        os.path.join(BACT_FASTQ,"{sample}_bacteria_R2.fastq")
     params:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
@@ -26,13 +26,13 @@ rule extract_bact_fastqs:
 rule extract_virus_fastqs:
     """Extract Fastas."""
     input:
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
+        os.path.join(KRAKEN,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN,"{sample}.kraken.rep"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R1.unmapped.fastq"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R2.unmapped.fastq")
     output:
-        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq"),
-        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R2.fastq")
+        os.path.join(VIR_FASTQ,"{sample}_virus_R1.fastq"),
+        os.path.join(VIR_FASTQ,"{sample}_virus_R2.fastq")
     params:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
@@ -52,13 +52,13 @@ rule extract_virus_fastqs:
 rule extract_hpv_fastqs:
     """Extract Fastas."""
     input:
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
+        os.path.join(KRAKEN,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN,"{sample}.kraken.rep"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R1.unmapped.fastq"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R2.unmapped.fastq")
     output:
-        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_hpv_R1.fastq"),
-        os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_hpv_R2.fastq")
+        os.path.join(VIR_FASTQ,"{sample}_hpv_R1.fastq"),
+        os.path.join(VIR_FASTQ,"{sample}_hpv_R2.fastq")
     params:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
@@ -77,13 +77,13 @@ rule extract_hpv_fastqs:
 rule extract_fung_fastqs:
     """Extract Fastas."""
     input:
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R1.fastq.gz"),
-        os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
+        os.path.join(KRAKEN,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN,"{sample}.kraken.rep"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R1.unmapped.fastq"),
+        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R2.unmapped.fastq")
     output:
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R1.fastq"),
-        os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R2.fastq")
+        os.path.join(FUNGI_FASTQ,"{sample}_fungi_R1.fastq"),
+        os.path.join(FUNGI_FASTQ,"{sample}_fungi_R2.fastq")
     params:
         os.path.join(KRAKENTOOLSDIR, 'extract_kraken_reads.py')
     conda:
@@ -103,10 +103,10 @@ rule extract_fung_fastqs:
 rule aggr_extraction:
     """aggr"""
     input:
-        expand(os.path.join(BACT_FASTQ_FIRST_PASS,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
-        expand(os.path.join(FUNGI_FASTQ_FIRST_PASS,"{sample}_fungi_R1.fastq"), sample = SAMPLES),
-        expand(os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_virus_R1.fastq"), sample = SAMPLES),
-        expand(os.path.join(VIR_FASTQ_FIRST_PASS,"{sample}_hpv_R1.fastq"), sample = SAMPLES)
+        expand(os.path.join(BACT_FASTQ,"{sample}_bacteria_R1.fastq"), sample = SAMPLES),
+        expand(os.path.join(FUNGI_FASTQ,"{sample}_fungi_R1.fastq"), sample = SAMPLES),
+        expand(os.path.join(VIR_FASTQ,"{sample}_virus_R1.fastq"), sample = SAMPLES),
+        expand(os.path.join(VIR_FASTQ,"{sample}_hpv_R1.fastq"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_extraction.txt")
     resources:

@@ -1,11 +1,11 @@
-rule bracken_first_pass_species:
+rule bracken_species:
     input:
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep")
+        os.path.join(KRAKEN,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
         os.path.join(DBDIR, 'standard')
     output:
-        os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_species_first_pass.txt")
+        os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
@@ -22,12 +22,12 @@ rule bracken_first_pass_species:
 
 rule bracken_first_pass_genus:
     input:
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.txt"),
-        os.path.join(KRAKEN_FIRST_PASS,"{sample}.kraken.rep")
+        os.path.join(KRAKEN,"{sample}.kraken.txt"),
+        os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
         os.path.join(DBDIR, 'standard')
     output:
-        os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt")
+        os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     threads:
@@ -71,74 +71,12 @@ rule bracken_first_pass_genus:
 #         kraken-biom {input[1]} -o {output[1]}  --fmt json
 #         '''
 
-rule bracken_second_pass_species:
-    input:
-        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.txt"),
-        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.rep")
-    params:
-        os.path.join(DBDIR, 'standard')
-    output:
-        os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_species_second_pass.txt")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    resources:
-        mem_mb=SmallJobMem,
-        time=60
-    threads:
-        1
-    shell:
-        '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
-        '''
-        
-rule bracken_second_pass_genus:
-    input:
-        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.txt"),
-        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.rep")
-    params:
-        os.path.join(DBDIR, 'standard')
-    output:
-        os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_genus_second_pass.txt")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    resources:
-        mem_mb=SmallJobMem,
-        time=60
-    threads:
-        1
-    shell:
-        '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l G 
-        '''
-        
-rule bracken_second_pass_family:
-    input:
-        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.txt"),
-        os.path.join(KRAKEN_SECOND_PASS,"{sample}.kraken_second_pass.rep")
-    params:
-        os.path.join(DBDIR, 'standard')
-    output:
-        os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_family_second_pass.txt")
-    conda:
-        os.path.join('..', 'envs','kraken2.yaml')
-    resources:
-        mem_mb=SmallJobMem,
-        time=60
-    threads:
-        1
-    shell:
-        '''
-        bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l F 
-        '''
 
 rule aggr_bracken:
     """aggregated"""
     input:
-        expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN_FIRST_PASS,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_species_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_genus_second_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN_SECOND_PASS,"{sample}.kraken_bracken_family_second_pass.txt"), sample = SAMPLES)
+        expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
     resources:
