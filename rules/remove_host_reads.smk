@@ -11,8 +11,8 @@ rule host_removal_mapping:
     output:
         r1 = os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R1.unmapped.fastq"),
         r2 = os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R2.unmapped.fastq"),
-        s = os.path.join(HOST_UNMAPPED_FASTQ,  "{sample}_R1.unmapped.singletons.fastq"),
-        o = os.path.join(HOST_UNMAPPED_FASTQ,  "{sample}_R1.other.singletons.fastq")
+        s = os.path.join(HOST_UNMAPPED_FASTQ_SINGLETONS,  "{sample}_R1.unmapped.singletons.fastq"),
+        o = os.path.join(HOST_UNMAPPED_FASTQ_SINGLETONS,  "{sample}_R1.other.singletons.fastq")
     resources:
         mem_mb = 16000,
         time = 300
