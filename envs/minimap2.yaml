@@ -1,7 +1,7 @@
 channels:
-    - conda-forge
-    - bioconda
+  - conda-forge
+  - bioconda
   dependencies:
-    - minimap2
-    - samtools
+  - minimap2
+  - samtools
   
