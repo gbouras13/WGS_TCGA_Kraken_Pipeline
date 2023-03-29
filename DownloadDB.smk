@@ -11,9 +11,11 @@ configfile: os.path.join(workflow.basedir,  'config', 'config.yaml')
 
 BigJobMem = config["BigJobMem"]
 BigJobCpu = config["BigJobCpu"]
+DBDIR = "Databases"
+# host FA
 HOSTFA = os.path.join(DBDIR, 'host', 'masked_ref.fa.gz')
 HOSTINDEX = f"{HOSTFA}.idx"
-DBDIR = "Databases"
+
 
 if not os.path.exists(os.path.join(DBDIR)):
     os.makedirs(os.path.join(DBDIR))
