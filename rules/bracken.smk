@@ -75,8 +75,8 @@ rule bracken_first_pass_genus:
 rule aggr_bracken:
     """aggregated"""
     input:
-        expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_species_first_pass.txt"), sample = SAMPLES),
-        expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_genus_first_pass.txt"), sample = SAMPLES)
+        expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES),
+        expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_bracken.txt")
     resources:
