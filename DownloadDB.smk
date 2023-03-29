@@ -101,7 +101,7 @@ rule create_host_index:
         "envs/minimap2.yaml"
     shell:
         """
-        minimap2 -t {threads} -d {output} <(cat {input}) 2> {log}
+        minimap2 -t {threads} -d {output} <(cat {input}) 
         """
 
 
