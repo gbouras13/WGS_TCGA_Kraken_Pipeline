@@ -86,8 +86,8 @@ rule aggr_fastp:
     input:
         expand(os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_fastp_R1.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(CONCAT_FASTQ,"{sample}_bacteria_virus_fungi_fastp_R2.fastq.gz"), sample = SAMPLES),
-        expand(os.path.join(HOST_UNMAPPED_FASTQ_FASTP,"{sample}_R1.unmapped.fastp.fastq")),
-        expand(os.path.join(HOST_UNMAPPED_FASTQ_FASTP,"{sample}_R2.unmapped.fastp.fastq"))
+        expand(os.path.join(HOST_UNMAPPED_FASTQ_FASTP,"{sample}_R1.unmapped.fastp.fastq"), sample = SAMPLES),
+        expand(os.path.join(HOST_UNMAPPED_FASTQ_FASTP,"{sample}_R2.unmapped.fastp.fastq"), sample = SAMPLES)
     output:
         os.path.join(LOGS, "aggr_fastp.txt")
     resources:
