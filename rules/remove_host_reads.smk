@@ -1,6 +1,5 @@
 rule host_removal_mapping:
     """Preprocessing step 02a: Host removal: mapping to host.
-    
     Must define host in config file (see Paths: Host: in config.yaml). Host should be masked of viral sequence.
     If your reference is not available you need to add it using 'Hecatomb addHost'
     """
@@ -15,7 +14,7 @@ rule host_removal_mapping:
         o = os.path.join(HOST_UNMAPPED_FASTQ_SINGLETONS,  "{sample}_R1.other.singletons.fastq")
     resources:
         mem_mb = 16000,
-        time = 300
+        time = 4000
     threads:
         16
     conda:
