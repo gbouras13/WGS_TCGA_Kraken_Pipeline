@@ -69,4 +69,61 @@ rule aggr_fastp:
         """
         touch {output[0]}
         """
-        
+
+
+rule create_host_index:
+    """Step 02. Create the minimap2 index for mapping to the host; this will save time."""
+    input:
+        HOSTFA,
+    output:
+        HOSTINDEX
+    benchmark:
+        os.path.join(BENCH, "create_host_index.txt")
+    log:
+        os.path.join(STDERR, 'create_host_index.log')
+    resources:
+        mem_mb = BBToolsMem
+    threads:
+        BBToolsCPU
+    conda:
+        "../envs/minimap2.yaml"
+    shell:
+        """
+        minimap2 -t {threads} -d {output} <(cat {input}) 2> {log}
+        rm {log}
+        """
+
+rule host_removal_mapping:
+    """Preprocessing step 02a: Host removal: mapping to host.
+    
+    Must define host in config file (see Paths: Host: in config.yaml). Host should be masked of viral sequence.
+    If your reference is not available you need to add it using 'Hecatomb addHost'
+    """
+    input:
+        r1 = os.path.join(TMPDIR, "p01", "{sample}_R1.s1.out.fastq"),
+        r2 = os.path.join(TMPDIR, "p01", "{sample}_R2.s1.out.fastq"),
+        host = HOSTINDEX
+    output:
+        r1 = temp(os.path.join(TMPDIR, "p02", "{sample}_R1.unmapped.fastq")),
+        r2 = temp(os.path.join(TMPDIR, "p02", "{sample}_R2.unmapped.fastq")),
+        s = temp(os.path.join(TMPDIR, "p02", "{sample}_R1.unmapped.singletons.fastq")),
+        o = temp(os.path.join(TMPDIR, "p02", "{sample}_R1.other.singletons.fastq"))
+    benchmark:
+        os.path.join(BENCH, "host_removal_mapping.{sample}.txt")
+    log:
+        mm = os.path.join(STDERR, "host_removal_mapping.{sample}.minimap.log"),
+        sv = os.path.join(STDERR, "host_removal_mapping.{sample}.samtoolsView.log"),
+        fq = os.path.join(STDERR, "host_removal_mapping.{sample}.samtoolsFastq.log")
+    resources:
+        mem_mb = BBToolsMem
+    threads:
+        BBToolsCPU
+    conda:
+        "../envs/minimap2.yaml"
+    shell:
+        """
+        minimap2 -ax sr -t {threads} --secondary=no {input.host} {input.r1} {input.r2} 2> {log.mm} \
+            | samtools view -f 4 -h 2> {log.sv} \
+            | samtools fastq -NO -1 {output.r1} -2 {output.r2} -0 {output.o} -s {output.s} 2> {log.fq}
+        rm {log.mm} {log.sv} {log.fq}
+        """
