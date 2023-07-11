@@ -1,5 +1,5 @@
 """
-Snakefile for downloading the prebuilt db. Only need to run this once.
+Snakefile for downloading the prebuilt Kraken db & host index. Only need to run this once.
 
 snakemake -c 1 -s DownloadDB.smk
 
