@@ -1,7 +1,7 @@
+name: mmseqs2-env
 channels:
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
-  - kraken2 =2.1.2
-  - bracken =2.6.1
-
+  - mmseqs2==13.45111

@@ -1,16 +1,17 @@
 
 rule run_kraken_first_pass:
     """Runs kraken down to the species level.
+    confidence based on this 
     https://www.biorxiv.org/content/10.1101/2022.04.27.489753v1.full.pdf
     """
     input:
-        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R1.unmapped.fastq"),
-        os.path.join(HOST_UNMAPPED_FASTQ, "{sample}_R2.unmapped.fastq")
+        os.path.join(INPUT, "{sample}.R1.fastq.gz"),
+        os.path.join(INPUT, "{sample}.R2.fastq.gz")
     output:
         os.path.join(KRAKEN,"{sample}.kraken.txt"),
         os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
-        os.path.join(DBDIR, 'standard')
+        KRAKENDB
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     resources:
@@ -28,13 +29,13 @@ rule run_kraken_first_pass:
         """
         
 
-rule aggr_kraken_first_pass:
-    """Index a .bam file for rapid access with samtools."""
+rule aggr_kraken:
+    """Aggregate kraken"""
     input:
         expand(os.path.join(KRAKEN,"{sample}.kraken.txt"), sample = SAMPLES),
         expand(os.path.join(KRAKEN,"{sample}.kraken.rep"), sample = SAMPLES)
     output:
-        os.path.join(LOGS, "aggr_kraken.txt")
+        os.path.join(LOGS, "aggr_kraken.flag")
     resources:
         mem_mb=SmallJobMem,
         time=5

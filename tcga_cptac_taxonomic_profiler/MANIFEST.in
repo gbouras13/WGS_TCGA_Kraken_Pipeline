@@ -1,0 +1,4 @@
+include tcga_cptac_taxonomic_profiler/tcga_cptac_taxonomic_profiler.LICENSE
+include tcga_cptac_taxonomic_profiler/tcga_cptac_taxonomic_profiler.CITATION
+include tcga_cptac_taxonomic_profiler/tcga_cptac_taxonomic_profiler.VERSION
+recursive-include tcga_cptac_taxonomic_profiler *

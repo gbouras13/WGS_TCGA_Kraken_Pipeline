@@ -2,6 +2,7 @@
 All target output files are declared here
 """
 
+
 # Preprocessing files
 OutputFiles = [
     os.path.join(LOGS, "aggr_kraken.txt"),

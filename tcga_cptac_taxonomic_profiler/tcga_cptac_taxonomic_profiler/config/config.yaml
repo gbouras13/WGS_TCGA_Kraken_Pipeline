@@ -1,7 +1,7 @@
-##################
-# Run Parameters #
-##################
-
+# Snakemake config
+input:
+output: 'tcga_cptac_taxonomic_profiler.out/'
+log: 'tcga_cptac_taxonomic_profiler/tcga_cptac_taxonomic_profiler.log'
 
 ### STICK TO YOUR SYSTEM'S CPU:RAM RATIO FOR THESE
 # this will be overwritten by the Snakemake profile
@@ -17,6 +17,4 @@ SmallJobCpu: 8
 # DBs
 kraken_db: 'blah'
 kraken_db: 'blah'
-
-
 
