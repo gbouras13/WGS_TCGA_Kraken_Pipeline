@@ -17,5 +17,5 @@ SmallJobCpu: 8
 # DBs
 # define the paths here
 kraken_db: '/hpcfs/users/a1667917/metagenomics_dbs/kraken2/k2_pluspf_20230605'
-mmseqs2_db: 'blah'
+mmseqs2_db: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef50/UniRef50'
 

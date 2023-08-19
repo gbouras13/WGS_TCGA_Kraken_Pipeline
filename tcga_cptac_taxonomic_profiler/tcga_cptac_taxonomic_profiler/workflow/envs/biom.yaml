@@ -1,8 +1,8 @@
 channels:
-    - conda-forge
-    - bioconda
-    - defaults
+  - conda-forge
+  - bioconda
+  - defaults
   dependencies:
-    - kraken-biom =1.2.0
+  - kraken-biom =1.2.0
   
   

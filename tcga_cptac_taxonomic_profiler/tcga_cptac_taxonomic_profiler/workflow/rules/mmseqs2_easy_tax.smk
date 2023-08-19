@@ -12,7 +12,7 @@ rule run_mmseqs_easy_tax:
     output:
         outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done')
     params:
-        db = os.path.join(UNIREF50_DIR, 'UniRef50'),
+        db = MMSEQS2_DB
         outdir=os.path.join(MMSEQS2, '{sample}')
         tmpdir = TMPDIR
     threads: 
