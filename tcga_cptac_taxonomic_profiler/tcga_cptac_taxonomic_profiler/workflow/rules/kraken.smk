@@ -1,12 +1,12 @@
 
-rule run_kraken_first_pass:
+rule run_kraken:
     """Runs kraken down to the species level.
     confidence based on this 
     https://www.biorxiv.org/content/10.1101/2022.04.27.489753v1.full.pdf
     """
     input:
-        os.path.join(INPUT, "{sample}.R1.fastq.gz"),
-        os.path.join(INPUT, "{sample}.R2.fastq.gz")
+        os.path.join(INPUT, "{sample}_R1.host_rm.fastq.gz"),
+        os.path.join(INPUT, "{sample}_R2.host_rm.fastq.gz")
     output:
         os.path.join(KRAKEN,"{sample}.kraken.txt"),
         os.path.join(KRAKEN,"{sample}.kraken.rep")
