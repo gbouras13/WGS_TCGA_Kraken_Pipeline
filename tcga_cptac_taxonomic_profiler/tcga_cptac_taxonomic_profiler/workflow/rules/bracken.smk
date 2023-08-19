@@ -27,7 +27,7 @@ rule bracken_genus:
         os.path.join(KRAKEN,"{sample}.kraken.txt"),
         os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
-        DBDIR
+        KRAKENDB
     output:
         os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt")
     conda:
