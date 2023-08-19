@@ -11,6 +11,10 @@ rule bracken_species:
         os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
+    log: 
+        os.path.join(LOGS, "bracken", "{sample}.bracken.species.log")
+    benchmark: 
+        os.path.join(BENCHMARKS, "bracken", "{sample}.bracken.species.log")
     threads:
         1
     resources:
@@ -32,6 +36,10 @@ rule bracken_genus:
         os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt")
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
+    log: 
+        os.path.join(LOGS, "bracken", "{sample}.bracken.genus.log")
+    benchmark: 
+        os.path.join(BENCHMARKS, "bracken", "{sample}.bracken.genus.log")
     threads:
         1
     resources:
@@ -49,7 +57,7 @@ rule aggr_bracken:
         expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES),
         expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt"), sample = SAMPLES)
     output:
-        os.path.join(LOGS, "aggr_bracken.txt")
+        os.path.join(FLAGS, "aggr_bracken.txt")
     resources:
         mem_mb=SmallJobMem,
         time=5

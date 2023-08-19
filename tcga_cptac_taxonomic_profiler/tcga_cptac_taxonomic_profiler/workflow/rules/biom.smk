@@ -14,6 +14,10 @@ rule biom:
         os.path.join(BIOM,"bracken_species.biom")
     conda:
         os.path.join('..', 'envs','biom.yaml')
+    log: 
+        os.path.join(LOGS, "biom", "{sample}.biom.log")
+    benchmark: 
+        os.path.join(BENCHMARKS, "biom", "{sample}.biom.log")
     resources:
         mem_mb=SmallJobMem,
         time=60

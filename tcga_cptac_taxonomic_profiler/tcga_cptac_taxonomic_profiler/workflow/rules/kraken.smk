@@ -14,6 +14,10 @@ rule run_kraken:
         KRAKENDB
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
+    log: 
+        os.path.join(LOGS, "kraken", "{sample}.kraken.log")
+    benchmark: 
+        os.path.join(BENCHMARKS, "kraken", "{sample}.kraken.log")
     resources:
         mem_mb=BigJobMem,
         time=120
@@ -35,7 +39,7 @@ rule aggr_kraken:
         expand(os.path.join(KRAKEN,"{sample}.kraken.txt"), sample = SAMPLES),
         expand(os.path.join(KRAKEN,"{sample}.kraken.rep"), sample = SAMPLES)
     output:
-        os.path.join(LOGS, "aggr_kraken.flag")
+        os.path.join(FLAGS, "aggr_kraken.flag")
     resources:
         mem_mb=SmallJobMem,
         time=5

@@ -5,9 +5,9 @@ All target output files are declared here
 
 # Preprocessing files
 KrakenTargets = [
-    os.path.join(LOGS, "aggr_kraken.flag"),
+    os.path.join(FLAGS, "aggr_kraken.flag"),
     os.path.join(FLAGS, "aggr_biom.flag"),
-    os.path.join(LOGS, "aggr_bracken.flag"),
+    os.path.join(FLAGS, "aggr_bracken.flag"),
 ]
 
 # Targets for extract
