@@ -319,7 +319,9 @@ def citation(**kwargs):
     print_citation()
 
 
-cli.add_command(run)
+cli.add_command(kraken)
+cli.add_command(install_host)
+cli.add_command(mmseqs)
 cli.add_command(config)
 cli.add_command(citation)
 
