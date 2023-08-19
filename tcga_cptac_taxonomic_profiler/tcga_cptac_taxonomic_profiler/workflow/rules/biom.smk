@@ -15,9 +15,9 @@ rule biom:
     conda:
         os.path.join('..', 'envs','biom.yaml')
     log: 
-        os.path.join(LOGS, "biom", "{sample}.biom.log")
+        os.path.join(LOGS, "biom", "biom.log")
     benchmark: 
-        os.path.join(BENCHMARKS, "biom", "{sample}.biom.log")
+        os.path.join(BENCHMARKS, "biom", "biom.log")
     resources:
         mem_mb=SmallJobMem,
         time=60
