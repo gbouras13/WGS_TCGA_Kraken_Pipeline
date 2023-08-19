@@ -3,13 +3,6 @@ Consistent output directory locations
 """
 
 
-### OUTPUT DIRECTORY
-if config['Output'] is None:
-    OUTPUT = 'wgs_tcga_out'
-else:
-    OUTPUT = config['Output']
-
-
 BENCHMARKS = os.path.join(OUTPUT, 'BENCHMARKS')
 LOGS = os.path.join(OUTPUT, 'LOGS')
 

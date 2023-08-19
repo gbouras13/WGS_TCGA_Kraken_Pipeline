@@ -38,13 +38,13 @@ SmallJobMem = config["SmallJobMem"]
 
 
 
-### DIRECTORIES
-include: "rules/directories.smk"
-
-# get if needed
+# get fromc config
 INPUT = config['input']
 OUTPUT = config['output']
 KRAKENDB = config["kraken_db"]
+
+### DIRECTORIES
+include: "rules/directories.smk"
 
 # Parse the samples with metasnek
 
