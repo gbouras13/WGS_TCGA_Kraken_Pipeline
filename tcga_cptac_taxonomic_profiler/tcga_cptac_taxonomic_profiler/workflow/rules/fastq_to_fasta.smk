@@ -1,6 +1,6 @@
 rule fastq_to_fasta_R1:
     input:
-        os.path.join(INPUT, "{sample}.R1.fastq.gz")
+        os.path.join(INPUT, "{sample}_R1.host_rm.fastq.gz")
     output:
         os.path.join(FASTA, "{sample}.R1.fasta")
     threads:
@@ -19,7 +19,7 @@ rule fastq_to_fasta_R1:
 
 rule fastq_to_fasta_R1:
     input:
-        os.path.join(INPUT, "{sample}.R2.fastq.gz")
+        os.path.join(INPUT, "{sample}_R2.host_rm.fastq.gz")
     output:
         os.path.join(FASTA, "{sample}.R2.fasta")
     threads:
