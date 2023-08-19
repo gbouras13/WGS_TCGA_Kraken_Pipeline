@@ -210,8 +210,6 @@ def install_host(database, log, **kwargs):
     )
 
 
-
-
 help_msg_extra_kraken = """
 \b
 CLUSTER EXECUTION:
@@ -238,7 +236,7 @@ Available targets:
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
-@click.option("--input", "_input", help="Input file/directory", type=str, required=True)
+@click.option("--input", "_input", help="Input directory", type=str, required=True)
 @common_options
 def kraken(_input, output, log, **kwargs):
     """Run TCGA_CPTAC_Taxonomic_Profiler with kraken & bracken"""
@@ -286,7 +284,7 @@ Available targets:
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
 )
-@click.option("--input", "_input", help="Input file/directory", type=str, required=True)
+@click.option("--input", "_input", help="Input directory", type=str, required=True)
 @common_options
 def mmseqs(_input, output, log, **kwargs):
     """Run TCGA_CPTAC_Taxonomic_Profiler with mmseqs"""

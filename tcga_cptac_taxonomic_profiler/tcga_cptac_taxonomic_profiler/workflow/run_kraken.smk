@@ -36,10 +36,7 @@ BigJobCpu = config["BigJobCpu"]
 MediumJobMem = config["MediumJobMem"]
 SmallJobMem = config["SmallJobMem"]
 
-DBDIR = config["kraken_db"]
-# host FA
-HOSTFA = os.path.join(DBDIR, 'host', 'masked_ref.fa.gz')
-HOSTINDEX = f"{HOSTFA}.idx"
+
 
 ### DIRECTORIES
 include: "rules/directories.smk"
@@ -47,9 +44,9 @@ include: "rules/directories.smk"
 # get if needed
 INPUT = config['input']
 OUTPUT = config['output']
+KRAKENDB = config["kraken_db"]
 
-# Parse the samples and read files
-# include: "rules/samples_from_output.smk"
+# Parse the samples with metasnek
 
 # https://gist.github.com/beardymcjohnface/bb161ba04ae1042299f48a4849e917c8
 

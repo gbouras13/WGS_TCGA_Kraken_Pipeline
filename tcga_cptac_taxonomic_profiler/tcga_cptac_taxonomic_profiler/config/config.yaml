@@ -15,6 +15,7 @@ SmallJobMem: 16000
 SmallJobCpu: 8       
 
 # DBs
-kraken_db: 'blah'
-kraken_db: 'blah'
+# define the paths here
+kraken_db: '/hpcfs/users/a1667917/metagenomics_dbs/kraken2/k2_pluspf_20230605'
+mmseqs2_db: 'blah'
 
