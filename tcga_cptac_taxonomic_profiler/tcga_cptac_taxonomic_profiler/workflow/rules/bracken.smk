@@ -57,7 +57,7 @@ rule aggr_bracken:
         expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt"), sample = SAMPLES),
         expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt"), sample = SAMPLES)
     output:
-        os.path.join(FLAGS, "aggr_bracken.txt")
+        os.path.join(FLAGS, "aggr_bracken.flag")
     resources:
         mem_mb=SmallJobMem,
         time=5
