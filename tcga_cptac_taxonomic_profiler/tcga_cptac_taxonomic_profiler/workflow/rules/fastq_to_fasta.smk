@@ -13,11 +13,11 @@ rule fastq_to_fasta_R1:
         os.path.join("..", "envs", "biopython.yml")
     resources:
         mem_mb=SmallJobMem,
-        time=SmallTime
+        time=MediumJobTimeMin
     script:
         '../scripts/fastq_to_fasta.py'
 
-rule fastq_to_fasta_R1:
+rule fastq_to_fasta_R2:
     input:
         os.path.join(INPUT, "{sample}_R2.host_rm.fastq.gz")
     output:
@@ -32,7 +32,7 @@ rule fastq_to_fasta_R1:
         os.path.join("..", "envs", "biopython.yml")
     resources:
         mem_mb=SmallJobMem,
-        time=SmallTime
+        time=MediumJobTimeMin
     script:
         '../scripts/fastq_to_fasta.py'
 
@@ -45,7 +45,7 @@ rule aggr_fastq_to_fasta:
         1
     resources:
         mem_mb=SmallJobMem,
-        time=SmallTime
+        time=SmallJobTimeMin
     shell:
         """
         touch {output[0]}

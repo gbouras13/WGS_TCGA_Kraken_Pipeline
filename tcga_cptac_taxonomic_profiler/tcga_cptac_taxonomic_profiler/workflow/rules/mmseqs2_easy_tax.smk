@@ -19,7 +19,7 @@ rule run_mmseqs_easy_tax:
         BigJobCpu
     resources:
         mem_mb=BigJobMem,
-        time=2000
+        time=BigJobTimeMin
     log: 
         os.path.join(LOGS, "mmseqs2", "{sample}.taxonomy.log")
     benchmark: 
@@ -43,7 +43,7 @@ rule aggr_mmseqs2_easy_tax:
         1
     resources:
         mem_mb=SmallJobMem,
-        time=SmallTime
+        time=SmallJobTimeMin
     shell:
         """
         touch {output[0]}

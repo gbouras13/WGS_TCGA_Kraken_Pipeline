@@ -34,7 +34,9 @@ BigJobMem = config["BigJobMem"]
 BigJobCpu = config["BigJobCpu"]
 MediumJobMem = config["MediumJobMem"]
 SmallJobMem = config["SmallJobMem"]
-
+BigJobTimeMin = config["BigJobTimeMin"]
+MediumJobTimeMin = config["MediumJobTimeMin"]
+SmallJobTimeMin = config['SmallJobTimeMin']
 
 ### DIRECTORIES
 # get if needed
