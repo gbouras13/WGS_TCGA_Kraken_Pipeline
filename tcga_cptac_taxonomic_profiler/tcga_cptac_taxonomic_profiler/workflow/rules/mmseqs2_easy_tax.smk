@@ -25,7 +25,7 @@ rule run_mmseqs_easy_tax:
     benchmark: 
         os.path.join(BENCHMARKS, "mmseqs2", "{sample}.taxonomy.benchmark")
     conda: 
-        os.path.join("..", "envs", "mmseqs2.yml")
+        os.path.join("..", "envs", "mmseqs2.yaml")
     shell:
         # touch output to let workflow continue in cases where 0 results are found
         """
