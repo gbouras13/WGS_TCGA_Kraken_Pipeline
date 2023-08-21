@@ -10,7 +10,7 @@ rule fastq_to_fasta_R1:
     benchmark: 
         os.path.join(BENCHMARKS, "fastq_to_fastq", "{sample}.benchmark")
     conda: 
-        os.path.join("..", "envs", "biopython.yml")
+        os.path.join("..", "envs", "biopython.yaml")
     resources:
         mem_mb=SmallJobMem,
         time=MediumJobTimeMin
