@@ -43,6 +43,7 @@ SmallJobTimeMin = config['SmallJobTimeMin']
 INPUT = config['input']
 OUTPUT = config['output']
 MMSEQS2_DB = config['mmseqs2_db']
+TMPDIR = config['tmpdir']
 
 include: "rules/directories.smk"
 
