@@ -8,6 +8,7 @@ LOGS = os.path.join(OUTPUT, 'LOGS')
 
 ### OUTPUT DIRs
 RESULTS = os.path.join(OUTPUT, 'RESULTS')
+PROCESSING = os.path.join(OUTPUT, 'PROCESSING')
 
 # fastq dirs
 UNALIGNED_FASTQ  = os.path.join(RESULTS, 'UNALIGNED_FASTQ')
@@ -19,6 +20,11 @@ BIOM = os.path.join(RESULTS, 'BIOM')
 # kraken and bracken dirs 
 KRAKEN = os.path.join(RESULTS, 'KRAKEN')
 BRACKEN = os.path.join(RESULTS, 'BRACKEN') 
+
+# mmseqs2 
+FASTA = os.path.join(PROCESSING, 'FASTA')
+MMSEQS2 = os.path.join(RESULTS, 'MMSEQS2')
+
 
 # get readcount of bams
 READCOUNT = os.path.join(RESULTS, 'READCOUNT')
