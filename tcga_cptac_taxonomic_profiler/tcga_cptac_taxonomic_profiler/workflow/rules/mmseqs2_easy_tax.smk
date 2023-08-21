@@ -12,8 +12,8 @@ rule run_mmseqs_easy_tax:
     output:
         outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done')
     params:
-        db = MMSEQS2_DB
-        outdir=os.path.join(MMSEQS2, '{sample}')
+        db = MMSEQS2_DB,
+        outdir=os.path.join(MMSEQS2, '{sample}'),
         tmpdir = TMPDIR
     threads: 
         BigJobCpu
