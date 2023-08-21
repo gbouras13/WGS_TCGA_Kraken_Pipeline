@@ -56,7 +56,9 @@ SAMPLES = list(sample_dict.keys())
 include: "rules/fastq_to_fasta.smk"
 include: "rules/mmseqs2_easy_tax.smk"
 
+# import targets
 
+include: "rules/targets.smk"
 
 rule all:
     input:
