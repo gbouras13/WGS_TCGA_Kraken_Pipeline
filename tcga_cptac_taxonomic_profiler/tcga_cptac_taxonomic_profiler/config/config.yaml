@@ -11,8 +11,10 @@ BigJobCpu: 32        # Threads for MMSeqs (recommend >= 16)
 BigJobTimeMin: 2000  # Max runtime in minutes  (this is only enforced by the Snakemake profile)
 MediumJobMem: 32000  
 MediumJobCpu: 16     
+MediumJobTimeMin: 500
 SmallJobMem: 16000   
 SmallJobCpu: 8       
+SmallJobTimeMin: 5
 
 # DBs
 # define the paths here
