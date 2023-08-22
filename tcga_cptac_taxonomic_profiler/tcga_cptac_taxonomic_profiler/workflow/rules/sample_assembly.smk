@@ -42,6 +42,7 @@ rule individual_sample_assembly:
             -o {params.assembly_dir} -t {threads}  -k auto --tmp-dir {params.tmpdir} 2> {log} 
         else
             touch {output.fasta}
+        fi
 
         """
 
