@@ -13,7 +13,7 @@ rule individual_sample_assembly:
         r2p = os.path.join(INPUT, "{sample}_R2.host_rm.fastq.gz"), 
         rs = os.path.join(INPUT, "{sample}_S.host_rm.fastq.gz")
     output:
-        fasta = os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'scaffolds.fasta') 
+        fasta = os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta') 
     params:
         max_memory = config.resources.big.mem,
         assembly_dir = os.path.join(SAMPLE_ASSEMBLIES, '{sample}'),
