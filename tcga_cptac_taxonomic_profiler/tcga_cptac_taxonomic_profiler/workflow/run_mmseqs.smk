@@ -30,20 +30,19 @@ onerror:
 ### DEFAULT CONFIG FILE
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
-BigJobMem = config["BigJobMem"]
-BigJobCpu = config["BigJobCpu"]
-MediumJobMem = config["MediumJobMem"]
-SmallJobMem = config["SmallJobMem"]
-BigJobTimeMin = config["BigJobTimeMin"]
-MediumJobTimeMin = config["MediumJobTimeMin"]
-SmallJobTimeMin = config['SmallJobTimeMin']
+BigJobMem = config.BigJobMem
+BigJobCpu = config.BigJobCpu
+MediumJobMem = config.MediumJobMem
+SmallJobMem = config.SmallJobMem
+BigJobTimeMin = config.BigJobTimeMin
+MediumJobTimeMin = config.MediumJobTimeMin
+SmallJobTimeMin = config.SmallJobTimeMin
 
 ### DIRECTORIES
 # get if needed
-INPUT = config['input']
-OUTPUT = config['output']
-MMSEQS2_DB = config['mmseqs2_db']
-TMPDIR = config['tmpdir']
+INPUT = config.input
+OUTPUT = config.output
+TMPDIR = config.tmpdir
 
 include: "rules/directories.smk"
 

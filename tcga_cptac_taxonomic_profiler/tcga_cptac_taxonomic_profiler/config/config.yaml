@@ -27,6 +27,7 @@ resources:
 # DBs
 # define the paths here
 databases:
+    host_db: '/hpcfs/users/a1667917/metagenomics_dbs/host_genome_db'
     kraken: '/hpcfs/users/a1667917/metagenomics_dbs/kraken2/k2_pluspf_20230605'
     mmseqs2:
         uniref50: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef50/UniRef50'

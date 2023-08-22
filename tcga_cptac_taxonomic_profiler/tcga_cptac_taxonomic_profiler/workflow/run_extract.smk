@@ -7,8 +7,12 @@ Also extracts the read counts for the bams in total
 """
 
 import glob
+import attrmap as ap
+import attrmap.utils as au
+
 
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+config = ap.AttrMap(config)
 
 # Concatenate Snakemake's own log file with the master log file
 def copy_log_file():
@@ -26,20 +30,22 @@ onerror:
 
 
 ### DEFAULT CONFIG FILE
-configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+BigJobMem = config.BigJobMem
+BigJobCpu = config.BigJobCpu
+MediumJobMem = config.MediumJobMem
+SmallJobMem = config.SmallJobMem
 
-BigJobMem = config["BigJobMem"]
-BigJobCpu = config["BigJobCpu"]
-MediumJobMem = config["MediumJobMem"]
-SmallJobMem = config["SmallJobMem"]
+
+### DIRECTORIES
+# get if needed
+BAMS_DIR = config.input
+OUTPUT = config.output
+THREADS = config.threads
 
 ### DIRECTORIES
 include: "rules/directories.smk"
 
 # get input and put directorr
-BAMS_DIR = config['input']
-OUTPUT = config['output']
-THREADS = config['threads']
 
 # Parse the samples from *.bam files
 

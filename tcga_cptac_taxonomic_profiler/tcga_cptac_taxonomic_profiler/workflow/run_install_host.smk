@@ -2,13 +2,18 @@
 Snakefile for downloading CHM
 """
 import os
+import attrmap as ap
+import attrmap.utils as au
 
 # load default config
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+config = ap.AttrMap(config)
+
+
 
 # config
 
-HostDir = config['host_db']
+HostDir = config.databases.host_db
 
 if not os.path.exists(os.path.join(HostDir)):
     os.makedirs(os.path.join(HostDir))

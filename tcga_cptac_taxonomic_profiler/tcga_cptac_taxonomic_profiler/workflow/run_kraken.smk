@@ -30,18 +30,23 @@ onerror:
 
 ### DEFAULT CONFIG FILE
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+# from hecatomb
+config = ap.AttrMap(config)
 
-BigJobMem = config["BigJobMem"]
-BigJobCpu = config["BigJobCpu"]
-MediumJobMem = config["MediumJobMem"]
-SmallJobMem = config["SmallJobMem"]
-BigJobTimeMin = config["BigJobTimeMin"]
-MediumJobTimeMin = config["MediumJobTimeMin"]
+BigJobMem = config.BigJobMem
+BigJobCpu = config.BigJobCpu
+MediumJobMem = config.MediumJobMem
+SmallJobMem = config.SmallJobMem
+BigJobTimeMin = config.BigJobTimeMin
+MediumJobTimeMin = config.MediumJobTimeMin
+SmallJobTimeMin = config.SmallJobTimeMin
 
-# get fromc config
-INPUT = config['input']
-OUTPUT = config['output']
-KRAKENDB = config["kraken_db"]
+### DIRECTORIES
+# get if needed
+INPUT = config.input
+OUTPUT = config.output
+TMPDIR = config.tmpdir
+
 
 ### DIRECTORIES
 include: "rules/directories.smk"
