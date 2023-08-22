@@ -33,16 +33,8 @@ configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 # from hecatomb
 config = ap.AttrMap(config)
 
-BigJobMem = config.BigJobMem
-BigJobCpu = config.BigJobCpu
-MediumJobMem = config.MediumJobMem
-SmallJobMem = config.SmallJobMem
-BigJobTimeMin = config.BigJobTimeMin
-MediumJobTimeMin = config.MediumJobTimeMin
-SmallJobTimeMin = config.SmallJobTimeMin
 
 ### DIRECTORIES
-# get if needed
 INPUT = config.input
 OUTPUT = config.output
 TMPDIR = config.tmpdir

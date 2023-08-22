@@ -32,7 +32,7 @@ configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 # from hecatomb
 config = ap.AttrMap(config)
 
-BigJobMem = config.BigJobMem
+BigJobMem = config.resources.big.mem
 BigJobCpu = config.BigJobCpu
 MediumJobMem = config.MediumJobMem
 SmallJobMem = config.SmallJobMem

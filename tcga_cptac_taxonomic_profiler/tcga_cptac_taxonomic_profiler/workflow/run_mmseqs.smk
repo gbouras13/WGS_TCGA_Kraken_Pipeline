@@ -30,14 +30,6 @@ onerror:
 ### DEFAULT CONFIG FILE
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
-BigJobMem = config.BigJobMem
-BigJobCpu = config.BigJobCpu
-MediumJobMem = config.MediumJobMem
-SmallJobMem = config.SmallJobMem
-BigJobTimeMin = config.BigJobTimeMin
-MediumJobTimeMin = config.MediumJobTimeMin
-SmallJobTimeMin = config.SmallJobTimeMin
-
 ### DIRECTORIES
 # get if needed
 INPUT = config.input
