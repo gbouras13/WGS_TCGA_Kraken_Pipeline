@@ -29,6 +29,7 @@ onerror:
 
 ### DEFAULT CONFIG FILE
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+config = ap.AttrMap(config)
 
 ### DIRECTORIES
 # get if needed

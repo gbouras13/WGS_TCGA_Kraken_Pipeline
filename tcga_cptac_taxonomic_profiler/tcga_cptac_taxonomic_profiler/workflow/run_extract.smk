@@ -11,8 +11,6 @@ import attrmap as ap
 import attrmap.utils as au
 
 
-configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
-config = ap.AttrMap(config)
 
 # Concatenate Snakemake's own log file with the master log file
 def copy_log_file():
@@ -30,11 +28,8 @@ onerror:
 
 
 ### DEFAULT CONFIG FILE
-BigJobMem = config.BigJobMem
-BigJobCpu = config.BigJobCpu
-MediumJobMem = config.MediumJobMem
-SmallJobMem = config.SmallJobMem
-
+configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
+config = ap.AttrMap(config)
 
 ### DIRECTORIES
 # get if needed
