@@ -341,7 +341,7 @@ Available targets:
 )
 @click.option("--input", "_input", help="Input directory", type=str, required=True)
 @common_options
-def mmseqs(_input, output, log, **kwargs):
+def assembly(_input, output, log, **kwargs):
     """Run TCGA_CPTAC_Taxonomic_Profiler to assemble MAGs """
     # Config to add or update in configfile
     merge_config = {
@@ -377,6 +377,7 @@ def citation(**kwargs):
 cli.add_command(kraken)
 cli.add_command(install_host)
 cli.add_command(mmseqs)
+cli.add_command(assembly)
 cli.add_command(config)
 cli.add_command(citation)
 
