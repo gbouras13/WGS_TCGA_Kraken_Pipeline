@@ -6,13 +6,9 @@ Also extracts the read counts for the bams in total
 
 """
 
-
-
 import glob
 
-
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
-
 
 # Concatenate Snakemake's own log file with the master log file
 def copy_log_file():

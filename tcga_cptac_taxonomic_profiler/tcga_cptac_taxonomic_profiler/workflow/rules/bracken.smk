@@ -6,7 +6,7 @@ rule bracken_species:
         os.path.join(KRAKEN,"{sample}.kraken.txt"),
         os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
-        KRAKENDB
+        config.databases.kraken
     output:
         os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt")
     conda:
@@ -15,11 +15,11 @@ rule bracken_species:
         os.path.join(LOGS, "bracken", "{sample}.bracken.species.log")
     benchmark: 
         os.path.join(BENCHMARKS, "bracken", "{sample}.bracken.species.log")
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.med.time
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem,
-        time=60
     shell:
         '''
         bracken -d {params[0]} -i {input[1]} -o {output[0]}  -r 50 -l S 
@@ -31,7 +31,7 @@ rule bracken_genus:
         os.path.join(KRAKEN,"{sample}.kraken.txt"),
         os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
-        KRAKENDB
+        config.databases.kraken
     output:
         os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt")
     conda:
@@ -40,11 +40,11 @@ rule bracken_genus:
         os.path.join(LOGS, "bracken", "{sample}.bracken.genus.log")
     benchmark: 
         os.path.join(BENCHMARKS, "bracken", "{sample}.bracken.genus.log")
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.med.time
     threads:
         1
-    resources:
-        mem_mb=SmallJobMem,
-        time=60
     shell:
         '''
         bracken -d {params[0]} -i {input[1]}  -o {output[0]} -r 50 -l G 
@@ -59,8 +59,8 @@ rule aggr_bracken:
     output:
         os.path.join(FLAGS, "aggr_bracken.flag")
     resources:
-        mem_mb=SmallJobMem,
-        time=5
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.med.time
     threads:
         1
     shell:

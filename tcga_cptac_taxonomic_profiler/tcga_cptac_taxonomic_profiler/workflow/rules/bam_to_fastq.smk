@@ -6,11 +6,11 @@ rule bam_index:
         os.path.join(BAMS_DIR,"{sample}.bam.bai")
     conda:
         os.path.join('..', 'envs','samtools.yaml')
-    threads:
-        BigJobCpu
     resources:
-        mem_mb=BigJobMem,
-        time=60
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time
+    threads:
+        config.resources.med.cpus
     shell:
         """
         samtools index -@ {threads} {input[0]} {output[0]} 
@@ -25,10 +25,11 @@ rule bam_unmap_sort_fastq:
         os.path.join(UNALIGNED_FASTQ,"{sample}_R2.fastq.gz")
     conda:
         os.path.join('..', 'envs','samtools.yaml')
-    threads:
-        BigJobCpu
     resources:
-        mem_mb=BigJobMem
+        mem_mb = config.resources.big.mem,
+        time = config.resources.big.time
+    threads:
+        config.resources.big.cpus
     shell:
         """
         samtools view -u -f 12 -F 256 -@ {threads} {input[0]} | samtools sort -@ {threads} |   
@@ -52,8 +53,8 @@ rule aggr_bam_to_fastq:
     threads:
         1
     resources:
-        mem_mb=SmallJobMem,
-        time=5
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
     shell:
         """
         touch {output[0]}

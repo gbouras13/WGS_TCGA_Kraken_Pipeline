@@ -50,6 +50,13 @@ def common_options(func):
             show_default=True,
         ),
         click.option(
+            "--tmpdir",
+            help="Temporary directory",
+            type=click.Path(dir_okay=True, writable=True, readable=True),
+            default="tmp",
+            show_default=True,
+        ),
+        click.option(
             "--configfile",
             default="config.yaml",
             show_default=False,

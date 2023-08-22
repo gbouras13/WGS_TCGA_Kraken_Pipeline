@@ -20,7 +20,13 @@ MMseqsTargets =[
 
     os.path.join(FLAGS, "aggr_mmseqs2.flag")    
 
-
 ]
 
 
+CoAssemblyTargets = [
+    os.path.join(FLAGS, "aggr_coassembly.flag")
+]
+
+SampleAssemblyTargets = [
+    os.path.join(FLAGS, "aggr_sample_assembly.flag")
+]

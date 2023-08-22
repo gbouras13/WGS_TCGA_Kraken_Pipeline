@@ -12,14 +12,14 @@ rule run_mmseqs_easy_tax:
     output:
         outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done')
     params:
-        db = MMSEQS2_DB,
+        db = config.databases.mmseqs2.uniref50,
         outdir=os.path.join(MMSEQS2, '{sample}'),
         tmpdir = TMPDIR
     threads: 
-        BigJobCpu
+        config.resources.big.cpus
     resources:
-        mem_mb=BigJobMem,
-        time=BigJobTimeMin
+        mem_mb=config.resources.big.mem,
+        time=config.resources.big.time
     log: 
         os.path.join(LOGS, "mmseqs2", "{sample}.taxonomy.log")
     benchmark: 
@@ -42,8 +42,8 @@ rule aggr_mmseqs2_easy_tax:
     threads:
         1
     resources:
-        mem_mb=SmallJobMem,
-        time=SmallJobTimeMin
+        mem_mb=config.resources.sml.mem,
+        time=config.resources.sml.time
     shell:
         """
         touch {output[0]}

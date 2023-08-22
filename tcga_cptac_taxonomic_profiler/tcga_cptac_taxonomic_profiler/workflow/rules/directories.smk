@@ -25,11 +25,12 @@ BRACKEN = os.path.join(RESULTS, 'BRACKEN')
 FASTA = os.path.join(PROCESSING, 'FASTA')
 MMSEQS2 = os.path.join(RESULTS, 'MMSEQS2')
 
-
 # get readcount of bams
 READCOUNT = os.path.join(RESULTS, 'READCOUNT')
 
-
-
+# assembly
+SAMPLE_ASSEMBLIES = os.path.join(RESULTS, 'SAMPLE_ASSEMBLIES')
+COASSEMBLY = os.path.join(RESULTS, 'COASSEMBLY')
+COASSEMBLY_RESULTS = os.path.join(RESULTS, 'COASSEMBLY_RESULTS')
 
 

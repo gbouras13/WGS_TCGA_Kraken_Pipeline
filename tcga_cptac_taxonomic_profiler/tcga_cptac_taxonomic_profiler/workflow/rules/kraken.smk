@@ -11,7 +11,7 @@ rule run_kraken:
         os.path.join(KRAKEN,"{sample}.kraken.txt"),
         os.path.join(KRAKEN,"{sample}.kraken.rep")
     params:
-        KRAKENDB
+        config.databases.kraken
     conda:
         os.path.join('..', 'envs','kraken2.yaml')
     log: 
@@ -19,10 +19,10 @@ rule run_kraken:
     benchmark: 
         os.path.join(BENCHMARKS, "kraken", "{sample}.kraken.log")
     resources:
-        mem_mb=BigJobMem,
-        time=120
+        mem_mb = config.resources.big.mem,
+        time = config.resources.med.time
     threads:
-        2
+        config.resources.sml.cpu
     shell:
         """
         kraken2 {input[0]} {input[1]}  \
@@ -41,10 +41,10 @@ rule aggr_kraken:
     output:
         os.path.join(FLAGS, "aggr_kraken.flag")
     resources:
-        mem_mb=SmallJobMem,
-        time=5
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
     threads:
-        1
+        config.resources.sml.cpu
     shell:
         """
         touch {output[0]}

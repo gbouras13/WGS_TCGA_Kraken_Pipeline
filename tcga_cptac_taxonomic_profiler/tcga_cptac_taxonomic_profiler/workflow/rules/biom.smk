@@ -14,13 +14,16 @@ rule biom:
         os.path.join(BIOM,"bracken_species.biom")
     conda:
         os.path.join('..', 'envs','biom.yaml')
+    params:
+        ' '.join(expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_genus.txt"), sample=SAMPLES)),
+        ' '.join(expand(os.path.join(BRACKEN,"{sample}.kraken_bracken_species.txt"), sample=SAMPLES)),
     log: 
         os.path.join(LOGS, "biom", "biom.log")
     benchmark: 
         os.path.join(BENCHMARKS, "biom", "biom.log")
     resources:
-        mem_mb=SmallJobMem,
-        time=60
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.med.time
     threads:
         1
     shell:
@@ -37,8 +40,8 @@ rule aggr_biom:
     output:
         os.path.join(FLAGS, "aggr_biom.flag")
     resources:
-        mem_mb=SmallJobMem,
-        time=5
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
     threads:
         1
     shell:

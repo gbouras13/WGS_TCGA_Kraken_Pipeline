@@ -7,10 +7,10 @@ rule bam_counts_all:
     conda:
         os.path.join('..', 'envs','samtools.yaml')
     resources:
-        mem_mb=MediumJobMem,
-        time=600
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time
     threads:
-        16
+        config.resources.med.cpus
     shell:
         """
         samtools view -c -@ {threads} {input[0]} > {output[0]}
@@ -24,8 +24,8 @@ rule aggr_read_counts:
     output:
         os.path.join(LOGS, "aggr_read_count.flag")
     resources:
-        mem_mb=SmallJobMem,
-        time=5
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
     threads:
         1
     shell:

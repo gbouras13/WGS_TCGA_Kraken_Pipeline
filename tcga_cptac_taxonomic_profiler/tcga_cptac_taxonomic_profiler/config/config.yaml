@@ -2,26 +2,42 @@
 input:
 output: 'tcga_cptac_taxonomic_profiler.out/'
 log: 'tcga_cptac_taxonomic_profiler/tcga_cptac_taxonomic_profiler.log'
-
-### STICK TO YOUR SYSTEM'S CPU:RAM RATIO FOR THESE
-# this will be overwritten by the Snakemake profile
-
-BigJobMem: 250000     # Memory for MMSeqs in megabytes (e.g 64GB = 64000, recommend >= 64000)
-BigJobCpu: 32        # Threads for MMSeqs (recommend >= 16)
-BigJobTimeMin: 2000  # Max runtime in minutes  (this is only enforced by the Snakemake profile)
-MediumJobMem: 32000  
-MediumJobCpu: 16     
-MediumJobTimeMin: 500
-SmallJobMem: 16000   
-SmallJobCpu: 8       
-SmallJobTimeMin: 5
-
-# DBs
-# define the paths here
-kraken_db: '/hpcfs/users/a1667917/metagenomics_dbs/kraken2/k2_pluspf_20230605'
-mmseqs2_db: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef50/UniRef50'
-
 # TMPDIR
 # define the paths here
 tmpdir: '/hpcfs/users/a1667917/tmp'
+
+resources:
+    massive:
+        mem: 1800000
+        cpu: 72 
+        time: 4000 
+    big:
+        mem: 250000      # Memory for big (mostly mmseqs) jobs in megabytes (e.g 64GB = 64000, recommend >= 64000)
+        cpu: 32         # Threads (recommend >= 16)
+        time: 2000      # Max runtime in minutes (allows to set max time for the scheduler via snakemake profiles)
+    med:
+        mem: 32000      # Memory for most jobs in megabytes (recommend >= 32000)
+        cpu: 16         # CPUs for most jobs in megabytes (recommend >= 16)
+        time: 500        # Max runtime in minutes for medium jobs (relevant for scheduler)
+    sml:
+        mem: 4000
+        cpu: 1
+        time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
+
+# DBs
+# define the paths here
+databases:
+    kraken: '/hpcfs/users/a1667917/metagenomics_dbs/kraken2/k2_pluspf_20230605'
+    mmseqs2:
+        uniref50: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef50/UniRef50'
+        uniref90: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef90/UniRef90'
+
+
+assembly:
+    megahit:
+        --k-min 25
+        --k-max 175
+        --k-step 26
+        --min-count 2
+        --min-contig-len 1000
 
