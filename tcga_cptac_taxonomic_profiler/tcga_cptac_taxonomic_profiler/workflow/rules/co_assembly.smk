@@ -38,10 +38,10 @@ rule co_assembly:
     log:
         os.path.join(LOGS, 'coassembly', "megahit_coassembly.log")
     resources:
-        mem_mb = config.resources.massive.mem,
-        time = config.resources.massive.time
+        mem_mb = config.resources.big.mem,
+        time = config.resources.big.time
     threads:
-        config.resources.massive.cpu
+        config.resources.big.cpu
     conda:
         os.path.join("..", "envs", "megahit.yaml")
     shell:
