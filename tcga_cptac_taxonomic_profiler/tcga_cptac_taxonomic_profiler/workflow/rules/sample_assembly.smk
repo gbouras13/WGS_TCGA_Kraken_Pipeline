@@ -46,7 +46,7 @@ rule individual_sample_assembly:
         """
 
 
-rule aggr_coassembly:
+rule aggr_sample_assembly:
     input:
         expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'scaffolds.fasta'), sample = SAMPLES)
     output:
