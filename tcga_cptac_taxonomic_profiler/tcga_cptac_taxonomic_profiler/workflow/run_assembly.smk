@@ -59,7 +59,6 @@ include: "rules/co_assembly.smk"
 include: "rules/sample_assembly.smk"
 
 # import targets
-
 include: "rules/targets.smk"
 
 rule all:

@@ -18,7 +18,7 @@ rule individual_sample_assembly:
         max_memory = config.resources.big.mem,
         assembly_dir = os.path.join(SAMPLE_ASSEMBLIES, '{sample}'),
         tmp = TMPDIR
-   benchmark:
+    benchmark:
         os.path.join(BENCHMARKS, 'sample_assembly', "{sample}_spades_assembly.txt")
     log:
         os.path.join(LOGS, 'sample_assembly', "{sample}_spades_assembly.log")
