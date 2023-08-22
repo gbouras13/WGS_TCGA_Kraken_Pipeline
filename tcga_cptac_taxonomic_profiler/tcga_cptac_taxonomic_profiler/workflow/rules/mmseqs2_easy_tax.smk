@@ -11,7 +11,6 @@ rule run_mmseqs_easy_tax:
         fasta2 = os.path.join(FASTA, "{sample}.R2.fasta"),
     output:
         outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done'),
-        tmp = temp(os.path.join(dir.out.assembly, "coAssembly", "co_assembly_graph.fastg")),
         tmpdir = temp(os.path.join(TMPDIR, "{sample}"))
     params:
         db = config.databases.mmseqs2.uniref50,
