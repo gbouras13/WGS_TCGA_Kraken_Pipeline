@@ -18,7 +18,7 @@ rule run_mmseqs_easy_tax:
     threads: 
         config.resources.big.cpu
     resources:
-        mem_mb=config.resources.massive.mem,
+        mem_mb=config.resources.big.mem,
         time=config.resources.big.time
     log: 
         os.path.join(LOGS, "mmseqs2", "{sample}.taxonomy.log")
