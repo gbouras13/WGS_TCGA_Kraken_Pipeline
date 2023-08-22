@@ -49,7 +49,7 @@ rule individual_sample_assembly:
 
 rule aggr_sample_assembly:
     input:
-        expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'scaffolds.fasta'), sample = SAMPLES)
+        expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample = SAMPLES)
     output:
         os.path.join(FLAGS, "aggr_sample_assembly.flag")
     threads:
