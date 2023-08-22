@@ -10,11 +10,12 @@ rule run_mmseqs_easy_tax:
         fasta1 = os.path.join(FASTA, "{sample}.R1.fasta"),
         fasta2 = os.path.join(FASTA, "{sample}.R2.fasta"),
     output:
-        outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done')
+        outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done'),
+        tmp = temp(os.path.join(dir.out.assembly, "coAssembly", "co_assembly_graph.fastg")),
+        tmpdir = temp(os.path.join(TMPDIR, "{sample}"))
     params:
         db = config.databases.mmseqs2.uniref50,
-        outdir=os.path.join(MMSEQS2, '{sample}'),
-        tmpdir = TMPDIR
+        outdir=os.path.join(MMSEQS2, '{sample}')
     threads: 
         config.resources.big.cpu
     resources:
@@ -29,7 +30,7 @@ rule run_mmseqs_easy_tax:
     shell:
         # touch output to let workflow continue in cases where 0 results are found
         """
-        mmseqs easy-taxonomy {input.fasta1} {input.fasta2} {params.db} {params.outdir} {params.tmpdir} --start-sens 1 --sens-steps 3 -s 7 --threads {threads} --orf-filter 0 2>> {log}
+        mmseqs easy-taxonomy {input.fasta1} {input.fasta2} {params.db} {params.outdir} {output.tmpdir} --start-sens 1 --sens-steps 3 -s 7 --threads {threads} --orf-filter 0 2>> {log}
         touch {output.outtouch}
         """
 
