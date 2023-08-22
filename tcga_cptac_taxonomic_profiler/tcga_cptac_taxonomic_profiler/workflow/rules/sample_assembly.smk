@@ -36,9 +36,13 @@ rule individual_sample_assembly:
         minimumsize=200000;
         actualsize=$(stat -c%s {input.r1p});
 
-        if [ $actualsize -ge $minimumsize ]
+        if [ -d {params.assembly_dir} ]
         then
-            spades.py --restart-from last --checkpoints all --memory {params.max_memory} --meta -1 {input.r1p} -2 {input.r2p} -s {input.rs}  \
+            spades.py --restart-from last  --memory {params.max_memory} --meta -1 {input.r1p} -2 {input.r2p} -s {input.rs}  \
+            -o {params.assembly_dir} -t {threads}  -k auto --tmp-dir {params.tmpdir} 2> {log} 
+        elif [ $actualsize -ge $minimumsize ]
+        then
+            spades.py  --checkpoints all --memory {params.max_memory} --meta -1 {input.r1p} -2 {input.r2p} -s {input.rs}  \
             -o {params.assembly_dir} -t {threads}  -k auto --tmp-dir {params.tmpdir} 2> {log} 
         else
             touch {output.fasta}
