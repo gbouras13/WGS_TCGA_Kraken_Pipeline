@@ -7,6 +7,9 @@ tcga_cptac_taxonomic_profiler extract needs to be run first.
 
 import glob
 from metasnek import fastq_finder
+import attrmap as ap
+import attrmap.utils as au
+
 
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
