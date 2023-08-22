@@ -10,7 +10,7 @@ rule bam_index:
         mem_mb = config.resources.med.mem,
         time = config.resources.med.time
     threads:
-        config.resources.med.cpus
+        config.resources.med.cpu
     shell:
         """
         samtools index -@ {threads} {input[0]} {output[0]} 
@@ -29,7 +29,7 @@ rule bam_unmap_sort_fastq:
         mem_mb = config.resources.big.mem,
         time = config.resources.big.time
     threads:
-        config.resources.big.cpus
+        config.resources.big.cpu
     shell:
         """
         samtools view -u -f 12 -F 256 -@ {threads} {input[0]} | samtools sort -@ {threads} |   

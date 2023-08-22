@@ -16,7 +16,7 @@ rule run_mmseqs_easy_tax:
         outdir=os.path.join(MMSEQS2, '{sample}'),
         tmpdir = TMPDIR
     threads: 
-        config.resources.big.cpus
+        config.resources.big.cpu
     resources:
         mem_mb=config.resources.big.mem,
         time=config.resources.big.time
