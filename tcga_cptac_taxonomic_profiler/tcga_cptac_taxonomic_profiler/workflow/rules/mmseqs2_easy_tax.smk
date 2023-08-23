@@ -28,8 +28,10 @@ rule run_mmseqs_easy_tax:
         os.path.join("..", "envs", "mmseqs2.yaml")
     shell:
         # touch output to let workflow continue in cases where 0 results are found
+        # need to remove log for some reason too
         """
         mmseqs easy-taxonomy {input.fasta1} {input.fasta2} {params.db} {params.outdir} {output.tmpdir} --start-sens 1 --sens-steps 3 -s 7 --threads {threads} 2>> {log}
+        rm {log}
         touch {output.outtouch}
         """
 
