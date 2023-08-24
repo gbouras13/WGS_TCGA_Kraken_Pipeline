@@ -58,7 +58,8 @@ setup(
         "Click>=8.1.3",
         "trimnami>=0.0.8",
         "metasnek>=0.0.6",
-        "attrmap>=0.0.7"
+        "attrmap>=0.0.7",
+        "vamb=4.1.3"
     ],
     entry_points={
         "console_scripts": [

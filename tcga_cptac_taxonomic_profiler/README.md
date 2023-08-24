@@ -43,10 +43,26 @@ trimnami config
 trimnami run --reads TCGA_output/UNALIGNED_FASTQ --host host_genome_db/human-t2t-hla.fa fastp --output TCGA_output/trimnami_output --configfile trimnami.config.yaml
 ```
 
-
-
-1. Run the 
+4. Run the profilers
 
 You will find the host depleted and trimmed reads in `TCGA_output/trimnami_output/fastp`.
 
+To run the Kraken based profiling
 
+```
+tcga_cptac_taxonomic_profiler kraken --input TCGA_output/trimnami_output/fastp  --output TCGA_output --fastqc
+```
+
+To run the MMseqs2 based profiling
+
+```
+tcga_cptac_taxonomic_profiler mmseqs --input TCGA_output/trimnami_output/fastp  --output TCGA_output --fastqc
+```
+
+5. Binners 
+
+## Sample-assembly
+
+The sample-assemblies were binned using VAMB. v4.1.3 needs to be in the local env/PATH (as conda is behin).
+
+For the co-assembly

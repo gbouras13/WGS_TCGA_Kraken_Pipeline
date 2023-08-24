@@ -30,3 +30,9 @@ CoAssemblyTargets = [
 SampleAssemblyTargets = [
     os.path.join(FLAGS, "aggr_sample_assembly.flag")
 ]
+
+SampleAssemblyBins = [
+
+    os.path.join(FLAGS 'vamb.flag')
+
+]

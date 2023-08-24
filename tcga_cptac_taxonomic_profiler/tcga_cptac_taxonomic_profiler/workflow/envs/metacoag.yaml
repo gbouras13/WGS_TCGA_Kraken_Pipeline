@@ -1,0 +1,7 @@
+name: metacoag
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - metacoag =1.1.4
