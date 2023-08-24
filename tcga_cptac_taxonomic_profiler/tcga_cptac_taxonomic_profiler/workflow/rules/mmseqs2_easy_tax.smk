@@ -11,7 +11,7 @@ rule run_mmseqs_easy_tax:
         fasta2 = os.path.join(FASTA, "{sample}.R2.fasta"),
     output:
         outtouch=os.path.join(MMSEQS2, 'flags', '{sample}.done'),
-        tmpdir = temp(os.path.join(TMPDIR, "{sample}"))
+        tmpdir = temp(directory(os.path.join(TMPDIR, "{sample}")))
     params:
         db = config.databases.mmseqs2.uniref50,
         outdir=os.path.join(MMSEQS2, '{sample}')
@@ -29,8 +29,7 @@ rule run_mmseqs_easy_tax:
     shell:
         # touch output to let workflow continue in cases where 0 results are found
         # need to remove log for some reason too
-        # --min-length for tiny orfs
-        # --orf-filter 0 assign taxonomy without ORF prefilter\n"
+        # --min-length for tiny orfs - due to 50bp reads
         # Classifies higher percentage for short nucleotide input (e.g. short reads) at the cost of speed
         """
         mmseqs easy-taxonomy {input.fasta1} {input.fasta2} {params.db} {params.outdir} {output.tmpdir} --start-sens 1 --sens-steps 3 -s 7 --threads {threads} --min-length 15  2>> {log}

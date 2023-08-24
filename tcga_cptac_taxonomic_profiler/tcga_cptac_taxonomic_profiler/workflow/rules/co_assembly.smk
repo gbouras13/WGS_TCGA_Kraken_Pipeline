@@ -1,15 +1,12 @@
 """
-Per-sample assemblies for short paired reads
-    Take all trimmed reads, create pooled contigs "all_samples_contigs_size_selected.fasta" for use
-    in combine_sample_assemblies.smk
-
-    # taken & modified from hecatomb https://github.com/shandley/hecatomb/blob/main/hecatomb/snakemake/workflow/rules/assembly/paired_end.smk
+ co assembly with megahit
 
 """
 
 
 rule co_assembly:
     """Alternative to cross assembly; assemble everything together in one hit.
+    Taken largely from hecatomb
     
     Megahit: https://github.com/voutcn/megahit
     """
