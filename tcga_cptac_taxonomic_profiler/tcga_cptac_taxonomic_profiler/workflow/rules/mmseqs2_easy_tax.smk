@@ -33,7 +33,7 @@ rule run_mmseqs_easy_tax:
         # --orf-filter 0 assign taxonomy without ORF prefilter\n"
         # Classifies higher percentage for short nucleotide input (e.g. short reads) at the cost of speed
         """
-        mmseqs easy-taxonomy {input.fasta1} {input.fasta2} {params.db} {params.outdir} {output.tmpdir} --start-sens 1 --sens-steps 3 -s 7 --threads {threads} --min-length 5 --orf-filter 0  2>> {log}
+        mmseqs easy-taxonomy {input.fasta1} {input.fasta2} {params.db} {params.outdir} {output.tmpdir} --start-sens 1 --sens-steps 3 -s 7 --threads {threads} --min-length 20  2>> {log}
         rm {log}
         touch {output.outtouch}
         """
