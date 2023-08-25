@@ -75,7 +75,7 @@ rule read_mapping:
     shell:
         """
 
-        minimap2 -t {threads} -ax sr {index.input}  {input.r1p} {input.r2p}  | 
+        minimap2 -t {threads} -ax sr {input.index}  {input.r1p} {input.r2p}  | 
         samtools view -F 3584 -b --threads {threads} > {output.bam}
 
         """
