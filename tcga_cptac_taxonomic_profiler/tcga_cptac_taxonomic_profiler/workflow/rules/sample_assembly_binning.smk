@@ -6,11 +6,13 @@ https://github.com/RasmussenLab/vamb
 rule concatenate_sample_assemblies:
     """
     concatenate assemblies
+    needs vamb 4.1.3 in Path 
     """
 
     input:
         expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES)
     params:
+        path = os.path.join("../scripts/concatenate.py"),
         fastas = ' '.join(expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES))
     output:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz')
@@ -25,12 +27,12 @@ rule concatenate_sample_assemblies:
         config.resources.med.cpu
     shell:
         """
-        python concatenate.py /path/to/catalogue.fna.gz {params.fastas}
+        python {params.path} {input.catalogue} {params.fastas}
         """
 
 rule index_catalogue:
     """
-    concatenate assemblies
+    index catalogue
     """
     input:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz')
@@ -84,6 +86,7 @@ rule read_mapping:
 rule run_vamb:
     """
     maps reads to the contig catalogue
+    needs vamb 4.1.3 in Path 
     """
     input:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
