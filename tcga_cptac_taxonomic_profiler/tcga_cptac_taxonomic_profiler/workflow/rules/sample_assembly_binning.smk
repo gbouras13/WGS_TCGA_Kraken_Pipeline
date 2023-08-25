@@ -23,8 +23,6 @@ rule concatenate_sample_assemblies:
         time = config.resources.med.time
     threads:
         config.resources.med.cpu
-    conda:
-        os.path.join("..", "envs", "vamb.yaml")
     shell:
         """
         python concatenate.py /path/to/catalogue.fna.gz {params.fastas}
