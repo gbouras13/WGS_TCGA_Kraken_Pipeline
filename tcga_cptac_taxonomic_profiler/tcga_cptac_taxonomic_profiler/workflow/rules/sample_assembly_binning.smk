@@ -91,7 +91,7 @@ rule run_vamb:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
         bams = expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES)
     output:
-        outtouch = os.path.join(FLAGS 'vamb.flag')
+        outtouch = os.path.join(FLAGS, 'vamb.flag')
     benchmark:
         os.path.join(BENCHMARKS, 'vamb', "{sample}_read_mapping.txt")
     log:
