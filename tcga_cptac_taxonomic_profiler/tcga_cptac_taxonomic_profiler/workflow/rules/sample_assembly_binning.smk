@@ -80,6 +80,28 @@ rule read_mapping:
 
         """
 
+rule vamb_bam_Sprt:
+    input:
+        bam = os.path.join(VAMB_BAMS, '{sample}.bam')
+    output:
+        bam = os.path.join(VAMB_BAMS, '{sample}_sorted.bam') 
+    benchmark:
+        os.path.join(BENCHMARKS, 'vamb', "{sample}_read_mapping_sort.txt")
+    log:
+        os.path.join(LOGS, 'vamb', "{sample}_read_mapping_sort.log")
+    resources:
+        mem_mb = config.resources.big.mem,
+        time = config.resources.big.time
+    threads:
+        config.resources.big.cpu
+    conda:
+        os.path.join("..", "envs", "minimap2.yaml")
+    shell:
+        """
+        samtools sort {input.bam} --threads {threads} -o {output.bam} 2> {log}
+        """
+
+
 rule run_vamb:
     """
     maps reads to the contig catalogue
@@ -87,7 +109,7 @@ rule run_vamb:
     """
     input:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
-        bams = expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES)
+        bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
     output:
         outtouch = os.path.join(FLAGS, 'vamb.flag')
     benchmark:
@@ -105,6 +127,7 @@ rule run_vamb:
     shell:
         # you may have trouble running this - best not to use a profile for this rule
         """
+
         vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {params.bams} -o C
         touch {output.outtouch}
         """
