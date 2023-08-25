@@ -93,9 +93,9 @@ rule run_vamb:
     output:
         outtouch = os.path.join(FLAGS, 'vamb.flag')
     benchmark:
-        os.path.join(BENCHMARKS, 'vamb', "{sample}_read_mapping.txt")
+        os.path.join(BENCHMARKS, 'vamb', "run_vamb.txt")
     log:
-        os.path.join(LOGS, 'vamb', "{sample}_read_mapping.log")
+        os.path.join(LOGS, 'vamb', "run_vamb.log")
     resources:
         mem_mb = config.resources.big.mem,
         time = config.resources.big.time
