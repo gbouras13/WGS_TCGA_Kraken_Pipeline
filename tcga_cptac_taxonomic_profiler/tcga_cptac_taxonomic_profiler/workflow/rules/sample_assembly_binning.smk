@@ -100,7 +100,7 @@ rule run_vamb:
         mem_mb = config.resources.big.mem,
         time = config.resources.big.time
     params:
-        bams = ' '.join(expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES))
+        bams = ' '.join(expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES)),
         outdir = VAMB_RESULTS
     threads:
         config.resources.big.cpu
