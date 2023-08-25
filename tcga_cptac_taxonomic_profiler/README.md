@@ -63,6 +63,8 @@ tcga_cptac_taxonomic_profiler mmseqs --input TCGA_output/trimnami_output/fastp  
 
 ## Sample-assembly
 
-The sample-assemblies were binned using VAMB. v4.1.3 needs to be in the local env/PATH (as conda is behin).
+The sample-assemblies were binned using VAMB. v4.1.3 needs to be in the local env/PATH (as conda is behind for VAMB). And you will need to run the 2 jobs requiring VAMB JOBs without a profile (they are single jobs so shouldn't be too bad)
+
+
 
 For the co-assembly

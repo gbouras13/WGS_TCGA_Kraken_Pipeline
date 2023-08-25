@@ -104,8 +104,6 @@ rule run_vamb:
         outdir = VAMB_RESULTS
     threads:
         config.resources.big.cpu
-    conda:
-        os.path.join("..", "envs", "minimap2.yaml")
     shell:
         # you may have trouble running this - best not to use a profile for this rule
         """
