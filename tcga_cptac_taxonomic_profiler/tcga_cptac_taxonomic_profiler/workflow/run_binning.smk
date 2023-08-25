@@ -1,7 +1,5 @@
 """
-The snakefile that runs the assembly pipeline.
-
-tcga_cptac_taxonomic_profiler extract needs to be run first.
+The snakefile that runs the binning pipeline.
 
 """
 
@@ -32,13 +30,6 @@ configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 # from hecatomb
 config = ap.AttrMap(config)
 
-BigJobMem = config.resources.big.mem
-BigJobCpu = config.BigJobCpu
-MediumJobMem = config.MediumJobMem
-SmallJobMem = config.SmallJobMem
-BigJobTimeMin = config.BigJobTimeMin
-MediumJobTimeMin = config.MediumJobTimeMin
-SmallJobTimeMin = config.SmallJobTimeMin
 
 ### DIRECTORIES
 # get if needed
@@ -55,8 +46,8 @@ SAMPLES = list(sample_dict.keys())
 
 
 # Import rules and functions
-include: "rules/co_assembly.smk"
-include: "rules/sample_assembly.smk"
+include: "rules/co_assembly_binning.smk"
+include: "rules/sample_assembly_binning.smk"
 
 # import targets
 include: "rules/targets.smk"
@@ -64,5 +55,5 @@ include: "rules/targets.smk"
 rule all:
     input:
         SampleAssemblyTargets,
-        CoAssemblyTargets
+        #CoAssemblyTargets
 
