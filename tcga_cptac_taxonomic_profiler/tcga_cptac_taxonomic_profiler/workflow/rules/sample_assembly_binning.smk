@@ -27,7 +27,7 @@ rule concatenate_sample_assemblies:
         config.resources.med.cpu
     shell:
         """
-        python {params.path} {input.catalogue} {params.fastas}
+        python {params.path} {output.catalogue} {params.fastas}
         """
 
 rule index_catalogue:
