@@ -12,7 +12,6 @@ rule concatenate_sample_assemblies:
     input:
         expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES)
     params:
-        path = os.path.join("../scripts/concatenate.py"),
         fastas = ' '.join(expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES))
     output:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz')
@@ -26,9 +25,8 @@ rule concatenate_sample_assemblies:
     threads:
         config.resources.med.cpu
     shell:
-        """
-        python {params.path} {output.catalogue} {params.fastas}
-        """
+    script:
+        '../scripts/concatenate_vamb.py'
 
 rule index_catalogue:
     """
