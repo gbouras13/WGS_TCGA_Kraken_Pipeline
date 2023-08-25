@@ -424,6 +424,7 @@ cli.add_command(kraken)
 cli.add_command(install_host)
 cli.add_command(mmseqs)
 cli.add_command(assembly)
+cli.add_command(binning)
 cli.add_command(config)
 cli.add_command(citation)
 
