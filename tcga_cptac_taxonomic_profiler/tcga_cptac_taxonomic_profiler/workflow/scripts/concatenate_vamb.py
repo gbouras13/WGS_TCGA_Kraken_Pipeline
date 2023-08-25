@@ -68,4 +68,4 @@ def open_fastq_file(outpath, inpaths, minlength, keepnames, nozip):
 
 
 # to actually run the script
-open_fastq_file(snakemake.output.catalogue, snakemake.params.fastas, 2000, False, False)
+open_fastq_file(snakemake.output.catalogue, snakemake.input.fastas, 2000, False, False)

@@ -10,9 +10,9 @@ rule concatenate_sample_assemblies:
     """
 
     input:
-        expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES)
-    params:
-        fastas = ' '.join(expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES))
+        fastas = expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES)
+    # params:
+    #     fastas = ' '.join(expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES))
     output:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz')
     benchmark:
