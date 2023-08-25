@@ -32,13 +32,6 @@ configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 # from hecatomb
 config = ap.AttrMap(config)
 
-BigJobMem = config.resources.big.mem
-BigJobCpu = config.BigJobCpu
-MediumJobMem = config.MediumJobMem
-SmallJobMem = config.SmallJobMem
-BigJobTimeMin = config.BigJobTimeMin
-MediumJobTimeMin = config.MediumJobTimeMin
-SmallJobTimeMin = config.SmallJobTimeMin
 
 ### DIRECTORIES
 # get if needed
@@ -63,6 +56,5 @@ include: "rules/targets.smk"
 
 rule all:
     input:
-        SampleAssemblyTargets,
-        CoAssemblyTargets
+        SampleAssemblyBins
 
