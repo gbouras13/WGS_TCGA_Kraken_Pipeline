@@ -24,7 +24,6 @@ rule concatenate_sample_assemblies:
         time = config.resources.med.time
     threads:
         config.resources.med.cpu
-    shell:
     script:
         '../scripts/concatenate_vamb.py'
 
