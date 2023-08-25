@@ -128,7 +128,7 @@ rule run_vamb:
         # you may have trouble running this - best not to use a profile for this rule
         """
 
-        vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {params.bams} -o C
+        vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {input.bams} -o C
         touch {output.outtouch}
         """
 
