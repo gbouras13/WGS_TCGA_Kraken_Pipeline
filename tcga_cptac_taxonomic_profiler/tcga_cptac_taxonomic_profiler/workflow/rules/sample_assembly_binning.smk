@@ -95,10 +95,10 @@ rule vamb_bam_Sprt:
     log:
         os.path.join(LOGS, 'vamb', "{sample}_read_mapping_sort.log")
     resources:
-        mem_mb = config.resources.big.mem,
-        time = config.resources.big.time
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time
     threads:
-        config.resources.big.cpu
+        config.resources.med.cpu
     conda:
         os.path.join("..", "envs", "minimap2.yaml")
     shell:
