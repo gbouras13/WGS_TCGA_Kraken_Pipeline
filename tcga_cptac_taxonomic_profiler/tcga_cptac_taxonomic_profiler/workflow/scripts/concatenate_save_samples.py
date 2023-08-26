@@ -8,7 +8,8 @@ import pandas as pd
 def concatenate_contigs(catalogue, fastas, samples, csv_path, min_length, separator ):
     # opens the catalogue
     headers = []
-    with gz.open(catalogue, "wb") as fout:
+    
+    with gz.open(catalogue, "wt") as fout:
 
         i = 1
         
