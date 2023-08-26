@@ -128,7 +128,7 @@ rule run_vamb:
         bams = ' '.join(expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES)),
         outdir = VAMB_RESULTS,
         separator = config.binning.separator,
-        minfasta = config.binning.minfasta
+        minfasta = config.binning.minfasta,
         min_contig_length = config.binning.min_contig_length
     threads:
         config.resources.big.cpu
