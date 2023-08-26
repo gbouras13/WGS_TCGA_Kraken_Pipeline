@@ -26,7 +26,7 @@ def concatenate_contigs(catalogue, fastas, samples, csv_path, min_length, separa
             i += 1
 
     
-    sample_vamb_df = pd.Dataframe(
+    sample_vamb_df = pd.DataFrame(
         {
             "sample" : samples,
             "Binner_ID" : headers
