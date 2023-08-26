@@ -22,7 +22,7 @@ def concatenate_contigs(catalogue, fastas, samples, csv_path, min_length, separa
                     record.description = ""
                     SeqIO.write(record, fout, 'fasta')
 
-            headers.append("fS{i}")
+            headers.append(f"S{i}")
             i += 1
 
     

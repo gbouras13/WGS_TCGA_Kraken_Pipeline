@@ -48,3 +48,7 @@ binning:
     separator: ":"
     minfasta: 200000 # the min bin size for VAMB
 
+mge:
+    genomad_db: '/hpcfs/users/a1667917/genomad/genomad_db'
+
+

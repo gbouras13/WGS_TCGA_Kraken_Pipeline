@@ -10,7 +10,7 @@ rule bam_counts_all:
         mem_mb = config.resources.med.mem,
         time = config.resources.med.time
     threads:
-        config.resources.med.cpus
+        config.resources.med.cpu
     shell:
         """
         samtools view -c -@ {threads} {input[0]} > {output[0]}
