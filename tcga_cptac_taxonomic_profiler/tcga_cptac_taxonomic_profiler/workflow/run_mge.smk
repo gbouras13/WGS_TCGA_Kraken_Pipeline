@@ -46,7 +46,7 @@ SAMPLES = list(sample_dict.keys())
 
 
 # Import rules and functions
-include: "rules/mge.smk"
+include: "rules/genomad.smk"
 
 # import targets
 include: "rules/targets.smk"
