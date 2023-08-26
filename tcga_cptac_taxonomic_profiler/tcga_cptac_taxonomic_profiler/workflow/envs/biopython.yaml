@@ -4,5 +4,7 @@ channels:
   - defaults
 dependencies:
   - biopython >=1.76
+  - pandas >=1.4.2
+  - gzip
   
   

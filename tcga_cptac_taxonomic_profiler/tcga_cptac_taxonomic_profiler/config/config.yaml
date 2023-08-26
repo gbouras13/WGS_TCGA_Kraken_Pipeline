@@ -42,3 +42,9 @@ assembly:
         --min-count 2
         --min-contig-len 1000
 
+
+binning:
+    min_contig_length: 1000
+    separator: ":"
+    minfasta: 200000 # the min bin size for VAMB
+
