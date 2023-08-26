@@ -17,7 +17,7 @@ def concatenate_contigs(catalogue, fastas, samples, csv_path, min_length, separa
 
             for record in SeqIO.parse(input_fasta, 'fasta'):
                 if len(record.seq) > min_length:
-                    header = f"S{i}{separator}{sample}"
+                    header = f"S{i}{separator}{record.id}"
                     record.id = header
                     record.description = ""
                     SeqIO.write(record, fout, 'fasta')
