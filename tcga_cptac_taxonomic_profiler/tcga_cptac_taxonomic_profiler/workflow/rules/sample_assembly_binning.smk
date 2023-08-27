@@ -186,7 +186,7 @@ rule run_checkm2_per_sample_all_bins:
         config.resources.big.cpu
     params:
         vamb_dir = VAMB_RESULTS,
-        checkm2_dir = CHECKM2_RESULTS
+        checkm2_dir = CHECKM2_RESULTS,
         database = config.databases.kraken
     log:
         os.path.join(LOGS, 'vamb', "{sample}_checkm2.log")
