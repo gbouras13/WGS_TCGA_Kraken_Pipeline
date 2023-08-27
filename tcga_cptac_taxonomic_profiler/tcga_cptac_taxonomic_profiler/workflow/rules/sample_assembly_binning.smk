@@ -132,6 +132,72 @@ rule run_vamb:
         touch {output.outtouch}
         """
 
+"""
+checkm2
+"""
 
+# Evaluate in which samples bins were reconstructed
+checkpoint samples_with_bins:
+    input:        
+        outtouch = os.path.join(FLAGS, 'vamb.flag')
+    output:
+        sammples_with_bins = os.path.join(VAMB_CATALOGUE, 'samples_with_bins.txt')
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
+    log:
+        os.path.join(LOGS, 'vamb', "samples_with_bins.log")
+    params:
+        outdir = VAMB_RESULTS
+    threads:
+        1
+    shell:
+        """
+        find {params.outdir}/bins/*/ -type d ! -empty |sed 's=.*bins/==g'  |sed 's=/==g'  > {output.sammples_with_bins}
+        """
+
+def samples_with_bins_f(wildcards):
+    # decision based on content of output file
+    with checkpoints.samples_with_bins.get().output[0].open() as f:
+        samples_with_bins = [sample.strip() for sample in f.readlines()]
+        samples_with_bins_paths=expand(os.path.join(CHECKM2_RESULTS,"tmp/checkm2_all_{sample}_bins_finished.log"),sample=samples_with_bins)
+        return samples_with_bins_paths
+
+
+# Run CheckM2 for each sample with bins        
+rule run_checkm2_per_sample_all_bins:
+    output:
+        outtouch=os.path.join(CHECKM2_RESULTS,"flags/checkm2_all_{sample}_bins_finished.flag")
+    resources:
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time
+    threads:
+        config.resources.big.cpu
+    params:
+        vamb_dir = VAMB_RESULTS
+        checkm2_dir = CHECKM2_RESULTS
+    log:
+        os.path.join(LOGS, 'vamb', "{sample}_checkm2.log")
+    conda: 
+        os.path.join("..", "envs", "checkm2.yaml")
+    shell:
+        """
+        checkm2 predict --threads {threads} --input {params.vamb_dir}/bins/{wildcards.sample}/*.fna --output-directory {params.checkm2_dir}/{wildcards.sample}
+        touch {output.outtouch}
+        """
+
+# this rule will be executed when all CheckM2 runs per sample finish
+rule cat_checkm2_all:
+    input:
+        samples_with_bins_f
+    output: 
+        outtouch = os.path.join(FLAGS, 'checkm2.flag')
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
+    threads:
+        1
+    shell:
+        "touch {output}"
 
 

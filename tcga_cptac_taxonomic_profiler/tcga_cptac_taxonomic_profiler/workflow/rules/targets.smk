@@ -34,6 +34,7 @@ SampleAssemblyTargets = [
 
 SampleAssemblyBins = [
 
-    os.path.join(FLAGS, 'vamb.flag')
+    os.path.join(FLAGS, 'vamb.flag'),
+    os.path.join(FLAGS, 'checkm2.flag')
 
 ]
