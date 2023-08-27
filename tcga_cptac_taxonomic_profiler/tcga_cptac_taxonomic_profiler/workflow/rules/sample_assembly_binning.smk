@@ -185,7 +185,7 @@ rule run_checkm2_per_sample_all_bins:
     threads:
         config.resources.big.cpu
     params:
-        vamb_dir = VAMB_RESULTS
+        vamb_dir = VAMB_RESULTS,
         checkm2_dir = CHECKM2_RESULTS
     log:
         os.path.join(LOGS, 'vamb', "{sample}_checkm2.log")
