@@ -171,7 +171,7 @@ def samples_with_bins_f(wildcards):
     # decision based on content of output file
     with checkpoints.samples_with_bins.get().output[0].open() as f:
         samples_with_bins = [sample.strip() for sample in f.readlines()]
-        samples_with_bins_paths=expand(os.path.join(CHECKM2_RESULTS,"tmp/checkm2_all_{sample}_bins_finished.log"),sample=samples_with_bins)
+        samples_with_bins_paths=expand(os.path.join(CHECKM2_RESULTS,"flags/checkm2_all_{sample}_bins_finished.flag"),sample=samples_with_bins)
         return samples_with_bins_paths
 
 
