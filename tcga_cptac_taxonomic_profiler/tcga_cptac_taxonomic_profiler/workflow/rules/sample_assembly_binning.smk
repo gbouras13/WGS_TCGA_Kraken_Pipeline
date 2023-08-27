@@ -187,7 +187,7 @@ rule run_checkm2_per_sample_all_bins:
     params:
         vamb_dir = VAMB_RESULTS,
         checkm2_dir = CHECKM2_RESULTS,
-        database = config.databases.kraken
+        database = config.databases.checkm2
     log:
         os.path.join(LOGS, 'vamb', "{sample}_checkm2.log")
     conda: 
