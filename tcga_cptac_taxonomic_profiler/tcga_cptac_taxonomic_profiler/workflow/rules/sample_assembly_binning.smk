@@ -194,7 +194,7 @@ rule run_checkm2_per_sample_all_bins:
         os.path.join("..", "envs", "checkm2.yaml")
     shell:
         """
-        checkm2 predict --threads {threads} --input {params.vamb_dir}/bins/{wildcards.sample}/*.fna --database_path {params.database} --output-directory {params.checkm2_dir}/{wildcards.sample}
+        checkm2 predict --threads {threads} --input {params.vamb_dir}/bins/{wildcards.sample}/*.fna --database_path {params.database} --output-directory {params.checkm2_dir}/{wildcards.sample} --force
         touch {output.outtouch}
         """
 
