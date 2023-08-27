@@ -3,8 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - biopython >=1.76
-  - pandas >=1.4.2
-  - gzip
-  
-  
+  - genomad =1.6.1
+

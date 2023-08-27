@@ -407,6 +407,53 @@ def binning(_input, output, log, **kwargs):
         **kwargs
     )
 
+help_msg_extra_binning = """
+\b
+CLUSTER EXECUTION:
+tcga_cptac_taxonomic_profiler mge ... --profile [profile]
+For information on Snakemake profiles see:
+https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
+\b
+RUN EXAMPLES:
+Required:           tcga_cptac_taxonomic_profiler mge --input [file]
+Specify threads:    tcga_cptac_taxonomic_profiler mge ... --threads [threads]
+Disable conda:      tcga_cptac_taxonomic_profiler mge ... --no-use-conda 
+Change defaults:    tcga_cptac_taxonomic_profiler mge ... --snake-default="-k --nolock"
+Add Snakemake args: tcga_cptac_taxonomic_profiler mge ... --dry-run --keep-going --touch
+Specify targets:    tcga_cptac_taxonomic_profiler mge ... all print_targets
+Available targets:
+    all             Run everything (default)
+    print_targets   List available targets
+"""
+
+
+@click.command(
+    epilog=help_msg_extra_mmseqs,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option("--input", "_input", help="Input directory", type=str, required=True)
+@common_options
+def mge(_input, output, log, **kwargs):
+    """Run TCGA_CPTAC_Taxonomic_Profiler to find mges """
+    # Config to add or update in configfile
+    merge_config = {
+        "input": _input,
+        "output": output,
+        "log": log
+    }
+
+    # run!
+    run_snakemake(
+        # Full path to Snakefile
+        snakefile_path=snake_base(os.path.join("workflow", "run_mge.smk")),
+        system_config=snake_base(os.path.join("config", "config.yaml")),
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
+
 @click.command()
 @common_options
 def config(configfile, **kwargs):
@@ -425,6 +472,7 @@ cli.add_command(install_host)
 cli.add_command(mmseqs)
 cli.add_command(assembly)
 cli.add_command(binning)
+cli.add_command(mge)
 cli.add_command(config)
 cli.add_command(citation)
 

@@ -3,6 +3,7 @@ co assembly binning
 """
 
 
+
 rule co_assembly_binning:
     """
     with metacoag (vijini)

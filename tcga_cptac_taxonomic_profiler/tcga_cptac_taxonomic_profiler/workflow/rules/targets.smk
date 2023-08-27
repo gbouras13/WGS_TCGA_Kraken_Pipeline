@@ -38,3 +38,5 @@ SampleAssemblyBins = [
     os.path.join(FLAGS, 'checkm2.flag')
 
 ]
+
+MGETargets = [os.path.join(FLAGS, 'genomad.flag')]

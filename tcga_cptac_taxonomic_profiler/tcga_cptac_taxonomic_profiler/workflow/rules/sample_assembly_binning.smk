@@ -6,15 +6,17 @@ https://github.com/RasmussenLab/vamb
 rule concatenate_sample_assemblies:
     """
     concatenate assemblies
-    needs vamb 4.1.3 in Path 
     """
 
     input:
         fastas = expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES)
-    # params:
-    #     fastas = ' '.join(expand(os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta'), sample=SAMPLES))
+    params:
+        min_contig_length = config.binning.min_contig_length,
+        samples = SAMPLES,
+        separator = ":"
     output:
-        catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz')
+        catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
+        csv_path = os.path.join(VAMB_CATALOGUE, 'sample_bin_name.csv')
     benchmark:
         os.path.join(BENCHMARKS, 'vamb', "concatenate_sample_assemblies.txt")
     log:
@@ -24,8 +26,11 @@ rule concatenate_sample_assemblies:
         time = config.resources.med.time
     threads:
         config.resources.med.cpu
+    conda:
+        os.path.join("..", "envs", "biopython.yaml")
     script:
-        '../scripts/concatenate_vamb.py'
+        '../scripts/concatenate_save_samples.py'
+
 
 rule index_catalogue:
     """
@@ -66,10 +71,10 @@ rule read_mapping:
     log:
         os.path.join(LOGS, 'vamb', "{sample}_read_mapping.log")
     resources:
-        mem_mb = config.resources.big.mem,
-        time = config.resources.big.time
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time
     threads:
-        config.resources.big.cpu
+        config.resources.med.cpu
     conda:
         os.path.join("..", "envs", "minimap2.yaml")
     shell:
@@ -90,10 +95,10 @@ rule vamb_bam_Sprt:
     log:
         os.path.join(LOGS, 'vamb', "{sample}_read_mapping_sort.log")
     resources:
-        mem_mb = config.resources.big.mem,
-        time = config.resources.big.time
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time
     threads:
-        config.resources.big.cpu
+        config.resources.med.cpu
     conda:
         os.path.join("..", "envs", "minimap2.yaml")
     shell:
@@ -121,15 +126,21 @@ rule run_vamb:
         time = config.resources.big.time
     params:
         bams = ' '.join(expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES)),
-        outdir = VAMB_RESULTS
+        outdir = VAMB_RESULTS,
+        separator = config.binning.separator,
+        minfasta = config.binning.minfasta,
+        min_contig_length = config.binning.min_contig_length
     threads:
         config.resources.big.cpu
     shell:
         # you may have trouble running this - best not to use a profile for this rule
+        # By default, Vamb does not output any FASTA files of the bins. 
+        # In the examples below, the option --minfasta 200000 is set, meaning that all bins with a size of 200 kbp or more will be output as FASTA files.
         """
 
-        vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {input.bams} -o C
+        vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {input.bams} -o {params.separator} -m {params.min_contig_length} --minfasta {params.minfasta}
         touch {output.outtouch}
+        
         """
 
 """
