@@ -187,13 +187,14 @@ rule run_checkm2_per_sample_all_bins:
     params:
         vamb_dir = VAMB_RESULTS,
         checkm2_dir = CHECKM2_RESULTS
+        database = config.databases.kraken
     log:
         os.path.join(LOGS, 'vamb', "{sample}_checkm2.log")
     conda: 
         os.path.join("..", "envs", "checkm2.yaml")
     shell:
         """
-        checkm2 predict --threads {threads} --input {params.vamb_dir}/bins/{wildcards.sample}/*.fna --output-directory {params.checkm2_dir}/{wildcards.sample}
+        checkm2 predict --threads {threads} --input {params.vamb_dir}/bins/{wildcards.sample}/*.fna --database_path {params.database} --output-directory {params.checkm2_dir}/{wildcards.sample}
         touch {output.outtouch}
         """
 
