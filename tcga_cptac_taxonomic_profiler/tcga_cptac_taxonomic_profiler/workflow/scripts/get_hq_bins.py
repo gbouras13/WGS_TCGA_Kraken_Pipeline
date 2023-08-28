@@ -8,6 +8,11 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
     # opens the catalogue
 
     high_qual_dfs =[]
+
+    # Create the directory
+    if not os.path.exists(combined_mag_directory):
+    
+        os.makedirs(combined_mag_directory)
     
     for sample in samples:
         # Read the TSV file
@@ -20,6 +25,8 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
         high_qual_dfs.append(high_qual_df)
 
         # copy bin to combined directory
+
+
 
         for name in high_qual_df['Name']:
 
