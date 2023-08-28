@@ -198,6 +198,14 @@ rule run_checkm2_per_sample_all_bins:
         touch {output.outtouch}
         """
 
+
+def samples_with_bins(wildcards):
+    # decision based on content of output file
+    with checkpoints.samples_with_bins.get().output[0].open() as f:
+        samples_with_bins = [sample.strip() for sample in f.readlines()]
+        return samples_with_bins
+
+
 # this rule will be executed when all CheckM2 runs per sample finish
 rule cat_checkm2_all:
     input:
@@ -222,7 +230,7 @@ rule get_hq_bins:
         samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag')
     params:
-        samples = samples_with_bins_f,
+        samples = samples_with_bins,
         checkm2_directory = CHECKM2_RESULTS,
         vamb_bin_dir = VAMB_RESULTS,
         combined_mag_directory = ALL_MAGS

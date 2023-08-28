@@ -8,8 +8,6 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
     # opens the catalogue
 
     high_qual_dfs =[]
-
-    print(samples)
     
     for sample in samples:
         # Read the TSV file
