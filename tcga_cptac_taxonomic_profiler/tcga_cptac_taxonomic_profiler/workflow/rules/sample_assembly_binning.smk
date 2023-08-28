@@ -213,3 +213,36 @@ rule cat_checkm2_all:
         "touch {output}"
 
 
+
+"""
+SemiBin2 multi_easy_bin -i contig_whole.fa -b *.sorted.bam -o output
+"""
+
+
+# this rule will be executed when all CheckM2 runs per sample finish
+rule run_semibin2:
+    input:
+        catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
+        bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
+    output:
+        outtouch = os.path.join(FLAGS, 'semibin2.flag')
+    benchmark:
+        os.path.join(BENCHMARKS, 'vamb', "run_semibin2.txt")
+    log:
+        os.path.join(LOGS, 'vamb', "run_semibin2.log")
+    resources:
+        mem_mb = config.resources.big.mem,
+        time = config.resources.big.time
+    params:
+        outdir = SEMIBIN2_RESULTS,
+        separator = config.binning.separator,
+        minfasta = config.binning.minfasta,
+        # min_contig_length = config.binning.min_contig_length
+    threads:
+        config.resources.big.cpu
+    shell:
+        """
+        SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta}
+        touch {output.outtouch}
+        """
+
