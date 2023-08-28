@@ -214,7 +214,6 @@ rule cat_checkm2_all:
 
 
 
-
 rule get_hq_bins:
     """
     get_hq_bins
