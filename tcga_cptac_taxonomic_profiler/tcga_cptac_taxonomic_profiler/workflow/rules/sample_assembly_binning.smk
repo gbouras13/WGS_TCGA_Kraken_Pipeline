@@ -228,7 +228,7 @@ rule get_hq_bins:
         vamb_bin_dir = VAMB_RESULTS,
         combined_mag_directory = ALL_MAGS
     output:
-        checm2_combo = os.path.join(checkm2_directory, "combined_check2_quality_report.tsv")
+        checm2_combo = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report.tsv")
     benchmark:
         os.path.join(BENCHMARKS, 'vamb', "rule get_hq_bins.txt")
     log:
