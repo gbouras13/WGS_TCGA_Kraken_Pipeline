@@ -214,37 +214,71 @@ rule cat_checkm2_all:
 
 
 
+
+
+rule get_hq_bins:
+    """
+    get_hq_bins
+    """
+    input:
+        outtouch = os.path.join(FLAGS, 'checkm2.flag')
+    params:
+        samples = samples_with_bins_f,
+        checkm2_directory = CHECKM2_RESULTS,
+        vamb_bin_dir = VAMB_RESULTS,
+        combined_mag_directory = ALL_MAGS
+    output:
+        checm2_combo = os.path.join(checkm2_directory, "combined_check2_quality_report.tsv")
+    benchmark:
+        os.path.join(BENCHMARKS, 'vamb', "rule get_hq_bins.txt")
+    log:
+        os.path.join(LOGS, 'vamb', "rule get_hq_bins.log")
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
+    threads:
+        config.resources.sml.cpu
+    conda:
+        os.path.join("..", "envs", "biopython.yaml")
+    script:
+        '../scripts/get_hq_bins.py'
+
+
+
+
+
+
 """
 SemiBin2 multi_easy_bin -i contig_whole.fa -b *.sorted.bam -o output
 """
 
 
-# this rule will be executed when all CheckM2 runs per sample finish
-rule run_semibin2:
-    input:
-        catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
-        bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
-    output:
-        outtouch = os.path.join(FLAGS, 'semibin2.flag')
-    benchmark:
-        os.path.join(BENCHMARKS, 'vamb', "run_semibin2.txt")
-    log:
-        os.path.join(LOGS, 'vamb', "run_semibin2.log")
-    resources:
-        mem_mb = config.resources.big.mem,
-        time = config.resources.big.time
-    params:
-        outdir = SEMIBIN2_RESULTS,
-        separator = config.binning.separator,
-        minfasta = config.binning.minfasta,
-        # min_contig_length = config.binning.min_contig_length
-    threads:
-        config.resources.big.cpu
-    conda: 
-        os.path.join("..", "envs", "semibin2.yaml")
-    shell:
-        """
-        SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta}
-        touch {output.outtouch}
-        """
+# # this rule will be executed when all CheckM2 runs per sample finish
+# rule run_semibin2:
+#     input:
+#         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
+#         bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
+#     output:
+#         outtouch = os.path.join(FLAGS, 'semibin2.flag')
+#     benchmark:
+#         os.path.join(BENCHMARKS, 'vamb', "run_semibin2.txt")
+#     log:
+#         os.path.join(LOGS, 'vamb', "run_semibin2.log")
+#     resources:
+#         mem_mb = config.resources.big.mem,
+#         time = config.resources.big.time
+#     params:
+#         outdir = SEMIBIN2_RESULTS,
+#         separator = config.binning.separator,
+#         minfasta = config.binning.minfasta,
+#         # min_contig_length = config.binning.min_contig_length
+#     threads:
+#         config.resources.big.cpu
+#     conda: 
+#         os.path.join("..", "envs", "semibin2.yaml")
+#     shell:
+#         """
+#         SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta}
+#         touch {output.outtouch}
+#         """
 

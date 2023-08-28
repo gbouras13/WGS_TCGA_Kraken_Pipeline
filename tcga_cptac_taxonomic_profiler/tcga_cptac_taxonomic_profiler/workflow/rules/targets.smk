@@ -36,7 +36,8 @@ SampleAssemblyBins = [
 
     os.path.join(FLAGS, 'vamb.flag'),
     os.path.join(FLAGS, 'checkm2.flag'),
-    os.path.join(FLAGS, 'semibin2.flag')
+    os.path.join(checkm2_directory, "combined_check2_quality_report.tsv")
+    #os.path.join(FLAGS, 'semibin2.flag')
 
 ]
 
