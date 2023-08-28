@@ -1,7 +1,7 @@
 channels:
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
-  - kraken2 =2.1.2
-  - bracken =2.6.1
+  - semibin =1.5.1
 
