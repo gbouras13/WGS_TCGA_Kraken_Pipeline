@@ -215,12 +215,12 @@ rule cat_checkm2_all:
 
 
 
-
 rule get_hq_bins:
     """
     get_hq_bins
     """
     input:
+        samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag')
     params:
         samples = samples_with_bins_f,
