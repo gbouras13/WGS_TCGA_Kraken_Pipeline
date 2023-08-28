@@ -38,4 +38,4 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
 
 
 # to actually run the script
-parse_mags(snakemake.params.samples, snakemake.params.checkm2_directory, snakemake.params.vamb_bin_dir, snakemake.output.combined_mag_directory)
+parse_mags(snakemake.params.samples, snakemake.params.checkm2_directory, snakemake.params.vamb_bin_dir, snakemake.params.combined_mag_directory)
