@@ -21,7 +21,7 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
 
         # copy bin to combined directory
 
-        for name in high_qual_dfs['Name']:
+        for name in high_qual_df['Name']:
 
             input_fasta = os.path.join(vamb_bin_dir, sample, f"{name}.fna")
             out_fasta = os.path.join(combined_mag_directory, f"{sample}_{name}.fna")
