@@ -257,9 +257,9 @@ gtdbtk
 # """
 
 rule gtdbtk_ani:
-"""
-generate mash db
-"""
+    """
+    generate mash db
+    """
     input:
         samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag'),
