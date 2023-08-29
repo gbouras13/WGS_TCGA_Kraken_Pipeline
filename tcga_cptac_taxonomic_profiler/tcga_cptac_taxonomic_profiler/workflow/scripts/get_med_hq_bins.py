@@ -23,7 +23,7 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
         # Filter rows based on criteria
         data['Sample'] = sample
         high_qual_df = data[(data['Completeness'] > 90) & (data['Contamination'] < 5)]
-        med_qual_df = data[(data['Completeness'] > 90) & (data['Completeness'] < 90) & (data['Contamination'] < 10)]
+        med_qual_df = data[(data['Completeness'] > 50) & (data['Completeness'] < 90) & (data['Contamination'] < 10)]
         high_qual_dfs.append(high_qual_df)
         med_qual_dfs.append(med_qual_df)
 
