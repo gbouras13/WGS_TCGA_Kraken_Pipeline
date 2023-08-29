@@ -235,7 +235,7 @@ rule get_hq_bins:
         vamb_bin_dir = VAMB_RESULTS,
         combined_mag_directory = ALL_MAGS
     output:
-        checm2_combo = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report.tsv")
+        checm2_combo = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
     benchmark:
         os.path.join(BENCHMARKS, 'vamb', "rule get_hq_bins.txt")
     log:
@@ -248,7 +248,7 @@ rule get_hq_bins:
     conda:
         os.path.join("..", "envs", "biopython.yaml")
     script:
-        '../scripts/get_hq_bins.py'
+        '../scripts/get_med_hq_bins.py'
 
 
 
@@ -287,9 +287,6 @@ rule gtdbtk_ani:
         gtdbtk ani_rep --genome_dir {params.combined_mag_directory} --out_dir {params.mashdir} --cpus {threads}
 
         """
-
-
-
 
 
 rule gtdbtk_classify_wf:
@@ -331,42 +328,42 @@ rule gtdbtk_classify_wf:
 
 
 
-"""
-SemiBin2 multi_easy_bin -i contig_whole.fa -b *.sorted.bam -o output
-"""
+# """
+# SemiBin2 multi_easy_bin -i contig_whole.fa -b *.sorted.bam -o output
+# """
 
 
-# this rule will be executed when all CheckM2 runs per sample finish
-rule run_semibin2:
-    input:
-        catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
-        bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
-    output:
-        outtouch = os.path.join(FLAGS, 'semibin2.flag')
-    benchmark:
-        os.path.join(BENCHMARKS, 'vamb', "run_semibin2.txt")
-    log:
-        os.path.join(LOGS, 'vamb', "run_semibin2.log")
-    resources:
-        mem_mb = config.resources.gpu.mem,
-        time = config.resources.gpu.time,
-        partition=str(config.resources.gpu.partition), # to send it to gpu partition
-        #slurm=str(config.resources.gpu.slurm) # command for slurm
-    params:
-        outdir = SEMIBIN2_RESULTS,
-        separator = config.binning.separator,
-        minfasta = config.binning.minfasta,
-        db = config.databases.semibin2,
-        tmpdir = config.tmpdir
-        # min_contig_length = config.binning.min_contig_length
-    threads:
-        config.resources.med.cpu
-    conda: 
-        os.path.join("..", "envs", "semibin2.yaml")
-    shell:
-        """
-        module load CUDA/11.6.2
-        SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta} -r {params.db} --tmpdir {params.tmpdir}
-        touch {output.outtouch}
-        """
+# # this rule will be executed when all CheckM2 runs per sample finish
+# rule run_semibin2:
+#     input:
+#         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
+#         bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
+#     output:
+#         outtouch = os.path.join(FLAGS, 'semibin2.flag')
+#     benchmark:
+#         os.path.join(BENCHMARKS, 'vamb', "run_semibin2.txt")
+#     log:
+#         os.path.join(LOGS, 'vamb', "run_semibin2.log")
+#     resources:
+#         mem_mb = config.resources.gpu.mem,
+#         time = config.resources.gpu.time,
+#         partition=str(config.resources.gpu.partition), # to send it to gpu partition
+#         #slurm=str(config.resources.gpu.slurm) # command for slurm
+#     params:
+#         outdir = SEMIBIN2_RESULTS,
+#         separator = config.binning.separator,
+#         minfasta = config.binning.minfasta,
+#         db = config.databases.semibin2,
+#         tmpdir = config.tmpdir
+#         # min_contig_length = config.binning.min_contig_length
+#     threads:
+#         config.resources.med.cpu
+#     conda: 
+#         os.path.join("..", "envs", "semibin2.yaml")
+#     shell:
+#         """
+#         module load CUDA/11.6.2
+#         SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta} -r {params.db} --tmpdir {params.tmpdir}
+#         touch {output.outtouch}
+#         """
 
