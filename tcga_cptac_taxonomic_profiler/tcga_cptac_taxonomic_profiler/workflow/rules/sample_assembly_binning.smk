@@ -322,66 +322,79 @@ rule gtdbtk_classify_wf:
         """
 
 
-# Evaluate in which mags were created
-checkpoint get_mags:
-    input:        
-        outtouch = os.path.join(FLAGS, 'mag.flag')
-    output:
-        mags = os.path.join(BAKTA, 'mag_names.txt')
-    resources:
-        mem_mb = config.resources.sml.mem,
-        time = config.resources.sml.time
-    log:
-        os.path.join(LOGS,  "mag_names.log")
-    params:
-        outdir = ALL_MAGS
-    threads:
-        1
-    shell:
-        """
-        find {params.outdir}/*/ -type d ! -empty |sed 's=.*bins/==g'  |sed 's=/==g'  > {output.mags}
-        """
-
-
-
-
-
-# """
-# SemiBin2 multi_easy_bin -i contig_whole.fa -b *.sorted.bam -o output
-# """
-
-
-# # this rule will be executed when all CheckM2 runs per sample finish
-# rule run_semibin2:
-#     input:
-#         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
-#         bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
+# # Evaluate in which mags were created
+# checkpoint get_mags:
+#     input:        
+#         outtouch = os.path.join(FLAGS, 'mag.flag')
 #     output:
-#         outtouch = os.path.join(FLAGS, 'semibin2.flag')
-#     benchmark:
-#         os.path.join(BENCHMARKS, 'vamb', "run_semibin2.txt")
-#     log:
-#         os.path.join(LOGS, 'vamb', "run_semibin2.log")
+#         mags = os.path.join(BAKTA, 'mag_names.txt')
 #     resources:
-#         mem_mb = config.resources.gpu.mem,
-#         time = config.resources.gpu.time,
-#         partition=str(config.resources.gpu.partition), # to send it to gpu partition
-#         #slurm=str(config.resources.gpu.slurm) # command for slurm
+#         mem_mb = config.resources.sml.mem,
+#         time = config.resources.sml.time
+#     log:
+#         os.path.join(LOGS,  "mag_names.log")
 #     params:
-#         outdir = SEMIBIN2_RESULTS,
-#         separator = config.binning.separator,
-#         minfasta = config.binning.minfasta,
-#         db = config.databases.semibin2,
-#         tmpdir = config.tmpdir
-#         # min_contig_length = config.binning.min_contig_length
+#         outdir = ALL_MAGS
 #     threads:
-#         config.resources.med.cpu
-#     conda: 
-#         os.path.join("..", "envs", "semibin2.yaml")
+#         1
 #     shell:
 #         """
-#         module load CUDA/11.6.2
-#         SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta} -r {params.db} --tmpdir {params.tmpdir}
-#         touch {output.outtouch}
+#         find {params.outdir}/* -type d ! -empty |sed 's=.*bins/==g'  |sed 's=/==g'  > {output.mags}
 #         """
 
+# def all_mags(wildcards):
+#     # decision based on content of output file
+#     with checkpoints.all_mags.get().output[0].open() as f:
+#         all_mags = [sample.strip() for sample in f.readlines()]
+#         return all_mags
+
+# rule run_bakta:
+#     """
+#     generate mash db
+#     """
+#     input:
+#         all_mags,
+#         mag =  os.path.join(ALL_MAGS, '{mag}.fna')
+#     output:
+#         out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
+#     threads:
+#         config.resources.med.cpu
+#     resources:
+#         mem_mb = config.resources.med.mem,
+#         time = config.resources.med.time
+#     conda:
+#         os.path.join("..", "envs", "bakta.yaml")
+#     benchmark:
+#         os.path.join(BENCHMARKS, 'bakta', "bakta_{mag}.txt")
+#     log:
+#         os.path.join(LOGS, 'bakta', "bakta_{mag}.log")
+#     params:
+#         outdir = os.path.join(BAKTA, '{mag}')
+#         db=config.databases.bakta,
+#     shell:
+#         """
+
+#         bakta --db {params.db} --output {params.outdir} -f  {input.mag} 
+
+#         """
+
+# rule aggr_bakta:
+#     """
+#     generate mash db
+#     """
+#     input:
+#         all_mags,
+#         tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=all_mags),
+#         outtouch = os.path.join(FLAGS, 'checkm2.flag')
+#     output:
+#         outtouch = os.path.join(FLAGS, 'bakta.flag'),
+#     threads:
+#         config.resources.sml.cpu
+#     resources:
+#         mem_mb = config.resources.sml.mem,
+#         time = config.resources.sml.time
+#     shell:
+#         """
+#         touch {output.outtouch}
+
+#         """
