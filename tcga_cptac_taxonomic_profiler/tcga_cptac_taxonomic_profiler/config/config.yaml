@@ -33,6 +33,7 @@ databases:
         uniref50: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef50/UniRef50'
         uniref90: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef90/UniRef90'
     checkm2: '/hpcfs/users/a1667917/metagenomics_dbs/checkm2_db/CheckM2_database/uniref100.KO.1.dmnd'
+    semibin2: '/hpcfs/users/a1667917/metagenomics_dbs/semibin2/GTDB'
 
 
 assembly:
