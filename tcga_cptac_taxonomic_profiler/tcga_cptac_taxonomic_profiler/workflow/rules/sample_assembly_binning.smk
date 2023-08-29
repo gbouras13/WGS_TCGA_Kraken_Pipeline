@@ -274,7 +274,7 @@ rule gtdbtk_classify_wf:
     log:
         os.path.join(LOGS, 'gtdb', "gtdbtk_classify_wf.log")
     params:
-        combined_mag_directory = ALL_MAGS
+        combined_mag_directory = ALL_MAGS,
         outdir=GTDB_OUTDIR,
         GTDBTK_DATA_PATH = config.databases.gtdb
     shell:
