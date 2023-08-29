@@ -318,7 +318,8 @@ rule run_semibin2:
         outdir = SEMIBIN2_RESULTS,
         separator = config.binning.separator,
         minfasta = config.binning.minfasta,
-        db = config.databases.semibin2
+        db = config.databases.semibin2,
+        tmpdir = config.tmpdir
         # min_contig_length = config.binning.min_contig_length
     threads:
         config.resources.med.cpu
@@ -327,7 +328,7 @@ rule run_semibin2:
     shell:
         """
         module load CUDA/11.6.2
-        SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta} -r {params.db}
+        SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta} -r {params.db} --tmpdir {params.tmpdir}
         touch {output.outtouch}
         """
 
