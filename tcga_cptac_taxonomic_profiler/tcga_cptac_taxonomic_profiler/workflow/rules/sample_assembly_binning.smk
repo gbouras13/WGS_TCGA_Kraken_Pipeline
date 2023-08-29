@@ -310,8 +310,8 @@ rule run_semibin2:
     log:
         os.path.join(LOGS, 'vamb', "run_semibin2.log")
     resources:
-        mem_mb = config.resources.big.mem,
-        time = config.resources.big.time,
+        mem_mb = config.resources.med.mem,
+        time = config.resources.med.time,
         partition=str(config.resources.gpu.partition), # to send it to gpu partition
         slurm=str(config.resources.gpu.slurm) # command for slurm
     params:
@@ -321,7 +321,7 @@ rule run_semibin2:
         db = config.databases.semibin2
         # min_contig_length = config.binning.min_contig_length
     threads:
-        config.resources.big.cpu
+        config.resources.med.cpu
     conda: 
         os.path.join("..", "envs", "semibin2.yaml")
     shell:
