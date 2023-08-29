@@ -24,7 +24,7 @@ resources:
         cpu: 1
         time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
     gpu: # for semibin sned to gpu
-        partition: '1100'
+        partition: 'a100'
         slurm: 'gres=gpu:1'
         mem: 32000
         cpu: 9
