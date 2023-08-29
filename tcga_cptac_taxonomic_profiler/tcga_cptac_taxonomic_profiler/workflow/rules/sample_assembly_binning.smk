@@ -263,7 +263,7 @@ rule gtdbtk_ani:
     input:
         samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag'),
-        os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
+        checkm2 = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
     output:
         out_tsv = os.path.join(GTDB_MASH_OUTDIR, 'gtdbtk.ani_summary.tsv') 
     threads:
