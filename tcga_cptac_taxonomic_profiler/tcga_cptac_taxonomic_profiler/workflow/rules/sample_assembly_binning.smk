@@ -313,7 +313,7 @@ rule run_semibin2:
         mem_mb = config.resources.gpu.mem,
         time = config.resources.gpu.time,
         partition=str(config.resources.gpu.partition), # to send it to gpu partition
-        slurm=str(config.resources.gpu.slurm) # command for slurm
+        #slurm=str(config.resources.gpu.slurm) # command for slurm
     params:
         outdir = SEMIBIN2_RESULTS,
         separator = config.binning.separator,
