@@ -256,10 +256,47 @@ rule get_hq_bins:
 gtdbtk
 # """
 
+rule gtdbtk_ani:
+"""
+generate mash db
+"""
+    input:
+        samples_with_bins_f,
+        outtouch = os.path.join(FLAGS, 'checkm2.flag'),
+    output:
+        out_tsv = os.path.join(GTDB_MASH_OUTDIR, 'gtdbtk.ani_summary.tsv') 
+    threads:
+        config.resources.big.cpu
+    resources:
+        mem_mb = config.resources.big.mem,
+        time = config.resources.med.time
+    conda:
+        os.path.join("..", "envs", "gtdbtk.yaml")
+    benchmark:
+        os.path.join(BENCHMARKS, 'gtdb', "gtdbtk_ani.txt")
+    log:
+        os.path.join(LOGS, 'gtdb', "gtdbtk_ani.log")
+    params:
+        combined_mag_directory = ALL_MAGS,
+        mashdir=GTDB_MASH_OUTDIR,
+        GTDBTK_DATA_PATH = config.databases.gtdb
+    shell:
+        """
+        export GTDBTK_DATA_PATH={params.GTDBTK_DATA_PATH}
+
+        gtdbtk ani_rep --genome_dir {params.combined_mag_directory} --out_dir {params.mashdir} --cpus {threads}
+
+        """
+
+
+
+
+
 rule gtdbtk_classify_wf:
     input:
         samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag'),
+        out_tsv = os.path.join(GTDB_MASH_OUTDIR, 'gtdbtk.ani_summary.tsv') 
     output:
         outtouch = os.path.join(FLAGS, 'gtdb.flag')
     threads:
@@ -276,12 +313,13 @@ rule gtdbtk_classify_wf:
     params:
         combined_mag_directory = ALL_MAGS,
         outdir=GTDB_OUTDIR,
-        GTDBTK_DATA_PATH = config.databases.gtdb
+        GTDBTK_DATA_PATH = config.databases.gtdb,
+        mashdir=GTDB_MASH_OUTDIR,
     shell:
         """
         export GTDBTK_DATA_PATH={params.GTDBTK_DATA_PATH}
 
-        gtdbtk classify_wf --genome_dir {params.combined_mag_directory}  --out_dir {params.outdir} --cpus {threads} --force 
+        gtdbtk classify_wf --genome_dir {params.combined_mag_directory}  --out_dir {params.outdir} --cpus {threads}   --mash_db {params.mashdir}  --force
 
         touch {output.outtouch}
         """
