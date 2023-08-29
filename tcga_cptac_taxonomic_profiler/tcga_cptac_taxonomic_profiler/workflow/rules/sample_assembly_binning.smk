@@ -326,7 +326,7 @@ rule run_semibin2:
         os.path.join("..", "envs", "semibin2.yaml")
     shell:
         """
-        module load CUDA
+        module load CUDA/11.6.2
         SemiBin2 multi_easy_bin -i {input.catalogue}  -b {input.bams} -o {params.outdir} -s {params.separator} --minfasta-kbs {params.minfasta} -r {params.db}
         touch {output.outtouch}
         """
