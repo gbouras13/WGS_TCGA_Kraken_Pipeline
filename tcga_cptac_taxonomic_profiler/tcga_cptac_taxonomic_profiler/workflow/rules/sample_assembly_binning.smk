@@ -279,7 +279,7 @@ rule gtdbtk_classify_wf:
         GTDBTK_DATA_PATH = config.databases.gtdb
     shell:
         """
-        export GTDBTK_DATA_PATH="{params.GTDBTK_DATA_PATH}
+        export GTDBTK_DATA_PATH={params.GTDBTK_DATA_PATH}
 
         gtdbtk classify_wf --genome_dir {params.combined_mag_directory}  --out_dir {params.outdir} --cpus {threads} --force 
 
