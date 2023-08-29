@@ -23,6 +23,9 @@ resources:
         mem: 4000
         cpu: 1
         time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
+    gpu: # for semibin sned to gpu
+        partition: 'v100'
+        slurm: 'gres=gpu:1'
 
 # DBs
 # define the paths here
@@ -34,6 +37,7 @@ databases:
         uniref90: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef90/UniRef90'
     checkm2: '/hpcfs/users/a1667917/metagenomics_dbs/checkm2_db/CheckM2_database/uniref100.KO.1.dmnd'
     semibin2: '/hpcfs/users/a1667917/metagenomics_dbs/semibin2/GTDB'
+    gtdb: '/hpcfs/users/a1667917/GTDB/release214/'
 
 
 assembly:
