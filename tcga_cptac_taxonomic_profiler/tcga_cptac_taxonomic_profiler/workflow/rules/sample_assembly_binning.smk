@@ -237,9 +237,9 @@ rule get_hq_bins:
     output:
         checm2_combo = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
     benchmark:
-        os.path.join(BENCHMARKS, 'vamb', "rule get_hq_bins.txt")
+        os.path.join(BENCHMARKS, 'vamb', "get_hq_bins.txt")
     log:
-        os.path.join(LOGS, 'vamb', "rule get_hq_bins.log")
+        os.path.join(LOGS, 'vamb', "get_hq_bins.log")
     resources:
         mem_mb = config.resources.sml.mem,
         time = config.resources.sml.time
@@ -322,7 +322,25 @@ rule gtdbtk_classify_wf:
         """
 
 
-
+# Evaluate in which mags were created
+checkpoint get_mags:
+    input:        
+        outtouch = os.path.join(FLAGS, 'mag.flag')
+    output:
+        mags = os.path.join(BAKTA, 'mag_names.txt')
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
+    log:
+        os.path.join(LOGS,  "mag_names.log")
+    params:
+        outdir = ALL_MAGS
+    threads:
+        1
+    shell:
+        """
+        find {params.outdir}/*/ -type d ! -empty |sed 's=.*bins/==g'  |sed 's=/==g'  > {output.mags}
+        """
 
 
 

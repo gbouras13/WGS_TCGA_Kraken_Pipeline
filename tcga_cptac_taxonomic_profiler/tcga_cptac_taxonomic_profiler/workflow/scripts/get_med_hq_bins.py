@@ -51,6 +51,8 @@ def parse_mags(samples, checkm2_directory, vamb_bin_dir, combined_mag_directory)
             index=False,
         )
 
+    combined_df = pd.concat(med_qual_dfs, ignore_index=True)
+
     combined_df.to_csv(
             os.path.join(checkm2_directory, "combined_check2_quality_report_med.tsv"),
             sep="\t",
