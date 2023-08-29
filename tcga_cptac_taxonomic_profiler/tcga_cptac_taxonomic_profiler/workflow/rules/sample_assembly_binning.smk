@@ -310,8 +310,8 @@ rule run_semibin2:
     log:
         os.path.join(LOGS, 'vamb', "run_semibin2.log")
     resources:
-        mem_mb = config.resources.med.mem,
-        time = config.resources.med.time,
+        mem_mb = config.resources.gpu.mem,
+        time = config.resources.gpu.time,
         partition=str(config.resources.gpu.partition), # to send it to gpu partition
         slurm=str(config.resources.gpu.slurm) # command for slurm
     params:

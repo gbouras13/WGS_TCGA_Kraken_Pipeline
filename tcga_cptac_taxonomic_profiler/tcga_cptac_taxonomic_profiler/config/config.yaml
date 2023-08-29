@@ -26,7 +26,10 @@ resources:
     gpu: # for semibin sned to gpu
         partition: 'v100'
         slurm: 'gres=gpu:1'
-        
+        mem: 16000
+        cpu: 8
+        time: 600
+
 
 # DBs
 # define the paths here
