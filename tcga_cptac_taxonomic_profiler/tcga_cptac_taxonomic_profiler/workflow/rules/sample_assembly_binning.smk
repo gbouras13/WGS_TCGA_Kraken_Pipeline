@@ -344,7 +344,7 @@ checkpoint get_mags:
 
 def all_mags(wildcards):
     # decision based on content of output file
-    with checkpoints.all_mags.get().output[0].open() as f:
+    with checkpoints.get_mags.get().output[0].open() as f:
         all_mags = [sample.strip() for sample in f.readlines()]
         return all_mags
 
