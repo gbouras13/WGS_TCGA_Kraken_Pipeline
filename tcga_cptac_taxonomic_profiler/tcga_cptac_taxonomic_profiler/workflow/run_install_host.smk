@@ -43,7 +43,7 @@ rule combine_phix174:
     """ 
     
     """
-    params:
+    input:
         chm13 = os.path.join(HostDir,"human-t2t-hla.fa"),
         phix174 = os.path.join('..', 'db',"phix174.fasta")
     output:
