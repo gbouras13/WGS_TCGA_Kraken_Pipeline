@@ -29,7 +29,7 @@ rule get_db:
     params:
         host_db = HostDir
     conda:
-        os.path.join( 'envs', 'gzip.yml')
+        os.path.join( 'envs', 'gzip.yaml')
     output:
         fasta = os.path.join(HostDir,"human-t2t-hla.fa"),
         fasta_phix = os.path.join(HostDir,"NC_001422.fna")
