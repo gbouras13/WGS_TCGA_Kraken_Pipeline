@@ -27,10 +27,10 @@ Steps:
 tcga_cptac_taxonomic_profiler extract --input input_bams --output TCGA_output 
 ```
 
-2. Download the CHM13 `human-t2t-hla.fa` host genome (from [hostile](https://github.com/bede/hostile)) with the following command.
+2. Download the CHM13 `human-t2t-hla.fa` host genome (from [hostile](https://github.com/bede/hostile)) and combine it with phix174 (a common contaminant spike-in in Illumina sequencing runs) with the following command.
 
 ```
-tcga_cptac_taxonomic_profiler install_host --database host_genome_db
+tcga_cptac_taxonomic_profiler install-host --database host_genome_db
 ```
 
 3. Run [trimnami](https://github.com/beardymcjohnface/Trimnami) specifying the directory of FASTQ reads as `--reads`.
@@ -40,7 +40,7 @@ Note that you will need to modify the config file so that `--length_required 40`
 ```
 trimnami config
 # edit the file so that --length_required 40
-trimnami run --reads TCGA_output/UNALIGNED_FASTQ --host host_genome_db/human-t2t-hla.fa fastp --output TCGA_output/trimnami_output --configfile trimnami.config.yaml
+trimnami run --reads TCGA_output/UNALIGNED_FASTQ --host host_genome_db/human-t2t-hla_phix174.fa fastp --output TCGA_output/trimnami_output --configfile trimnami.config.yaml
 ```
 
 4. Run the profilers
