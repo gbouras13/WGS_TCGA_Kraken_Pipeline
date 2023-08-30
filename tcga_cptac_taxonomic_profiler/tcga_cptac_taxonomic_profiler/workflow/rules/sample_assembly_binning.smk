@@ -390,7 +390,7 @@ rule aggr_bakta:
     generate mash db
     """
     input:
-        all_mags
+        all_mags,
         tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=MED_HQ_MAGS),
         outtouch = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
     output:
