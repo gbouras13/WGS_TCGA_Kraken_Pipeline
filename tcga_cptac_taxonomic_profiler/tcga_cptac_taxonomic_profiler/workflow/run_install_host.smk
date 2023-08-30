@@ -31,12 +31,14 @@ rule get_db:
     conda:
         os.path.join( 'envs', 'gzip.yml')
     output:
-        fasta = os.path.join(HostDir,"human-t2t-hla.fa")
+        fasta = os.path.join(HostDir,"human-t2t-hla.fa"),
+        fasta_phix = os.path.join(HostDir,"NC_001422.fna")
     shell:
         """
         cd {params.host_db}
         wget "https://objectstorage.uk-london-1.oraclecloud.com/n/lrbvkel2wjot/b/human-genome-bucket/o/human-t2t-hla.fa.gz" -O human-t2t-hla.fa.gz
         gunzip human-t2t-hla.fa.gz
+        wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Viruses/enterobacteria_phage_phix174_sensu_lato_uid14015/NC_001422.fna  -O NC_001422.fna
         """
 
 rule combine_phix174:
@@ -45,7 +47,7 @@ rule combine_phix174:
     """
     input:
         chm13 = os.path.join(HostDir,"human-t2t-hla.fa"),
-        phix174 = os.path.join( 'db',"phix174.fasta")
+        phix174 = os.path.join(HostDir,"NC_001422.fna")
     output:
         fasta = os.path.join(HostDir,"human-t2t-hla-phix174.fa")
     shell:
