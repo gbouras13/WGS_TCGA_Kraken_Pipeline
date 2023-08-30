@@ -42,7 +42,7 @@ include: "rules/directories.smk"
 # this parses the samples into a dictionary
 # get all the mags
 include: "rules/mags_from_magdir.smk"
-mag_dict = parseSamplesMags(BAMS_ALL_MAGSDIR)
+mag_dict = parseSamplesMags(ALL_MAGS)
 HQ_MED_MAGS = mag_dict.keys()
 
 
