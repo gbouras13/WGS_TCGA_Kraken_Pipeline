@@ -36,10 +36,10 @@ SampleAssemblyBins = [
 
     os.path.join(FLAGS, 'vamb.flag'),
     os.path.join(FLAGS, 'checkm2.flag'),
-    os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report.tsv"),
-    os.path.join(FLAGS, 'semibin2.flag'),
+    os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv"),
     os.path.join(FLAGS, 'gtdb.flag')
-
 ]
+
+AnnotationTargets = [os.path.join(FLAGS, 'bakta.flag')]
 
 MGETargets = [os.path.join(FLAGS, 'genomad.flag')]
