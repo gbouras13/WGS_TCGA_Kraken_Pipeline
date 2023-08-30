@@ -325,7 +325,7 @@ rule gtdbtk_classify_wf:
 # Evaluate in which mags were created
 checkpoint get_mags:
     input:        
-        outtouch = os.path.join(FLAGS, 'mag.flag')
+        outtouch = os.path.join(FLAGS, 'gtdb.flag')
     output:
         mags = os.path.join(BAKTA, 'mag_names.txt')
     resources:
@@ -369,7 +369,7 @@ rule run_bakta:
     log:
         os.path.join(LOGS, 'bakta', "bakta_{mag}.log")
     params:
-        outdir = os.path.join(BAKTA, '{mag}')
+        outdir = os.path.join(BAKTA, '{mag}'),
         db=config.databases.bakta,
     shell:
         """
