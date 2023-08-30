@@ -352,8 +352,7 @@ def all_mags(wildcards):
         return all_mags
 
 
-MED_HQ_MAGS = all_mags
-
+MED_HQ_MAGS = all_mags(SAMPLES)
 
 rule run_bakta:
     """
