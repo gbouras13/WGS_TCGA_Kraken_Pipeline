@@ -376,7 +376,7 @@ rule run_bakta:
     log:
         os.path.join(LOGS, 'bakta', "{mag}.log")
     params:
-        magdir = os.path.join(ALL_MAGS, '{mag}.fna')
+        magdir = os.path.join(ALL_MAGS, '{mag}.fna'),
         outdir = os.path.join(BAKTA, '{mag}'),
         db=config.databases.bakta,
     shell:
