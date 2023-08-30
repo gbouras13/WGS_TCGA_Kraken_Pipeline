@@ -353,7 +353,7 @@ rule run_bakta:
     generate mash db
     """
     input:
-        all_mags,
+        mags = all_mags,
         # mag =  os.path.join(ALL_MAGS, '{mag}.fna')
     output:
         #out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
