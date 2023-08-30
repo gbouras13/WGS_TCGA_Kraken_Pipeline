@@ -354,9 +354,10 @@ rule run_bakta:
     """
     input:
         all_mags,
-        mag =  os.path.join(ALL_MAGS, '{mag}.fna')
+        # mag =  os.path.join(ALL_MAGS, '{mag}.fna')
     output:
-        out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
+        #out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
+        outtouch = os.path.join(FLAGS, 'bakta.flag')
     threads:
         config.resources.med.cpu
     resources:
@@ -365,35 +366,38 @@ rule run_bakta:
     conda:
         os.path.join("..", "envs", "bakta.yaml")
     benchmark:
-        os.path.join(BENCHMARKS, 'bakta', "bakta_{mag}.txt")
+        os.path.join(BENCHMARKS, 'bakta', "bakta.txt")
     log:
-        os.path.join(LOGS, 'bakta', "bakta_{mag}.log")
+        os.path.join(LOGS, 'bakta', "bakta.log")
     params:
-        outdir = os.path.join(BAKTA, '{mag}'),
+        magdir = ALL_MAGS,
+        outdir = BAKTA,
         db=config.databases.bakta,
     shell:
         """
-
-        bakta --db {params.db} --output {params.outdir} -f  {input.mag} 
-
+        for sample in {input.mags}  
+        do
+        bakta --db {params.db} --output {params.outdir}/$sample -f -t {threads}  {params.magdir}/${sample}.fna 
+        done
+        touch {out.touch}
         """
 
-rule aggr_bakta:
-    """
-    generate mash db
-    """
-    input:
-        tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=all_mags),
-        outtouch = os.path.join(FLAGS, 'checkm2.flag')
-    output:
-        outtouch = os.path.join(FLAGS, 'bakta.flag'),
-    threads:
-        config.resources.sml.cpu
-    resources:
-        mem_mb = config.resources.sml.mem,
-        time = config.resources.sml.time
-    shell:
-        """
-        touch {output.outtouch}
+# rule aggr_bakta:
+#     """
+#     generate mash db
+#     """
+#     input:
+#         tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=all_mags),
+#         outtouch = os.path.join(FLAGS, 'checkm2.flag')
+#     output:
+#         outtouch = os.path.join(FLAGS, 'bakta.flag'),
+#     threads:
+#         config.resources.sml.cpu
+#     resources:
+#         mem_mb = config.resources.sml.mem,
+#         time = config.resources.sml.time
+#     shell:
+#         """
+#         touch {output.outtouch}
 
-        """
+#         """
