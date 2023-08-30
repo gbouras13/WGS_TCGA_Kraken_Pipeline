@@ -322,10 +322,11 @@ rule gtdbtk_classify_wf:
         touch {output.outtouch}
         """
 
-# Evaluate in which mags were created
-checkpoint get_mags:
+
+# Evaluate in which samples bins were reconstructed
+checkpoint med_hq_mags:
     input:        
-        outtouch = os.path.join(FLAGS, 'gtdb.flag')
+        outtouch = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
     output:
         mags = os.path.join(BAKTA, 'mag_names.txt')
     resources:
@@ -342,11 +343,17 @@ checkpoint get_mags:
         find {params.outdir}/* -type d ! -empty |sed 's=.*bins/==g'  |sed 's=/==g'  > {output.mags}
         """
 
+
 def all_mags(wildcards):
     # decision based on content of output file
-    with checkpoints.get_mags.get().output[0].open() as f:
+    with checkpoints.med_hq_mags.get().output[0].open() as f:
         all_mags = [sample.strip() for sample in f.readlines()]
+        #all_mags_paths=expand(os.path.join(all_mags,"flags/bakta_all_{sample}_bins_finished.flag"),sample=all_mags)
         return all_mags
+
+
+MED_HQ_MAGS = all_mags
+
 
 rule run_bakta:
     """
@@ -354,10 +361,9 @@ rule run_bakta:
     """
     input:
         mags = all_mags,
-        # mag =  os.path.join(ALL_MAGS, '{mag}.fna')
+        mag =  os.path.join(ALL_MAGS, '{mag}.fna')
     output:
-        #out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
-        outtouch = os.path.join(FLAGS, 'bakta.flag')
+        out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
     threads:
         config.resources.med.cpu
     resources:
@@ -366,38 +372,36 @@ rule run_bakta:
     conda:
         os.path.join("..", "envs", "bakta.yaml")
     benchmark:
-        os.path.join(BENCHMARKS, 'bakta', "bakta.txt")
+        os.path.join(BENCHMARKS, 'bakta', "{mag}.txt")
     log:
-        os.path.join(LOGS, 'bakta', "bakta.log")
+        os.path.join(LOGS, 'bakta', "{mag}.log")
     params:
-        magdir = ALL_MAGS,
-        outdir = BAKTA,
+        magdir = os.path.join(ALL_MAGS, '{mag}.fna')
+        outdir = os.path.join(BAKTA, '{mag}'),
         db=config.databases.bakta,
     shell:
         """
-        for sample in {input.mags} ; 
-        do
-        bakta --db {params.db} --output {params.outdir}/{{$sample}} -f -t {threads}  {params.magdir}/{{${sample}.fna}} 
-        done
-        touch {out.touch}
+        bakta --db {params.db} --output {params.outdir} -f -t {threads}  {params.magdir}/{{${sample}.fna}} 
         """
 
-# rule aggr_bakta:
-#     """
-#     generate mash db
-#     """
-#     input:
-#         tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=all_mags),
-#         outtouch = os.path.join(FLAGS, 'checkm2.flag')
-#     output:
-#         outtouch = os.path.join(FLAGS, 'bakta.flag'),
-#     threads:
-#         config.resources.sml.cpu
-#     resources:
-#         mem_mb = config.resources.sml.mem,
-#         time = config.resources.sml.time
-#     shell:
-#         """
-#         touch {output.outtouch}
 
-#         """
+rule aggr_bakta:
+    """
+    generate mash db
+    """
+    input:
+        all_mags
+        tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=MED_HQ_MAGS),
+        outtouch = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
+    output:
+        outtouch = os.path.join(FLAGS, 'bakta.flag'),
+    threads:
+        config.resources.sml.cpu
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
+    shell:
+        """
+        touch {output.outtouch}
+
+        """
