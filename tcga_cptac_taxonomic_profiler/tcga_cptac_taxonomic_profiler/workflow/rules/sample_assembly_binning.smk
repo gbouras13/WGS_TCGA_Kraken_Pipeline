@@ -383,7 +383,6 @@ rule aggr_bakta:
     generate mash db
     """
     input:
-        all_mags,
         tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=all_mags),
         outtouch = os.path.join(FLAGS, 'checkm2.flag')
     output:
