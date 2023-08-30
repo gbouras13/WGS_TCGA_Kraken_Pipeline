@@ -20,7 +20,7 @@ if not os.path.exists(os.path.join(HostDir)):
 
 rule all:
     input:
-        os.path.join(HostDir,"human-t2t-hla.fa")
+        os.path.join(HostDir,"human-t2t-hla-phix174.fa")
 
 rule get_db:
     """ 
@@ -37,4 +37,18 @@ rule get_db:
         cd {params.host_db}
         wget "https://objectstorage.uk-london-1.oraclecloud.com/n/lrbvkel2wjot/b/human-genome-bucket/o/human-t2t-hla.fa.gz" -O human-t2t-hla.fa.gz
         gunzip human-t2t-hla.fa.gz
+        """
+
+rule combine_phix174:
+    """ 
+    
+    """
+    params:
+        chm13 = os.path.join(HostDir,"human-t2t-hla.fa"),
+        phix174 = os.path.join('..', 'db',"phix174.fasta")
+    output:
+        fasta = os.path.join(HostDir,"human-t2t-hla-phix174.fa")
+    shell:
+        """
+        cat {input.chm13} {input.phix174} > {output.fasta}
         """
