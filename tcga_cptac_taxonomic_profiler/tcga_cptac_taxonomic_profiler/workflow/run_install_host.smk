@@ -48,7 +48,6 @@ rule get_phix:
     conda:
         os.path.join( 'envs', 'gzip.yaml')
     output:
-        fasta = os.path.join(HostDir,"human-t2t-hla.fa"),
         fasta_phix = os.path.join(HostDir,"phix.fna")
     shell:
         """
