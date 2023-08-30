@@ -375,9 +375,9 @@ rule run_bakta:
         db=config.databases.bakta,
     shell:
         """
-        for sample in {input.mags}  
+        for sample in {input.mags} ; 
         do
-        bakta --db {params.db} --output {params.outdir}/$sample -f -t {threads}  {params.magdir}/${sample}.fna 
+        bakta --db {params.db} --output {params.outdir}/{{$sample}} -f -t {threads}  {params.magdir}/{{${sample}.fna}} 
         done
         touch {out.touch}
         """
