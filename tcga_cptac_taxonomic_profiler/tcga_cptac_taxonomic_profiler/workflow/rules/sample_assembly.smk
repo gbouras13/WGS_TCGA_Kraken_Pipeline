@@ -11,7 +11,7 @@ rule individual_sample_assembly:
     input:
         r1p = os.path.join(INPUT, "{sample}_R1.host_rm.fastq.gz"), 
         r2p = os.path.join(INPUT, "{sample}_R2.host_rm.fastq.gz"), 
-        rs = os.path.join(INPUT, "{sample}_S.host_rm.fastq.gz")
+        rs = os.path.join(INPUT, "{sample}_RS.host_rm.fastq.gz")
     output:
         fasta = os.path.join(SAMPLE_ASSEMBLIES, '{sample}', 'contigs.fasta') 
     params:
