@@ -57,5 +57,5 @@ include: "rules/targets.smk"
 rule all:
     input:
         SampleAssemblyTargets,
-        CoAssemblyTargets
+        #CoAssemblyTargets
 

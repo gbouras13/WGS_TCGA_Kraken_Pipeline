@@ -14,7 +14,7 @@ rule co_assembly:
         expand(
             os.path.join(INPUT, "{sample}_{r12}.host_rm.fastq.gz"),
             sample=SAMPLES,
-            r12=["R1","R2", "S"],
+            r12=["R1","R2", "RS"],
         )
     output:
         assembly = os.path.join(COASSEMBLY_RESULTS, "co_assembly.fasta"),
