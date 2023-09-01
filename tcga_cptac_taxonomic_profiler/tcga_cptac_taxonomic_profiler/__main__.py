@@ -164,20 +164,20 @@ def extract(_input, output, log, **kwargs):
 
 
 
-help_msg_extra_kraken = """
+help_msg_extra_install = """
 \b
 CLUSTER EXECUTION:
-tcga_cptac_taxonomic_profiler install_host ... --profile [profile]
+tcga_cptac_taxonomic_profiler install-host ... --profile [profile]
 For information on Snakemake profiles see:
 https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
 \b
 RUN EXAMPLES:
-Required:           tcga_cptac_taxonomic_profiler install_host --database [path]
-Specify threads:    tcga_cptac_taxonomic_profiler install_host ... --threads [threads]
-Disable conda:      tcga_cptac_taxonomic_profiler install_host ... --no-use-conda 
-Change defaults:    tcga_cptac_taxonomic_profiler install_host ... --snake-default="-k --nolock"
-Add Snakemake args: tcga_cptac_taxonomic_profiler install_host ... --dry-run --keep-going --touch
-Specify targets:    tcga_cptac_taxonomic_profiler install_host ... all print_targets
+Required:           tcga_cptac_taxonomic_profiler install-host --database [path]
+Specify threads:    tcga_cptac_taxonomic_profiler install-host ... --threads [threads]
+Disable conda:      tcga_cptac_taxonomic_profiler install-host ... --no-use-conda 
+Change defaults:    tcga_cptac_taxonomic_profiler install-host ... --snake-default="-k --nolock"
+Add Snakemake args: tcga_cptac_taxonomic_profiler install-host ... --dry-run --keep-going --touch
+Specify targets:    tcga_cptac_taxonomic_profiler install-host ... all print_targets
 Available targets:
     all             Run everything (default)
     print_targets   List available targets
@@ -185,7 +185,7 @@ Available targets:
 
 
 @click.command(
-    epilog=help_msg_extra_kraken,
+    epilog=help_msg_extra_install,
     context_settings=dict(
         help_option_names=["-h", "--help"], ignore_unknown_options=True
     ),
@@ -209,7 +209,7 @@ def install_host(database, log, **kwargs):
     # run!
     run_snakemake(
         # Full path to Snakefile
-        snakefile_path=snake_base(os.path.join("workflow", "run_instlal_host.smk")),
+        snakefile_path=snake_base(os.path.join("workflow", "run_install_host.smk")),
         system_config=snake_base(os.path.join("config", "config.yaml")),
         merge_config=merge_config,
         log=log,
