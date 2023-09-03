@@ -48,6 +48,7 @@ HQ_MED_MAGS = mag_dict.keys()
 
 # Import rules and functions
 include: "rules/bakta.smk"
+include: "rules/phispy.smk"
 
 # import targets
 include: "rules/targets.smk"
