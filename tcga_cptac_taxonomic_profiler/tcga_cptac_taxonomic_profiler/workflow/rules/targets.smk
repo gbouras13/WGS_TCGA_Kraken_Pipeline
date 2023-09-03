@@ -43,7 +43,7 @@ SampleAssemblyBins = [
 AnnotationTargets = [
     
     os.path.join(FLAGS, 'bakta.flag'),
-    os.path.join(FLAGS, 'bakta.flag')
+    os.path.join(FLAGS, 'phispy.flag')
 ]
 
 MGETargets = [os.path.join(FLAGS, 'genomad.flag')]

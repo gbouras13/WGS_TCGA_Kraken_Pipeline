@@ -31,7 +31,7 @@ rule aggr_phispy:
         expand(os.path.join(PHISPY,"{mag}", "prophage_coordinates.tsv"), mag = HQ_MED_MAGS),
         expand(os.path.join(PHISPY,"{mag}", "phage.fasta"), mag = HQ_MED_MAGS)
     output:
-        outtouch = os.path.join(FLAGS, 'bakta.flag'),
+        outtouch = os.path.join(FLAGS, 'phispy.flag'),
     threads:
         config.resources.sml.cpu
     resources:
