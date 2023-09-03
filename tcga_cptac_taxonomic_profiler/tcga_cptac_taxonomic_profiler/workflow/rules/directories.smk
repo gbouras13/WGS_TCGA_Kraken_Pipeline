@@ -51,5 +51,8 @@ GTDB_MASH_OUTDIR = os.path.join(GTDB_OUTDIR, 'MASH')
 # BAKTA
 BAKTA = os.path.join(RESULTS, 'BAKTA')
 
+# PHISPY
+PHISPY = os.path.join(RESULTS, 'PHISPY')
+
 # MGE
 GENOMAD_RESULTS = os.path.join(RESULTS, 'GENOMAD_RESULTS')
