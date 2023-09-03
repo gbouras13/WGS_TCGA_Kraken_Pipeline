@@ -5,7 +5,8 @@ rule run_bakta:
     input:
         mag =  os.path.join(ALL_MAGS, '{mag}.fna')
     output:
-        out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') 
+        out_tsv = os.path.join(BAKTA, '{mag}', '{mag}.tsv') ,
+        gbk = os.path.join(BAKTA, '{mag}', '{mag}.gbff') 
     threads:
         config.resources.med.cpu
     resources:

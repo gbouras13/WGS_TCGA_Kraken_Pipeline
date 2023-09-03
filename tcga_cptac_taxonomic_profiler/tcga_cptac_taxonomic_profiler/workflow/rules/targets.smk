@@ -40,6 +40,10 @@ SampleAssemblyBins = [
     os.path.join(FLAGS, 'gtdb.flag')
 ]
 
-AnnotationTargets = [os.path.join(FLAGS, 'bakta.flag')]
+AnnotationTargets = [
+    
+    os.path.join(FLAGS, 'bakta.flag'),
+    os.path.join(FLAGS, 'bakta.flag')
+]
 
 MGETargets = [os.path.join(FLAGS, 'genomad.flag')]
