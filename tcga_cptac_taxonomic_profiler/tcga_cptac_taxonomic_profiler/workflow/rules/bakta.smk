@@ -31,6 +31,7 @@ rule run_bakta_mimag:
     generate counts of tRNA, 5S, 16S and 23S genes for each isolate
     """
     input:
+        tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=HQ_MED_MAGS),
         samples=HQ_MED_MAGS
     output:
         out_tsv = os.path.join(BAKTA, 'mimag.tsv')
