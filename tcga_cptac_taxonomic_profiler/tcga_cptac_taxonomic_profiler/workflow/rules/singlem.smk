@@ -40,7 +40,7 @@ rule aggr_singlem:
         expand(os.path.join(SINGLEM,"{sample}.smf.tsv"), sample = SAMPLES),
         expand(os.path.join(SINGLEM,"{sample}.smf.tsv"), sample = SAMPLES)
     output:
-        os.path.join(FLAGS, "aggr_singlem.flag")
+        os.path.join(FLAGS, "singlem.flag")
     resources:
         mem_mb = config.resources.sml.mem,
         time = config.resources.sml.time

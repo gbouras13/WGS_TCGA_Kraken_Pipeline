@@ -123,13 +123,13 @@ You will find the host depleted and trimmed reads in `TCGA_output/trimnami_outpu
 To run the Kraken based profiling
 
 ```
-tcga_cptac_taxonomic_profiler kraken --input TCGA_output/trimnami_output/fastp  --output TCGA_output --fastqc
+tcga_cptac_taxonomic_profiler kraken --input TCGA_output/trimnami_output/fastp  --output TCGA_output 
 ```
 
 To run the MMseqs2 based profiling
 
 ```
-tcga_cptac_taxonomic_profiler mmseqs --input TCGA_output/trimnami_output/fastp  --output TCGA_output --fastqc
+tcga_cptac_taxonomic_profiler mmseqs --input TCGA_output/trimnami_output/fastp  --output TCGA_output 
 ```
 
 To run the singleM based profiling
@@ -137,7 +137,7 @@ To run the singleM based profiling
 * Note: the singleM developers [recommend](https://wwood.github.io/singlem/tools/pipe) using the raw reads not the trimmed/quality control reads, so that is what we will do
 
 ```
-tcga_cptac_taxonomic_profiler singlem --input TCGA_output/UNALIGNED_FASTQ  --output TCGA_output --fastqc
+tcga_cptac_taxonomic_profiler singlem --input TCGA_output/UNALIGNED_FASTQ  --output TCGA_output 
 ```
 
 5. Assembly 
