@@ -45,15 +45,6 @@ databases:
     singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S4.3.0.GTDB_r220.metapackage_20240523.smpkg.zb'
 
 
-assembly:
-    megahit:
-        --k-min 25
-        --k-max 175
-        --k-step 26
-        --min-count 2
-        --min-contig-len 1000
-
-
 binning:
     min_contig_length: 1000
     separator: ":"
