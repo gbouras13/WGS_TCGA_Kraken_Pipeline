@@ -23,5 +23,5 @@ printshellcmds: True
 scheduler: greedy
 use-conda: True
 conda-frontend: conda
-cluster-status: /hpcfs/users/a1667917/TCGA_CPTAC_190823_Final_Analysis/WGS_TCGA_Kraken_Pipeline/tcga_cptac_taxonomic_profiler/profile/slurm/slurm-status.py
+cluster-status: /hpcfs/users/a1667917/TCGA_CPTAC_190823_Final_Analysis/WGS_TCGA_Kraken_Pipeline/tcga_cptac_taxonomic_profiler/profile/slurm/slurm_status.py
 max-status-checks-per-second: 10

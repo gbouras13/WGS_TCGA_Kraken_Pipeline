@@ -148,6 +148,8 @@ tcga_cptac_taxonomic_profiler singlem --input TCGA_output/UNALIGNED_FASTQ  --out
 tcga_cptac_taxonomic_profiler assembly --input tcga_trimnami_output/results/fastp   --output TCGA_output_all --rerun-triggers mtime 
 ```
 
+* Note - all steps this was done only for TCGA, as the assembly of the CPTAC did not provide meaningful analysis downstream.
+
 6. Binning & Assessment
 
 * The sample-assemblies were binned using VAMB v4.1.3. 
@@ -159,4 +161,11 @@ tcga_cptac_taxonomic_profiler assembly --input tcga_trimnami_output/results/fast
 tcga_cptac_taxonomic_profiler binning --input tcga_trimnami_output/results/fastp   --output TCGA_output_all 
 ```
 
+7. Annotation
 
+* Runs bakta and phispy to annotate the bins
+
+```
+tcga_cptac_taxonomic_profiler annotate  --input tcga_trimnami_output/results/fastp   --output TCGA_output_all 
+
+8. MGEs (plasmids)
