@@ -99,4 +99,4 @@ def parse_mags(samples, bakta_dir, outfile):
 
 
 # to actually run the script
-parse_mags(snakemake.input.samples, snakemake.params.bakta_dir, snakemake.output.out_tsv)
+parse_mags(snakemake.params.samples, snakemake.params.bakta_dir, snakemake.output.out_tsv)

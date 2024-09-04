@@ -32,7 +32,6 @@ rule run_bakta_mimag:
     """
     input:
         tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=HQ_MED_MAGS),
-        samples=HQ_MED_MAGS
     output:
         out_tsv = os.path.join(BAKTA, 'mimag.tsv')
     threads:
@@ -47,7 +46,8 @@ rule run_bakta_mimag:
     log:
         os.path.join(LOGS, 'bakta_mimag', "{mag}.log")
     params:
-        bakta_dir=BAKTA
+        bakta_dir=BAKTA,
+        samples=HQ_MED_MAGS
     script:
         '../scripts/mimag.py'
 
@@ -56,7 +56,6 @@ rule aggr_bakta:
     generate mash db
     """
     input:
-        tsvs = expand(os.path.join(BAKTA, '{mag}', '{mag}.tsv') , mag=HQ_MED_MAGS),
         mimag = os.path.join(BAKTA, 'mimag.tsv')
     output:
         outtouch = os.path.join(FLAGS, 'bakta.flag'),
