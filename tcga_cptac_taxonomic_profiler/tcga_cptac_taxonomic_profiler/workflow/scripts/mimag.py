@@ -16,7 +16,7 @@ def parse_mags(samples, bakta_dir, outfile):
     sixteenS_dict = {}
     twentythreeS_dict = {}
 
-
+    print(samples)
     for mag in samples:
         os.path.join(bakta_dir, mag, f'{mag}.tsv') 
 
@@ -82,6 +82,7 @@ def parse_mags(samples, bakta_dir, outfile):
             twentythreeS_dict[mag] = twentythreeS
             trna_dict[mag] = trna_count
 
+    print(fiveS_dict)
     combined_df = pd.DataFrame({
     'sample': fiveS_dict.keys(),
     'fiveS': fiveS_dict.values(),
