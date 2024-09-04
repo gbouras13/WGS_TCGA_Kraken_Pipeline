@@ -46,8 +46,7 @@ rule run_bakta_mimag:
     log:
         os.path.join(LOGS, 'bakta_mimag', "bakta_mimag.log")
     params:
-        bakta_dir=BAKTA,
-        samples=HQ_MED_MAGS
+        bakta_dir=BAKTA
     script:
         '../scripts/mimag.py'
 

@@ -8,7 +8,7 @@ https://github.com/ac1513/MAGqual/blob/main/workflow/scripts/python/qual_parse.p
 import pandas as pd
 import os
 
-def parse_mags(samples, bakta_dir, outfile):
+def parse_mags(tsvs, bakta_dir, outfile):
     # opens the catalogue
 
     fiveS_dict = {}
@@ -16,11 +16,12 @@ def parse_mags(samples, bakta_dir, outfile):
     sixteenS_dict = {}
     twentythreeS_dict = {}
 
-    print(samples)
-    for mag in samples:
-        os.path.join(bakta_dir, mag, f'{mag}.tsv') 
+    for tsv in tsvs:
 
-        bakta_file = os.path.join(bakta_dir, mag, f'{mag}.tsv')  
+        mag = os.path.basename(os.path.dirname(tsv))
+        # Return the second part if the split is successful, otherwise return the original path
+
+        bakta_file = tsv
 
         with open(bakta_file, 'r') as bakta_in:
             trna_set = set()
@@ -100,4 +101,4 @@ def parse_mags(samples, bakta_dir, outfile):
 
 
 # to actually run the script
-parse_mags(snakemake.params.samples, snakemake.params.bakta_dir, snakemake.output.out_tsv)
+parse_mags(snakemake.input.tsvs, snakemake.params.bakta_dir, snakemake.output.out_tsv)
