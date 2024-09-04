@@ -84,11 +84,11 @@ def parse_mags(samples, bakta_dir, outfile):
 
     print(fiveS_dict)
     combined_df = pd.DataFrame({
-    'sample': fiveS_dict.keys(),
-    'fiveS': fiveS_dict.values(),
-    'sixteenS': sixteenS_dict.values(),
-    'twentythreeS': twentythreeS_dict.values(),
-    'tRNA_count': trna_dict.values()
+    'sample': list(fiveS_dict.keys()),
+    'fiveS': list(fiveS_dict.values()),
+    'sixteenS': list(sixteenS_dict.values()),
+    'twentythreeS': list(twentythreeS_dict.values()),
+    'tRNA_count': list(trna_dict.values())
 })
     combined_df.to_csv(
             outfile,
