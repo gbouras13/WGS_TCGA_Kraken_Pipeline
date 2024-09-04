@@ -12,7 +12,7 @@ cluster:
 default-resources:
   - mem_mb=4000
   - time=1320
-jobs: 200
+jobs: 50
 latency-wait: 30
 local-cores: 8
 restart-times: 1
