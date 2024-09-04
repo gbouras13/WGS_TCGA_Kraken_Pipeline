@@ -42,9 +42,9 @@ rule run_bakta_mimag:
     conda:
         os.path.join("..", "envs", "biopython.yaml")
     benchmark:
-        os.path.join(BENCHMARKS, 'bakta_mimag', "{mag}.txt")
+        os.path.join(BENCHMARKS, 'bakta_mimag', "bakta_mimag.txt")
     log:
-        os.path.join(LOGS, 'bakta_mimag', "{mag}.log")
+        os.path.join(LOGS, 'bakta_mimag', "bakta_mimag.log")
     params:
         bakta_dir=BAKTA,
         samples=HQ_MED_MAGS
