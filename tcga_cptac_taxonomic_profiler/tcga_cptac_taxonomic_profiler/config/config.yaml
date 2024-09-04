@@ -42,6 +42,7 @@ databases:
     checkm2: '/hpcfs/users/a1667917/metagenomics_dbs/checkm2_db/CheckM2_database/uniref100.KO.1.dmnd'
     gtdb: '/hpcfs/users/a1667917/GTDB/release214/'
     bakta: '/hpcfs/users/a1667917/metagenomics_dbs/bakta/db'
+    singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S4.3.0.GTDB_r220.metapackage_20240523.smpkg.zb'
 
 
 assembly:

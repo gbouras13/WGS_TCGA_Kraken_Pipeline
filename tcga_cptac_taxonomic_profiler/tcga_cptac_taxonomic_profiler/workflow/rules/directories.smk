@@ -30,8 +30,9 @@ READCOUNT = os.path.join(RESULTS, 'READCOUNT')
 
 # assembly
 SAMPLE_ASSEMBLIES = os.path.join(RESULTS, 'SAMPLE_ASSEMBLIES')
-COASSEMBLY = os.path.join(RESULTS, 'COASSEMBLY')
-COASSEMBLY_RESULTS = os.path.join(RESULTS, 'COASSEMBLY_RESULTS')
+
+# singlem 
+SINGLEM = os.path.join(RESULTS, 'SINGLEM')
 
 #binning 
 # sample

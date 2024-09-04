@@ -1,14 +1,18 @@
 """
-The snakefile that runs the assembly pipeline.
+The snakefile that runs the kraken pipeline.
 
 tcga_cptac_taxonomic_profiler extract needs to be run first.
 
 """
 
+
 import glob
 from metasnek import fastq_finder
 import attrmap as ap
 import attrmap.utils as au
+
+
+configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
 
 # Concatenate Snakemake's own log file with the master log file
@@ -34,26 +38,29 @@ config = ap.AttrMap(config)
 
 
 ### DIRECTORIES
-# get if needed
 INPUT = config.input
 OUTPUT = config.output
 TMPDIR = config.tmpdir
 
 
+### DIRECTORIES
 include: "rules/directories.smk"
+
+# Parse the samples with metasnek
+
+# https://gist.github.com/beardymcjohnface/bb161ba04ae1042299f48a4849e917c8
 
 # this parses the samples into a dictionary
 sample_dict = fastq_finder.parse_samples_to_dictionary(INPUT)
 SAMPLES = list(sample_dict.keys())
 
-
 # Import rules and functions
-include: "rules/sample_assembly.smk"
-
-# import targets
 include: "rules/targets.smk"
+include: "rules/singlem.smk"
+
+
 
 rule all:
     input:
-        SampleAssemblyTargets,
+        SinglemTargets
 
