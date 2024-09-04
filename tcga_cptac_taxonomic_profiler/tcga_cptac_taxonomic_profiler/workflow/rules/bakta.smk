@@ -35,7 +35,7 @@ rule run_bakta_mimag:
     output:
         out_tsv = os.path.join(BAKTA, 'mimag.tsv')
     threads:
-        config.resources.small.cpu
+        config.resources.sml.cpu
     resources:
         mem_mb = config.resources.small.mem,
         time = config.resources.small.time
