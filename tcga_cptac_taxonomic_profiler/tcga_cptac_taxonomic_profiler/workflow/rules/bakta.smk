@@ -37,8 +37,8 @@ rule run_bakta_mimag:
     threads:
         config.resources.sml.cpu
     resources:
-        mem_mb = config.resources.small.mem,
-        time = config.resources.small.time
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
     conda:
         os.path.join("..", "envs", "biopython.yaml")
     benchmark:
