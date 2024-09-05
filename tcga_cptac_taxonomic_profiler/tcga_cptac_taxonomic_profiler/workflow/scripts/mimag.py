@@ -83,7 +83,6 @@ def parse_mags(tsvs, bakta_dir, outfile):
             twentythreeS_dict[mag] = twentythreeS
             trna_dict[mag] = trna_count
 
-    print(fiveS_dict)
     combined_df = pd.DataFrame({
     'sample': list(fiveS_dict.keys()),
     'fiveS': list(fiveS_dict.values()),

@@ -46,7 +46,6 @@ SAMPLES = list(sample_dict.keys())
 
 
 # Import rules and functions
-include: "rules/co_assembly_binning.smk"
 include: "rules/sample_assembly_binning.smk"
 
 # import targets
