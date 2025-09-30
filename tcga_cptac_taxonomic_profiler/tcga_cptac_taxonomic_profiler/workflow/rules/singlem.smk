@@ -32,7 +32,7 @@ rule run_singlem:
             -1 {input[0]} -2 {input[1]} -p {output[0]} --taxonomic-profile-krona {output[1]} --threads {threads}
 
         singlem microbial_fraction \
-            --forward {input[0]} --reverse {input[1]}  -p {output[0]} > {output[2]      }
+            --forward {input[0]} --reverse {input[1]}  -p {output[0]} > {output[2]}
         
         touch {output[0]}
         touch {output[1]}
