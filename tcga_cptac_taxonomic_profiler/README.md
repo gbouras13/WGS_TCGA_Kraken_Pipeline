@@ -169,3 +169,13 @@ tcga_cptac_taxonomic_profiler binning --input tcga_trimnami_output/results/fastp
 tcga_cptac_taxonomic_profiler annotate  --input tcga_trimnami_output/results/fastp   --output TCGA_output_all 
 
 8. MGEs (plasmids)
+
+
+# CPTAC
+
+```
+BAM_DIR="CPTAC_output_all/RESULTS/VAMB_BAMS"
+
+vamb --outdir CPTAC_output_all/RESULTS/VAMB_RESULTS --fasta CPTAC_output_all/RESULTS/VAMB_CATALOGUE/catalogue.fna.gz  --bamfiles $BAM_DIR/a73a9c1a-c8de-4763-8f7a-0e85dd18e9a3_wgs_gdc_realn_sorted.bam $BAM_DIR/1bce2290-d038-47b2-92ac-a20cfc946a0f_wgs_gdc_realn_sorted.bam  $BAM_DIR/52e9042a-995c-48e4-9642-470e44271aab_wgs_gdc_realn_sorted.bam $BAM_DIR/4cc74c91-25c6-4051-b4ba-eee19c2858f4_wgs_gdc_realn_sorted.bam $BAM_DIR/662fe48b-3316-48a4-b9ff-478577986b86_wgs_gdc_realn_sorted.bam $BAM_DIR/6b857303-8eda-414f-9ad5-7f6a8ba109c9_wgs_gdc_realn_sorted.bam $BAM_DIR/24ce24cc-3d67-49d6-af28-d453465da942_wgs_gdc_realn_sorted.bam $BAM_DIR/b933d5a8-8f91-4e04-bc03-35154301efda_wgs_gdc_realn_sorted.bam $BAM_DIR/57381eac-4fd0-41d7-a67a-4396584c0dce_wgs_gdc_realn_sorted.bam $BAM_DIR/a0efd61b-a82a-49cc-911d-96c7f04ed245_wgs_gdc_realn_sorted.bam $BAM_DIR/c123a154-adec-48b6-923a-9bc5a29d1601_wgs_gdc_realn_sorted.bam $BAM_DIR/58d9cb22-cc39-4db7-b889-647d69bed821_wgs_gdc_realn_sorted.bam $BAM_DIR/060eb50a-3094-46f9-9bd7-d314b69dcaef_wgs_gdc_realn_sorted.bam \
+ -o : -m 1000 --minfasta 200000
+ ```
