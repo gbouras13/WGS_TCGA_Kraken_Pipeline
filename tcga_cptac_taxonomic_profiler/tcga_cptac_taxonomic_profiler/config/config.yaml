@@ -45,6 +45,15 @@ databases:
     singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S4.3.0.GTDB_r220.metapackage_20240523.smpkg.zb'
 
 
+# host depletion (deacon)
+# Deacon defaults are abs_threshold 2, rel_threshold 0.01.
+# abs_threshold 1 is more aggressive: preferred for tumour WGS, where a
+# retained human read costs more than a discarded microbial one.
+deacon:
+    abs_threshold: 1
+    rel_threshold: 0.01
+
+
 binning:
     min_contig_length: 1000
     separator: ":"

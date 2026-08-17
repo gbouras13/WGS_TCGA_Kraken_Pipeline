@@ -20,7 +20,8 @@ if not os.path.exists(os.path.join(HostDir)):
 
 rule all:
     input:
-        os.path.join(HostDir,"human-t2t-hla-phix174.fa")
+        os.path.join(HostDir,"human-t2t-hla-phix174.fa"),
+        os.path.join(HostDir,"panhuman-1.k31w15.idx")
 
 rule get_host:
     """ 
@@ -68,4 +69,23 @@ rule combine_phix174:
     shell:
         """
         cat {input.chm13} {input.phix174} > {output.fasta}
+        """
+
+rule get_deacon_index:
+    """Fetch the prebuilt Deacon panhuman-1 index (~3.3 GB).
+
+    panhuman-1 = HPRC year-1 assemblies + CHM13v2.0 + GRCh38.p14, with
+    bacterial and viral sequence removed. `deacon index fetch` resolves the
+    current mirror itself rather than hardcoding a URL.
+    Zenodo archive for the record: https://zenodo.org/records/17288185
+    """
+    params:
+        host_db = HostDir
+    conda:
+        os.path.join('envs', 'deacon.yaml')
+    output:
+        index = os.path.join(HostDir, "panhuman-1.k31w15.idx")
+    shell:
+        """
+        deacon index fetch panhuman-1 --output {output.index}
         """

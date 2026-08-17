@@ -12,6 +12,7 @@ PROCESSING = os.path.join(OUTPUT, 'PROCESSING')
 
 # fastq dirs
 UNALIGNED_FASTQ  = os.path.join(RESULTS, 'UNALIGNED_FASTQ')
+HOST_RM_FASTQ    = os.path.join(RESULTS, 'HOST_RM_FASTQ')
 
 # dir for flags
 FLAGS = os.path.join(OUTPUT, 'FLAGS')

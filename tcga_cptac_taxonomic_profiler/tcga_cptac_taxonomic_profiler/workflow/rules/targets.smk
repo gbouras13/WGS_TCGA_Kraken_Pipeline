@@ -16,6 +16,11 @@ ExtractFiles = [
     os.path.join(FLAGS, "aggr_read_count.flag")
 ]
 
+# Targets for host removal
+HostRemovalTargets = [
+    os.path.join(FLAGS, "aggr_host_removal.flag")
+]
+
 MMseqsTargets =[
 
     os.path.join(FLAGS, "aggr_mmseqs2.flag")    

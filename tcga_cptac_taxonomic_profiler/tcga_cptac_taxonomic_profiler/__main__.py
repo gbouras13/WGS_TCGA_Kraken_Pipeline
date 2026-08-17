@@ -217,6 +217,49 @@ def install_host(database, log, **kwargs):
     )
 
 
+help_msg_extra_host_removal = """
+\b
+CLUSTER EXECUTION:
+tcga_cptac_taxonomic_profiler host-removal ... --profile [profile]
+\b
+RUN EXAMPLES:
+Required:           tcga_cptac_taxonomic_profiler host-removal --input [dir]
+Specify threads:    tcga_cptac_taxonomic_profiler host-removal ... --threads [threads]
+Disable conda:      tcga_cptac_taxonomic_profiler host-removal ... --no-use-conda
+Change defaults:    tcga_cptac_taxonomic_profiler host-removal ... --snake-default="-k --nolock"
+Add Snakemake args: tcga_cptac_taxonomic_profiler host-removal ... --dry-run --keep-going --touch
+Specify targets:    tcga_cptac_taxonomic_profiler host-removal ... all print_targets
+"""
+
+
+@click.command(
+    epilog=help_msg_extra_host_removal,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option("--input", "_input", help="Input directory of extracted unaligned FASTQs", type=str, required=True)
+@common_options
+def host_removal(_input, output, log, **kwargs):
+    """Deplete human reads with Deacon (run between extract and kraken)"""
+    # Config to add or update in configfile
+    merge_config = {
+        "input": _input,
+        "output": output,
+        "log": log
+    }
+
+    # run!
+    run_snakemake(
+        # Full path to Snakefile
+        snakefile_path=snake_base(os.path.join("workflow", "run_host_removal.smk")),
+        system_config=snake_base(os.path.join("config", "config.yaml")),
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
+
+
 help_msg_extra_kraken = """
 \b
 CLUSTER EXECUTION:
@@ -573,6 +616,7 @@ def citation(**kwargs):
     print_citation()
 
 
+cli.add_command(host_removal)
 cli.add_command(kraken)
 cli.add_command(install_host)
 cli.add_command(mmseqs)
