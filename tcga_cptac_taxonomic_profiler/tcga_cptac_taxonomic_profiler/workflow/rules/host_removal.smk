@@ -23,6 +23,7 @@ rule deacon_host_removal:
     output:
         r1 = os.path.join(HOST_RM_FASTQ, "{sample}_R1.host_rm.fastq.gz"),
         r2 = os.path.join(HOST_RM_FASTQ, "{sample}_R2.host_rm.fastq.gz"),
+        rs = os.path.join(HOST_RM_FASTQ, "{sample}_RS.host_rm.fastq.gz"),
         summary = os.path.join(HOST_RM_FASTQ, "{sample}.deacon.json")
     params:
         abs_threshold = config.deacon.abs_threshold,
@@ -49,6 +50,12 @@ rule deacon_host_removal:
             {input.index} {input.r1} {input.r2} \
             --output {output.r1} \
             --output2 {output.r2} 2> {log}
+
+        # Deacon retains or discards read pairs together, so no singletons are
+        # produced by construction. The extract stage also discards singletons
+        # (samtools fastq -0 /dev/null -s /dev/null). An empty file is emitted
+        # to satisfy the assembly stage, which expects an _RS input.
+        : | gzip -c > {output.rs}
         """
 
 
@@ -57,6 +64,7 @@ rule aggr_host_removal:
     input:
         expand(os.path.join(HOST_RM_FASTQ, "{sample}_R1.host_rm.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(HOST_RM_FASTQ, "{sample}_R2.host_rm.fastq.gz"), sample = SAMPLES),
+        expand(os.path.join(HOST_RM_FASTQ, "{sample}_RS.host_rm.fastq.gz"), sample = SAMPLES),
         expand(os.path.join(HOST_RM_FASTQ, "{sample}.deacon.json"), sample = SAMPLES)
     output:
         os.path.join(FLAGS, "aggr_host_removal.flag")

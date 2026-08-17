@@ -38,7 +38,17 @@ rule individual_sample_assembly:
 
         if [ $actualsize -ge $minimumsize ]
         then
-            spades.py  --checkpoints all --memory {params.max_memory} --meta -1 {input.r1p} -2 {input.r2p} -s {input.rs}  \
+            # only pass -s if singletons are actually present: deacon-based host
+            # removal keeps or drops pairs together and emits an empty _RS file,
+            # and spades rejects an empty library
+            if [ -s {input.rs} ] && [ $(gzip -cd {input.rs} | head -c 1 | wc -c) -gt 0 ]
+            then
+                singletons="-s {input.rs}"
+            else
+                singletons=""
+            fi
+
+            spades.py  --checkpoints all --memory {params.max_memory} --meta -1 {input.r1p} -2 {input.r2p} $singletons  \
             -o {params.assembly_dir} -t {threads}  -k auto --tmp-dir {params.tmpdir} 2> {log} 
         else
             touch {output.fasta}
