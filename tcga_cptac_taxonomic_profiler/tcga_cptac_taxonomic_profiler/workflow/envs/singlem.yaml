@@ -2,5 +2,9 @@ name: singlem
 channels:
     - conda-forge
     - bioconda
+    - defaults
 dependencies:
-    - singlem==0.18.3
+    # >=0.19.0 is required to read the GTDB R226 metapackage (0.18.x is r220
+    # only). Held below 0.21, whose default metapackage moves to R232 -- the
+    # pipeline is aligned on R226 across SingleM, GTDB-Tk and Metabuli.
+    - singlem >=0.20,<0.21
