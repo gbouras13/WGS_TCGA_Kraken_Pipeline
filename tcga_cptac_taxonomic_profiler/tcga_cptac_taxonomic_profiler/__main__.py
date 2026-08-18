@@ -260,6 +260,49 @@ def host_removal(_input, output, log, **kwargs):
     )
 
 
+help_msg_extra_metabuli = """
+\b
+CLUSTER EXECUTION:
+tcga_cptac_taxonomic_profiler metabuli ... --profile [profile]
+\b
+RUN EXAMPLES:
+Required:           tcga_cptac_taxonomic_profiler metabuli --input [dir]
+Specify threads:    tcga_cptac_taxonomic_profiler metabuli ... --threads [threads]
+Disable conda:      tcga_cptac_taxonomic_profiler metabuli ... --no-use-conda
+Change defaults:    tcga_cptac_taxonomic_profiler metabuli ... --snake-default="-k --nolock"
+Add Snakemake args: tcga_cptac_taxonomic_profiler metabuli ... --dry-run --keep-going --touch
+Specify targets:    tcga_cptac_taxonomic_profiler metabuli ... all print_targets
+"""
+
+
+@click.command(
+    epilog=help_msg_extra_metabuli,
+    context_settings=dict(
+        help_option_names=["-h", "--help"], ignore_unknown_options=True
+    ),
+)
+@click.option("--input", "_input", help="Input directory of host-depleted FASTQs", type=str, required=True)
+@common_options
+def metabuli(_input, output, log, **kwargs):
+    """Classify reads with Metabuli (joint amino acid + DNA)"""
+    # Config to add or update in configfile
+    merge_config = {
+        "input": _input,
+        "output": output,
+        "log": log
+    }
+
+    # run!
+    run_snakemake(
+        # Full path to Snakefile
+        snakefile_path=snake_base(os.path.join("workflow", "run_metabuli.smk")),
+        system_config=snake_base(os.path.join("config", "config.yaml")),
+        merge_config=merge_config,
+        log=log,
+        **kwargs
+    )
+
+
 help_msg_extra_kraken = """
 \b
 CLUSTER EXECUTION:
@@ -618,6 +661,7 @@ def citation(**kwargs):
 
 cli.add_command(host_removal)
 cli.add_command(kraken)
+cli.add_command(metabuli)
 cli.add_command(install_host)
 cli.add_command(mmseqs)
 cli.add_command(singlem)

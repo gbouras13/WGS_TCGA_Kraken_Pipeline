@@ -1,0 +1,7 @@
+name: metabuli
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - metabuli >=1.2.0

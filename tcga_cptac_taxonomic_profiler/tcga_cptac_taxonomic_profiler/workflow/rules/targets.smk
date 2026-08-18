@@ -21,6 +21,11 @@ HostRemovalTargets = [
     os.path.join(FLAGS, "aggr_host_removal.flag")
 ]
 
+# Targets for metabuli
+MetabuliTargets = [
+    os.path.join(FLAGS, "aggr_metabuli.flag")
+]
+
 MMseqsTargets =[
 
     os.path.join(FLAGS, "aggr_mmseqs2.flag")    

@@ -22,6 +22,9 @@ BIOM = os.path.join(RESULTS, 'BIOM')
 KRAKEN = os.path.join(RESULTS, 'KRAKEN')
 BRACKEN = os.path.join(RESULTS, 'BRACKEN') 
 
+# metabuli (joint AA+DNA classifier, independent of kraken2)
+METABULI = os.path.join(RESULTS, 'METABULI')
+
 # mmseqs2 
 FASTA = os.path.join(PROCESSING, 'FASTA')
 MMSEQS2 = os.path.join(RESULTS, 'MMSEQS2')
