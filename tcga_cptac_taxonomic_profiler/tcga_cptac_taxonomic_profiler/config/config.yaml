@@ -43,7 +43,7 @@ databases:
     gtdb: '/hpcfs/users/a1667917/GTDB/release214/'
     bakta: '/hpcfs/users/a1667917/metagenomics_dbs/bakta/db'
     singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S4.3.0.GTDB_r220.metapackage_20240523.smpkg.zb'
-    metabuli: '/hpcfs/users/a1667917/metagenomics_dbs/metabuli/RefSeq'
+    metabuli: '/hpcfs/users/a1667917/metagenomics_dbs/metabuli/GTDB226'
 
 
 # metabuli (joint amino acid + DNA classification)
