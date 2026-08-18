@@ -43,7 +43,7 @@ databases:
     gtdb: '/hpcfs/users/a1667917/GTDB/release214/'
     bakta: '/hpcfs/users/a1667917/metagenomics_dbs/bakta/db'
     singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S4.3.0.GTDB_r220.metapackage_20240523.smpkg.zb'
-    metabuli: '/hpcfs/users/a1667917/metagenomics_dbs/metabuli/gtdb'
+    metabuli: '/hpcfs/users/a1667917/metagenomics_dbs/metabuli/RefSeq'
 
 
 # metabuli (joint amino acid + DNA classification)
@@ -51,8 +51,9 @@ databases:
 # max_ram_gib must stay under resources.big.mem (150000 MB = ~146 GiB).
 metabuli:
     max_ram_gib: 120
-    precise: 1
+    precise: 1        # 1 = short-read preset
     min_score: 0
+    seq_mode: 2       # 1 single-end, 2 paired-end, 3 long read
 
 
 # host depletion (deacon)

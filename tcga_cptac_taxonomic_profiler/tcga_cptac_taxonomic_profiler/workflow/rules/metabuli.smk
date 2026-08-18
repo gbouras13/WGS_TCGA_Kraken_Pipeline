@@ -14,7 +14,10 @@ rule run_metabuli:
     --precise 1 selects the short-read preset. The report is emitted in Kraken2
     format, so it feeds the existing kraken-biom path unchanged.
 
-    CLI:  metabuli classify R1 R2 DBDIR OUTDIR JOB_ID [options]
+    CLI (confirmed against metabuli 1.2.0):
+      metabuli classify <query file(s)> <DB dir> <out dir> <job ID> [options]
+    --seq-mode 2 is paired-end. It is the default, but set explicitly so the
+    run does not depend on an upstream default staying put.
     """
     input:
         r1 = os.path.join(INPUT, "{sample}_R1.host_rm.fastq.gz"),
@@ -28,7 +31,8 @@ rule run_metabuli:
         job_id = "{sample}",
         max_ram = config.metabuli.max_ram_gib,
         precise = config.metabuli.precise,
-        min_score = config.metabuli.min_score
+        min_score = config.metabuli.min_score,
+        seq_mode = config.metabuli.seq_mode
     conda:
         os.path.join('..', 'envs', 'metabuli.yaml')
     log:
@@ -48,6 +52,7 @@ rule run_metabuli:
             {params.outdir} \
             {params.job_id} \
             --threads {threads} \
+            --seq-mode {params.seq_mode} \
             --max-ram {params.max_ram} \
             --precise {params.precise} \
             --min-score {params.min_score} 2> {log}
