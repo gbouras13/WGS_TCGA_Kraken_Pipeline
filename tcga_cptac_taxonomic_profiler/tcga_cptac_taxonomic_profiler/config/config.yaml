@@ -42,7 +42,12 @@ databases:
     checkm2: '/hpcfs/users/a1667917/metagenomics_dbs/checkm2_db/CheckM2_database/uniref100.KO.1.dmnd'
     gtdb: '/hpcfs/users/a1667917/GTDB/release226/'
     bakta: '/hpcfs/users/a1667917/metagenomics_dbs/bakta/db'
-    singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S5.4.0.GTDB_r226.metapackage_20250331.smpkg.zb'
+    # SingleM is on GTDB R232, not R226 like Metabuli and GTDB-Tk. singlem
+    # >=0.21.4 is required (earlier versions treat DIAMOND's stderr as fatal)
+    # and hard-rejects the R226 metapackage. SingleM contributes a microbial
+    # *fraction*, not taxonomy used for cross-tool comparison, so the release
+    # mismatch does not affect the load comparison.
+    singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S6.5.0.GTDB_r232.metapackage_20260319.smpkg.zb'
     metabuli: '/hpcfs/users/a1667917/metagenomics_dbs/metabuli/GTDB226/gtdb+human+virus'
 
 
