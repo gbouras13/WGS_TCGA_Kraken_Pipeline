@@ -21,7 +21,9 @@ rule run_singlem:
         os.path.join(BENCHMARKS, "singlem", "{sample}.singlem.log")
     resources:
         mem_mb = config.resources.big.mem,
-        time = config.resources.med.time
+        # SingleM runs DIAMOND blastx over the *raw* undepleted reads, which
+        # exceeded the 500 min med budget on the full cohort. Use the big budget.
+        time = config.resources.big.time
     threads:
         config.resources.med.cpu
     shell:
@@ -29,10 +31,10 @@ rule run_singlem:
         export SINGLEM_METAPACKAGE_PATH={params[0]}
 
         singlem pipe \
-            -1 {input[0]} -2 {input[1]} -p {output[0]} --taxonomic-profile-krona {output[1]} --threads {threads}
+            -1 {input[0]} -2 {input[1]} -p {output[0]} --taxonomic-profile-krona {output[1]} --threads {threads} 2> {log}
 
         singlem microbial_fraction \
-            --forward {input[0]} --reverse {input[1]}  -p {output[0]} > {output[2]}
+            --forward {input[0]} --reverse {input[1]}  -p {output[0]} > {output[2]} 2>> {log}
         
         touch {output[0]}
         touch {output[1]}
