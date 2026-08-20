@@ -4,7 +4,20 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    # >=0.19.0 is required to read the GTDB R226 metapackage (0.18.x is r220
-    # only). Held below 0.21, whose default metapackage moves to R232 -- the
-    # pipeline is aligned on R226 across SingleM, GTDB-Tk and Metabuli.
-    - singlem >=0.20,<0.21
+    # 0.21.4 is required, not merely preferred. Earlier versions (incl. 0.20.3)
+    # treat ANY bytes on DIAMOND's stderr as a fatal error, before checking the
+    # return code:
+    #
+    #     stderr_output = proc.stderr.read()
+    #     if stderr_output:
+    #         raise Exception("DIAMOND failed")
+    #
+    # DIAMOND >=180 days old prints a version-nag to stderr, so every sample
+    # failed even though DIAMOND exited 0. 0.21.4 "safely captur[es] DIAMOND's
+    # stderr output" and builds prefilter databases from a FASTA file rather
+    # than stdin, for compatibility with recent DIAMOND.
+    #
+    # 0.21.x changes the DEFAULT metapackage to R232, but the rule sets
+    # SINGLEM_METAPACKAGE_PATH explicitly, so the R226 alignment is unaffected
+    # by the default. That is why the previous <0.21 upper bound is gone.
+    - singlem >=0.21.4
