@@ -23,7 +23,13 @@ rule run_singlem:
         mem_mb = config.resources.big.mem,
         # SingleM runs DIAMOND blastx over the *raw* undepleted reads, which
         # exceeded the 500 min med budget on the full cohort. Use the big budget.
-        time = config.resources.big.time
+        time = config.resources.big.time,
+        # Without this snakemake defaults to node-local scratch (/mnt/tmp_local),
+        # which is small. DIAMOND prefiltering of the largest samples filled it:
+        # 17/336 died with "[Errno 28] No space left on device", almost all of
+        # them the big *_wgs_Illumina inputs. config.tmpdir is on /hpcfs, which
+        # has hundreds of TB free. Slower than node-local, but it completes.
+        tmpdir = config.tmpdir
     threads:
         config.resources.med.cpu
     shell:
