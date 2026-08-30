@@ -142,6 +142,16 @@ rule run_semibin2:
             --output {params.outdir} \
             --separator {params.separator} \
             --threads {threads} > {log} 2>&1
+
+        # NORMALISE: multi_easy_bin writes per-sample bins to
+        # {outdir}/samples/{sample}/output_bins/, not a flat bins/ directory.
+        # Binette takes explicit --bin_dirs, so every binner is normalised to
+        # {outdir}/bins to remove any dependence on a tool's internal layout.
+        mkdir -p {params.outdir}/bins
+        find {params.outdir} -path "{params.outdir}/bins" -prune -o \
+             -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
+          | while read f; do ln -sf "$f" "{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
+        echo "normalised bins: $(ls {params.outdir}/bins 2>/dev/null | wc -l)" >> {log}
         touch {output.flag}
         """
 
@@ -186,6 +196,14 @@ rule run_comebin:
             -t {threads} \
             -d {params.device} > {log} 2>&1
         rm -f {params.outdir}/catalogue.fna
+
+        # NORMALISE to {outdir}/bins (see the SemiBin2 rule). COMEBin writes to
+        # comebin_res/comebin_res_bins/, but that layout is version-dependent.
+        mkdir -p {params.outdir}/bins
+        find {params.outdir} -path "{params.outdir}/bins" -prune -o \
+             -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
+          | while read f; do ln -sf "$f" "{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
+        echo "normalised bins: $(ls {params.outdir}/bins 2>/dev/null | wc -l)" >> {log}
         touch {output.flag}
         """
 
@@ -209,12 +227,16 @@ rule run_binette:
     params:
         outdir = BINETTE_RESULTS,
         checkm2_db = config.databases.checkm2,
+        # Every binner normalises its output to {RESULTS}/bins, so these paths
+        # do not depend on any tool's internal layout (SemiBin2 in particular
+        # writes samples/{sample}/output_bins/, and COMEBin's nesting is
+        # version-dependent).
         bin_dirs = " ".join([
             os.path.join(VAMB_RESULTS, 'bins'),
             os.path.join(METABAT2_RESULTS, 'bins'),
             os.path.join(CONCOCT_RESULTS, 'bins'),
             os.path.join(SEMIBIN2_RESULTS, 'bins'),
-            os.path.join(COMEBIN_RESULTS, 'comebin_res', 'comebin_res_bins'),
+            os.path.join(COMEBIN_RESULTS, 'bins'),
         ]),
         contamination_weight = config.binning.binette_contamination_weight
     conda:
@@ -232,13 +254,33 @@ rule run_binette:
     shell:
         """
         mkdir -p {params.outdir}
+
+        # VAMB is the one binner not normalised in its own rule (it predates
+        # these). Normalise here so all five inputs are consistent.
+        mkdir -p {VAMB_RESULTS}/bins
+        find {VAMB_RESULTS} -path "{VAMB_RESULTS}/bins" -prune -o \
+             -name "*.fna" -print -o -name "*.fa" -print 2>/dev/null \
+          | while read f; do ln -sf "$f" "{VAMB_RESULTS}/bins/$(basename "$f")"; done
+
+        # Fail loudly on an empty bin set. Binette accepts an empty --bin_dirs
+        # entry without complaint, which would silently reduce the consensus
+        # from five binners to fewer and be very hard to notice afterwards.
+        for d in {params.bin_dirs}; do
+            n=$(ls "$d" 2>/dev/null | wc -l)
+            echo "bin_dir $d -> $n bins" >> {log}
+            if [ "$n" -eq 0 ]; then
+                echo "ERROR: $d contains no bins; refusing to run a degraded consensus" >> {log}
+                exit 1
+            fi
+        done
+
         zcat {input.catalogue} > {params.outdir}/catalogue.fna
         binette --bin_dirs {params.bin_dirs} \
             --contigs {params.outdir}/catalogue.fna \
             --outdir {params.outdir} \
             --checkm2_db {params.checkm2_db} \
             --contamination_weight {params.contamination_weight} \
-            --threads {threads} > {log} 2>&1
+            --threads {threads} >> {log} 2>&1
         rm -f {params.outdir}/catalogue.fna
         touch {output.flag}
         """
