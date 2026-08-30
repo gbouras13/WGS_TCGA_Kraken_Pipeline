@@ -50,6 +50,11 @@ SampleAssemblyTargets = [
 SampleAssemblyBins = [
 
     os.path.join(FLAGS, 'vamb.flag'),
+    os.path.join(FLAGS, 'metabat2.flag'),
+    os.path.join(FLAGS, 'concoct.flag'),
+    os.path.join(FLAGS, 'semibin2.flag'),
+    os.path.join(FLAGS, 'comebin.flag'),
+    os.path.join(FLAGS, 'binette.flag'),
     os.path.join(FLAGS, 'checkm2.flag'),
     os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv"),
     os.path.join(FLAGS, 'gtdb.flag')

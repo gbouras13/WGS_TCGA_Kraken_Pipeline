@@ -93,6 +93,12 @@ deacon:
 
 binning:
     min_contig_length: 1000
+    # run_comebin.sh defaults to -d cuda; compute nodes are CPU so this must be
+    # set explicitly or every COMEBin job fails.
+    comebin_device: 'cpu'
+    # Binette scoring: higher weight penalises contamination more. In low-biomass
+    # tumour samples a contaminated bin is worse than no bin.
+    binette_contamination_weight: 5
     separator: ":"
     minfasta: 200000 # the min bin size for VAMB
 

@@ -125,7 +125,9 @@ rule run_vamb:
         mem_mb = config.resources.big.mem,
         time = config.resources.big.time
     params:
-        bams = ' '.join(expand(os.path.join(VAMB_BAMS, '{sample}.bam'), sample=SAMPLES)),
+        # BUG FIX: this passed the UNSORTED {sample}.bam while the rule's input
+        # (and VAMB's requirement) is the sorted {sample}_sorted.bam.
+        bams = ' '.join(expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)),
         outdir = VAMB_RESULTS,
         separator = config.binning.separator,
         minfasta = config.binning.minfasta,
