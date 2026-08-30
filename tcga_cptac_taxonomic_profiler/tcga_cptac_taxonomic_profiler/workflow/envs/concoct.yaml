@@ -4,8 +4,15 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - concoct
-    # Same class of failure as spades: with python 3.12+ the compiled extension
-    # is absent and `concoct` dies with
+    # CONCOCT cannot be updated: 1.1.0 (2019) is the final release and the
+    # project is unmaintained. It is kept because it produced 42 of the 81 bins
+    # in the v1 manuscript -- the single largest contributor -- and because it
+    # is a non-deep-learning method, which is what lets the Binette consensus
+    # diversify the failure mode rather than just the tool count.
+    - concoct = 1.1.0
+    # Bound to <3.13, NOT <3.12. bioconda's newest concoct build is py312
+    # (py312hb1d17a5_9); pinning <3.12 would silently drop to an older py39
+    # build. Left unbounded, the env solves to python 3.14, for which no concoct
+    # build exists, and the compiled extension is then unimportable:
     #   import vbgmm -> ModuleNotFoundError: No module named 'vbgmm'
-    - python <3.12
+    - python <3.13
