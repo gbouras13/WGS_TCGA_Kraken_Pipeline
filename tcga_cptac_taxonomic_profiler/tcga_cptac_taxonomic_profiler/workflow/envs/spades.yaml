@@ -5,3 +5,9 @@ channels:
     - defaults
 dependencies:
     - spades = 3.15.5
+    # SPAdes 3.15.5's Python wrapper imports distutils, which was REMOVED in
+    # Python 3.12. The original 2023 env solved to python 3.11.4 and worked; a
+    # rebuild today solves to 3.14.7 and every job dies instantly with
+    #   from distutils.version import LooseVersion -> ModuleNotFoundError
+    # The version must be pinned or the env silently breaks on any re-solve.
+    - python <3.12

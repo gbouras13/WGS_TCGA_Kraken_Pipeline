@@ -5,3 +5,7 @@ channels:
     - defaults
 dependencies:
     - concoct
+    # Same class of failure as spades: with python 3.12+ the compiled extension
+    # is absent and `concoct` dies with
+    #   import vbgmm -> ModuleNotFoundError: No module named 'vbgmm'
+    - python <3.12
