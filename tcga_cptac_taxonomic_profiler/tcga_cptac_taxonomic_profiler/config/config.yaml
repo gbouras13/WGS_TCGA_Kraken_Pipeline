@@ -49,6 +49,22 @@ databases:
     # mismatch does not affect the load comparison.
     singlem: '/hpcfs/users/a1667917/metagenomics_dbs/singlem/S6.5.0.GTDB_r232.metapackage_20260319.smpkg.zb'
     metabuli: '/hpcfs/users/a1667917/metagenomics_dbs/metabuli/GTDB226/gtdb+human+virus'
+    # sylph GTDB r220, -c 200 "sensitive" build. No R226 build is published, so
+    # sylph is a third GTDB release in the stack (Metabuli/GTDB-Tk R226, SingleM
+    # R232, sylph R220). Acceptable on the same grounds as SingleM: sylph
+    # contributes detection + containment ANI, not taxonomy compared taxon-by-taxon.
+    sylph: '/hpcfs/users/a1667917/metagenomics_dbs/sylph/gtdb-r220-c200-dbv1.syldb'
+
+
+# sylph (ANI-based containment profiling)
+# min_ani is deliberately below sylph's own default of 95 for `profile`: the
+# low-ANI tail is the contamination signal to observe and filter in R, not to
+# discard at profiling time.
+sylph:
+    min_ani: 90
+    min_kmers: 50            # sylph default
+    estimate_read_counts: true   # gives counts, so ALDEx2-style decontamination stays possible
+    estimate_unknown: false      # -u rescales abundance by estimated unknown fraction
 
 
 # metabuli (joint amino acid + DNA classification)

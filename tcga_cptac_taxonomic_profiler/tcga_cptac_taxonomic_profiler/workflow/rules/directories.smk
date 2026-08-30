@@ -25,6 +25,9 @@ BRACKEN = os.path.join(RESULTS, 'BRACKEN')
 # metabuli (joint AA+DNA classifier, independent of kraken2)
 METABULI = os.path.join(RESULTS, 'METABULI')
 
+# sylph (ANI-based containment profiler)
+SYLPH = os.path.join(RESULTS, 'SYLPH')
+
 # mmseqs2 
 FASTA = os.path.join(PROCESSING, 'FASTA')
 MMSEQS2 = os.path.join(RESULTS, 'MMSEQS2')

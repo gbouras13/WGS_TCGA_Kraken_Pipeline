@@ -26,6 +26,11 @@ MetabuliTargets = [
     os.path.join(FLAGS, "aggr_metabuli.flag")
 ]
 
+# Targets for sylph
+SylphTargets = [
+    os.path.join(FLAGS, "aggr_sylph.flag")
+]
+
 MMseqsTargets =[
 
     os.path.join(FLAGS, "aggr_mmseqs2.flag")    
