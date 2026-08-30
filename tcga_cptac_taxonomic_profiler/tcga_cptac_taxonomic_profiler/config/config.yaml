@@ -64,7 +64,11 @@ sylph:
     min_ani: 90
     min_kmers: 50            # sylph default
     estimate_read_counts: true   # gives counts, so ALDEx2-style decontamination stays possible
-    estimate_unknown: false      # -u rescales abundance by estimated unknown fraction
+    # NOTE: sylph 0.9.0 force-enables -u whenever --estimate-read-counts is set
+    # ("--estimate-read-counts detected, also enabling -u"). This flag is
+    # therefore documentation of what happens, not a control. Sequence_abundance
+    # is scaled by the estimated unknown fraction either way.
+    estimate_unknown: false
 
 
 # metabuli (joint amino acid + DNA classification)
