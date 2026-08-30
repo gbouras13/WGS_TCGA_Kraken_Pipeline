@@ -1,7 +1,7 @@
-name: semibin2
+name: comebin
 channels:
     - conda-forge
     - bioconda
     - defaults
 dependencies:
-    - semibin >=2.4.1
+    - comebin >=1.1.0

@@ -3,5 +3,11 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - bakta =1.8.2
-
+  # Bumped from 1.8.2. The installed database (bakta_db/db, 84 GB, v6.0
+  # 2025-02-24) is schema major 6 and declares "software-min": 1.11, which
+  # bakta 1.8.2 (schema 5) cannot read.
+  #
+  # Held below 1.12: the database declares a MINIMUM of 1.11, not a maximum,
+  # and a newer bakta may require schema 7 -- which would mean another 84 GB
+  # download. 1.11.x is the range the installed database explicitly supports.
+  - bakta >=1.11,<1.12

@@ -41,7 +41,8 @@ databases:
         uniref90: '/hpcfs/users/a1667917/metagenomics_dbs/mmseqs2/UniRef90/UniRef90'
     checkm2: '/hpcfs/users/a1667917/metagenomics_dbs/checkm2_db/CheckM2_database/uniref100.KO.1.dmnd'
     gtdb: '/hpcfs/users/a1667917/GTDB/release226/'
-    bakta: '/hpcfs/users/a1667917/metagenomics_dbs/bakta/db'
+    # Existing 84 GB install, schema v6.0 (2025-02-24), requires bakta >=1.11
+    bakta: '/home/a1667917/a1667917/bakta_db/db'
     # SingleM is on GTDB R232, not R226 like Metabuli and GTDB-Tk. singlem
     # >=0.21.4 is required (earlier versions treat DIAMOND's stderr as fatal)
     # and hard-rejects the R226 metapackage. SingleM contributes a microbial

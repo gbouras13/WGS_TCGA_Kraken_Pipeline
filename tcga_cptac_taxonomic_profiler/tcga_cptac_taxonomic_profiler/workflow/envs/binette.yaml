@@ -1,0 +1,9 @@
+name: binette
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    # Consensus/refinement across VAMB + SemiBin2 + COMEBin.
+    # Binette scores candidate bins with CheckM2, which is already installed.
+    - binette >=1.2.1
