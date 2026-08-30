@@ -4,10 +4,9 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - spades = 3.15.5
-    # SPAdes 3.15.5's Python wrapper imports distutils, which was REMOVED in
-    # Python 3.12. The original 2023 env solved to python 3.11.4 and worked; a
-    # rebuild today solves to 3.14.7 and every job dies instantly with
-    #   from distutils.version import LooseVersion -> ModuleNotFoundError
-    # The version must be pinned or the env silently breaks on any re-solve.
-    - python <3.12
+    # Bumped from 3.15.5. The old version's Python wrapper imports distutils,
+    # removed in Python 3.12, so it only worked with an old interpreter -- the
+    # 2023 env solved to python 3.11.4, and a rebuild today solved to 3.14.7 and
+    # failed every job instantly. Updating the assembler is the better fix than
+    # pinning python backwards to keep a 2022-era SPAdes alive.
+    - spades = 4.3.0
