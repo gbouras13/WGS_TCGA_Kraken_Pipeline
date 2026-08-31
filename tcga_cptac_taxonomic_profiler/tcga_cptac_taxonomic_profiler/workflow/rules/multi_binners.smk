@@ -104,6 +104,7 @@ rule run_concoct:
         cut_up_fasta.py catalogue.fna -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa 2>> {log}
         concoct_coverage_table.py contigs_10K.bed {input.bams} > coverage_table.tsv 2>> {log}
         concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv \
+            -l {params.min_contig} \
             -b concoct_out --threads {threads} >> {log} 2>&1
         merge_cutup_clustering.py concoct_out_clustering_gt1000.csv > clustering_merged.csv 2>> {log}
         extract_fasta_bins.py catalogue.fna clustering_merged.csv --output_path bins >> {log} 2>&1
@@ -121,7 +122,8 @@ rule run_semibin2:
         flag = os.path.join(FLAGS, 'semibin2.flag')
     params:
         outdir = SEMIBIN2_RESULTS,
-        separator = config.binning.separator
+        separator = config.binning.separator,
+        min_contig = config.binning.min_contig_length
     conda:
         os.path.join('..', 'envs', 'semibin2.yaml')
     log:
@@ -141,6 +143,7 @@ rule run_semibin2:
             --input-bam {input.bams} \
             --output {params.outdir} \
             --separator {params.separator} \
+            --min-len {params.min_contig} \
             --threads {threads} > {log} 2>&1
 
         # NORMALISE: multi_easy_bin writes per-sample bins to
@@ -173,7 +176,8 @@ rule run_comebin:
     params:
         outdir = COMEBIN_RESULTS,
         bamdir = VAMB_BAMS,
-        device = config.binning.comebin_device
+        device = config.binning.comebin_device,
+        min_contig = config.binning.min_contig_length
     conda:
         os.path.join('..', 'envs', 'comebin.yaml')
     log:
@@ -189,7 +193,16 @@ rule run_comebin:
     shell:
         """
         mkdir -p {params.outdir}
-        zcat {input.catalogue} > {params.outdir}/catalogue.fna
+        # COMEBin has NO minimum-contig-length option -- its -l is the loss
+        # function temperature, not a length. So the catalogue is filtered here
+        # instead, ensuring COMEBin bins the same contig set as the other four.
+        zcat {input.catalogue} \
+          | awk -v m={params.min_contig} 'BEGIN{{RS=">";ORS=""}} NR>1{{
+                h=$0; sub(/\n.*/,"",h);
+                seq=$0; sub(/^[^\n]*\n/,"",seq); gsub(/\n/,"",seq);
+                if (length(seq)>=m) print ">"h"\n"seq"\n" }}' \
+          > {params.outdir}/catalogue.fna
+        echo "comebin input contigs >= {params.min_contig}: $(grep -c '^>' {params.outdir}/catalogue.fna)" >> {log}
         run_comebin.sh -a {params.outdir}/catalogue.fna \
             -o {params.outdir} \
             -p {params.bamdir} \

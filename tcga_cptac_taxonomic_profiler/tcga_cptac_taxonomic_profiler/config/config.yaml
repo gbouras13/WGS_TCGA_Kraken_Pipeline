@@ -92,7 +92,20 @@ deacon:
 
 
 binning:
-    min_contig_length: 1000
+    # 1500, not 1000. MetaBAT2 refuses outright below 1500
+    #   "[Error!] Contig length < 1500 is not allowed to be used for binning."
+    # and SemiBin2's internal default of 2500 left it with an empty matrix
+    #   "ValueError: operands could not be broadcast together with shapes (0,30)"
+    #
+    # Catalogue length distribution (30-sample subset, 67,126 contigs, 318 Mb):
+    #   >=1000 100.0% | >=1500 59.2% | >=2000 40.5% | >=2500 30.3%
+    #
+    # 1500 is MetaBAT2's floor and retains 59% of contigs (and the large majority
+    # of assembled bases, since short contigs carry little sequence). It is passed
+    # explicitly to every binner so they all bin the SAME contig set - otherwise
+    # each tool applies its own default and the consensus compares tools that
+    # were given different data.
+    min_contig_length: 1500
     # run_comebin.sh defaults to -d cuda; compute nodes are CPU so this must be
     # set explicitly or every COMEBin job fails.
     comebin_device: 'cpu'
