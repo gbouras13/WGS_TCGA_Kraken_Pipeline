@@ -144,9 +144,9 @@ rule run_semibin2:
             --threads {threads} > {log} 2>&1
 
         # NORMALISE: multi_easy_bin writes per-sample bins to
-        # {outdir}/samples/{sample}/output_bins/, not a flat bins/ directory.
+        # OUTDIR/samples/SAMPLE/output_bins/, not a flat bins/ directory.
         # Binette takes explicit --bin_dirs, so every binner is normalised to
-        # {outdir}/bins to remove any dependence on a tool's internal layout.
+        # OUTDIR/bins to remove any dependence on a tool's internal layout.
         mkdir -p {params.outdir}/bins
         find {params.outdir} -path "{params.outdir}/bins" -prune -o \
              -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
@@ -197,7 +197,7 @@ rule run_comebin:
             -d {params.device} > {log} 2>&1
         rm -f {params.outdir}/catalogue.fna
 
-        # NORMALISE to {outdir}/bins (see the SemiBin2 rule). COMEBin writes to
+        # NORMALISE to OUTDIR/bins (see the SemiBin2 rule). COMEBin writes to
         # comebin_res/comebin_res_bins/, but that layout is version-dependent.
         mkdir -p {params.outdir}/bins
         find {params.outdir} -path "{params.outdir}/bins" -prune -o \
@@ -238,7 +238,11 @@ rule run_binette:
             os.path.join(SEMIBIN2_RESULTS, 'bins'),
             os.path.join(COMEBIN_RESULTS, 'bins'),
         ]),
-        contamination_weight = config.binning.binette_contamination_weight
+        contamination_weight = config.binning.binette_contamination_weight,
+        # Must go through params: a shell block can only interpolate input,
+        # output, params, wildcards, threads, resources, config and log. A bare
+        # global such as VAMB_RESULTS raises NameError at runtime.
+        vamb_results = VAMB_RESULTS
     conda:
         os.path.join('..', 'envs', 'binette.yaml')
     log:
@@ -257,10 +261,10 @@ rule run_binette:
 
         # VAMB is the one binner not normalised in its own rule (it predates
         # these). Normalise here so all five inputs are consistent.
-        mkdir -p {VAMB_RESULTS}/bins
-        find {VAMB_RESULTS} -path "{VAMB_RESULTS}/bins" -prune -o \
+        mkdir -p {params.vamb_results}/bins
+        find {params.vamb_results} -path "{params.vamb_results}/bins" -prune -o \
              -name "*.fna" -print -o -name "*.fa" -print 2>/dev/null \
-          | while read f; do ln -sf "$f" "{VAMB_RESULTS}/bins/$(basename "$f")"; done
+          | while read f; do ln -sf "$f" "{params.vamb_results}/bins/$(basename "$f")"; done
 
         # Fail loudly on an empty bin set. Binette accepts an empty --bin_dirs
         # entry without complaint, which would silently reduce the consensus
