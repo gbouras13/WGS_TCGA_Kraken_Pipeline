@@ -156,6 +156,18 @@ rule run_vamb:
         fi
 
         vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {input.bams} -o {params.separator} -m {params.min_contig_length} --minfasta {params.minfasta}
+
+        # Verify before flagging. Four tools in this workflow exit 0 on failure,
+        # and VAMB only writes FASTA at all when a bin clears --minfasta, so an
+        # empty bins/ is a plausible silent outcome rather than a crash. VAMB
+        # splits on the separator, so the fastas sit one level down in
+        # bins/<sample>/.
+        n=$(find {params.outdir}/bins -mindepth 1 -name "*.fna" -print -o -mindepth 1 -name "*.fa" -print 2>/dev/null | wc -l)
+        echo "vamb bins: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: VAMB produced no bins; refusing to write vamb.flag" >> {log}
+            exit 1
+        fi
         touch {output.outtouch}
         
         """

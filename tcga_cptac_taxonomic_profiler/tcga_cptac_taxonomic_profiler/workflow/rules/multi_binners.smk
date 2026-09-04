@@ -62,10 +62,27 @@ rule run_metabat2:
         config.resources.big.cpu
     shell:
         """
-        mkdir -p $(dirname {params.outprefix})
+        # Clear previous bins first. metabat2 names them bin.1.fa, bin.2.fa, ...
+        # so a run producing fewer bins than its predecessor leaves the surplus
+        # behind and the directory ends up holding two runs' output. That is how
+        # SemiBin2 came to hand Binette 30 bins from a superseded catalogue.
+        BINS=$(dirname {params.outprefix})
+        rm -rf "$BINS"
+        mkdir -p "$BINS"
+
         metabat2 --inFile {input.catalogue} --abdFile {input.depth} \
             --outFile {params.outprefix} --minContig {params.min_contig} \
             --numThreads {threads} > {log} 2>&1
+
+        # Verify before flagging. Four tools in this workflow exit 0 on failure,
+        # so a written flag must mean output exists, not that the command
+        # returned.
+        n=$(find "$BINS" -maxdepth 1 -name "*.fa" -print 2>/dev/null | wc -l)
+        echo "metabat2 bins: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: MetaBAT2 produced no bins; refusing to write metabat2.flag" >> {log}
+            exit 1
+        fi
         touch {output.flag}
         """
 
@@ -100,6 +117,10 @@ rule run_concoct:
         config.resources.big.cpu
     shell:
         """
+        # Clear previous bins for the same reason as MetaBAT2: extract_fasta_bins
+        # writes one file per cluster id, so a shorter run leaves the surplus in
+        # place and the directory mixes two runs.
+        rm -rf {params.outdir}/bins
         mkdir -p {params.outdir}/bins
         cd {params.outdir}
         zcat {input.catalogue} > catalogue.fna
@@ -134,6 +155,14 @@ rule run_concoct:
           cp concoct_out_clustering_gt{params.min_contig}.csv clustering_merged.csv
         extract_fasta_bins.py catalogue.fna clustering_merged.csv --output_path bins >> {log} 2>&1
         rm -f catalogue.fna
+
+        # Verify before flagging - see the MetaBAT2 rule.
+        n=$(find bins -maxdepth 1 -name "*.fa" -print 2>/dev/null | wc -l)
+        echo "concoct bins: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: CONCOCT produced no bins; refusing to write concoct.flag" >> {log}
+            exit 1
+        fi
         touch {output.flag}
         """
 
