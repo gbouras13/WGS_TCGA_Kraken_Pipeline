@@ -191,7 +191,17 @@ rule run_semibin2:
         find {params.outdir} -path "{params.outdir}/bins" -prune -o \
              -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
           | while read f; do ln -sf "$f" "{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
-        echo "normalised bins: $(ls {params.outdir}/bins 2>/dev/null | wc -l)" >> {log}
+        # Verify before flagging. run_comebin.sh prints "Data augmentation
+        # exited with status 1" and then EXITS 0, so bash strict mode does not
+        # catch it: the rule ran to completion, normalised nothing, touched the
+        # flag, and snakemake recorded COMPLETED with zero bins produced. Never
+        # trust this wrapper's exit code - check for output instead.
+        n=$(find {params.outdir}/bins -maxdepth 1 -name "*.fa" -print -o -maxdepth 1 -name "*.fna" -print -o -maxdepth 1 -name "*.fasta" -print 2>/dev/null | wc -l)
+        echo "normalised bins: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: COMEBin produced no bins; refusing to write comebin.flag" >> {log}
+            exit 1
+        fi
         touch {output.flag}
         """
 
@@ -245,11 +255,26 @@ rule run_comebin:
                 END  {{ if (h != "" && length(s) >= m) print h ORS s }}' \
           > {params.outdir}/catalogue.fna
         echo "comebin input contigs >= {params.min_contig}: $(grep -c '^>' {params.outdir}/catalogue.fna)" >> {log}
+
+        # COMEBin's -p takes a DIRECTORY and reads every .bam in it. VAMB_BAMS
+        # holds both {{sample}}.bam and {{sample}}_sorted.bam - 60 files for 30
+        # samples - so pointing at it directly makes COMEBin see each sample
+        # twice and abort with
+        #     ValueError: BAM coverage contains repeated groups for retained
+        #     contig S3:NODE_1564_...
+        # Stage exactly the declared sorted inputs into a private directory so
+        # the rule cannot pick up intermediates that happen to sit alongside.
+        rm -rf {params.outdir}/bams
+        mkdir -p {params.outdir}/bams
+        for b in {input.bams}; do ln -sf "$b" "{params.outdir}/bams/$(basename "$b")"; done
+        echo "comebin bam inputs: $(ls {params.outdir}/bams | wc -l)" >> {log}
+
+        # Append, do not truncate: > would wipe the two lines just written.
         run_comebin.sh -a {params.outdir}/catalogue.fna \
             -o {params.outdir} \
-            -p {params.bamdir} \
+            -p {params.outdir}/bams \
             -t {threads} \
-            -d {params.device} > {log} 2>&1
+            -d {params.device} >> {log} 2>&1
         rm -f {params.outdir}/catalogue.fna
 
         # NORMALISE to OUTDIR/bins (see the SemiBin2 rule). COMEBin writes to
