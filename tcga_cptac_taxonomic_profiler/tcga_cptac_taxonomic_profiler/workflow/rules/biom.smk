@@ -24,6 +24,14 @@ The consequence was not confined to this rule: the downstream decontamination
 (W1a in the analysis repo) reads bracken_species.biom, so an empty file silently
 blocked the whole contaminant-filtering step.
 
+It also emits the TAXONOMY that kraken-biom used to attach. The downstream
+decontamination prunes eukaryotes on Rank1 == "k__Eukaryota", and Homo sapiens is
+the second largest taxon in this cohort, so dropping the lineage would have
+silently disabled that step. Bracken's tabular output has no lineage, so it is
+reconstructed from the Kraken2-format .rep files alongside (rank code, taxid and
+two-space indentation per level). Verified: 1,299 Bacteria, 31 Viruses and 16
+Eukaryota across the 1,346 species, with Homo sapiens under Eukaryota/Chordata.
+
 The replacement writes plain TSV via workflow/scripts/bracken_to_matrix.py,
 which uses the python standard library only - no conda environment, so it cannot
 be broken by a re-solve and needs no network on a compute node. It refuses to
@@ -40,9 +48,12 @@ rule bracken_matrix:
         species = expand(os.path.join(BRACKEN, "{sample}.kraken_bracken_species.txt"), sample=SAMPLES)
     output:
         genus = os.path.join(BIOM, "bracken_genus_counts.tsv"),
-        species = os.path.join(BIOM, "bracken_species_counts.tsv")
+        species = os.path.join(BIOM, "bracken_species_counts.tsv"),
+        genus_tax = os.path.join(BIOM, "bracken_genus_taxonomy.tsv"),
+        species_tax = os.path.join(BIOM, "bracken_species_taxonomy.tsv")
     params:
-        script = os.path.join(workflow.basedir, 'scripts', 'bracken_to_matrix.py')
+        script = os.path.join(workflow.basedir, 'scripts', 'bracken_to_matrix.py'),
+        report_dir = KRAKEN
     log:
         os.path.join(LOGS, "biom", "bracken_matrix.log")
     benchmark:
@@ -54,13 +65,17 @@ rule bracken_matrix:
         1
     shell:
         """
-        python3 {params.script} --level genus   --out {output.genus}   {input.genus}   >> {log} 2>&1
-        python3 {params.script} --level species --out {output.species} {input.species} >> {log} 2>&1
+        python3 {params.script} --level genus --out {output.genus} \
+            --tax-out {output.genus_tax} --report-dir {params.report_dir} \
+            {input.genus} >> {log} 2>&1
+        python3 {params.script} --level species --out {output.species} \
+            --tax-out {output.species_tax} --report-dir {params.report_dir} \
+            {input.species} >> {log} 2>&1
 
         # Belt and braces: the rule this replaces wrote a file that existed and
         # was empty, so existence is not the check. Require a header plus at
         # least one data row in each.
-        for f in {output.genus} {output.species}; do
+        for f in {output.genus} {output.species} {output.genus_tax} {output.species_tax}; do
             n=$(wc -l < "$f")
             echo "$f: $n lines" >> {log}
             if [ "$n" -lt 2 ]; then
@@ -75,7 +90,9 @@ rule aggr_biom:
     """Aggregate the Bracken count matrices."""
     input:
         os.path.join(BIOM, "bracken_genus_counts.tsv"),
-        os.path.join(BIOM, "bracken_species_counts.tsv")
+        os.path.join(BIOM, "bracken_species_counts.tsv"),
+        os.path.join(BIOM, "bracken_genus_taxonomy.tsv"),
+        os.path.join(BIOM, "bracken_species_taxonomy.tsv")
     output:
         os.path.join(FLAGS, "aggr_biom.flag")
     resources:

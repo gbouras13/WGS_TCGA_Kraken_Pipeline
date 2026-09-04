@@ -27,8 +27,20 @@ Output (tab-separated, taxa as rows, samples as columns):
 
 Counts are new_est_reads, i.e. Bracken's re-estimated abundance.
 
+TAXONOMY. kraken-biom attached a full lineage (Rank1..Rank7), and the
+downstream decontamination depends on it - it prunes eukaryotes with
+Rank1 == "k__Eukaryota", which matters because Homo sapiens is the second
+largest taxon in this cohort. Bracken's tabular output carries no lineage, so
+--tax-out reconstructs one from the Kraken2-format reports (.rep) that sit
+alongside: rank code in column 4, taxid in column 5, and two spaces of
+indentation per level in column 6.
+
+    taxonomy_id  taxon  domain  phylum  class  order  family  genus  species
+
 Usage:
     bracken_to_matrix.py --level species --out matrix.tsv FILE [FILE ...]
+    bracken_to_matrix.py --level species --out matrix.tsv \
+        --tax-out taxonomy.tsv --report-dir RESULTS/KRAKEN FILE [FILE ...]
 """
 
 import argparse
@@ -70,10 +82,54 @@ def read_one(path):
     return counts
 
 
+# Kraken rank codes we keep, in order. Sub-ranks (D1, G1, ...) are skipped:
+# kraken-biom's Rank1..Rank7 held the primary ranks only.
+PRIMARY_RANKS = [("D", "domain"), ("P", "phylum"), ("C", "class"),
+                 ("O", "order"), ("F", "family"), ("G", "genus"),
+                 ("S", "species")]
+RANK_INDEX = {code: i for i, (code, _) in enumerate(PRIMARY_RANKS)}
+
+
+def parse_report(path, lineage_of):
+    """Accumulate taxid -> lineage from one Kraken2-format report.
+
+    Columns: pct, clade_reads, taxon_reads, rank_code, taxid, indented name.
+    Depth comes from the leading spaces of the name, two per level.
+    """
+    stack = []  # (depth, rank_index, name)
+    with open(path) as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            f = line.rstrip("\n").split("\t")
+            if len(f) < 6:
+                continue
+            rank, taxid, raw = f[3], f[4], f[5]
+            depth = (len(raw) - len(raw.lstrip(" "))) // 2
+            name = raw.strip()
+            while stack and stack[-1][0] >= depth:
+                stack.pop()
+            ri = RANK_INDEX.get(rank)
+            stack.append((depth, ri, name))
+            if ri is None:
+                continue  # sub-rank or root: contributes no lineage column
+            lin = [""] * len(PRIMARY_RANKS)
+            for _, sri, sname in stack:
+                if sri is not None:
+                    lin[sri] = sname
+            prev = lineage_of.get(taxid)
+            # keep the most complete lineage seen for this taxid
+            if prev is None or sum(bool(x) for x in lin) > sum(bool(x) for x in prev[1]):
+                lineage_of[taxid] = (name, lin)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--level", required=True, choices=("species", "genus"))
     ap.add_argument("--out", required=True)
+    ap.add_argument("--tax-out", help="write a taxonomy table here")
+    ap.add_argument("--report-dir",
+                    help="directory of Kraken2-format .rep files (needed for --tax-out)")
     ap.add_argument("files", nargs="+")
     a = ap.parse_args()
 
@@ -115,6 +171,34 @@ def main():
                     nonzero += 1
                 row.append(str(n))
             out.write("%s\t%s\t%s\n" % (taxid_of[taxon], taxon, "\t".join(row)))
+
+    if a.tax_out:
+        if not a.report_dir:
+            sys.exit("ERROR: --tax-out requires --report-dir")
+        suffix = ".kraken_bracken_%s.rep" % (
+            "genuses" if a.level == "genus" else a.level)
+        reports = sorted(
+            os.path.join(a.report_dir, f)
+            for f in os.listdir(a.report_dir) if f.endswith(suffix))
+        if not reports:
+            sys.exit("ERROR: no *%s under %s" % (suffix, a.report_dir))
+        lineage_of = {}
+        for r in reports:
+            parse_report(r, lineage_of)
+        by_name = {n: lin for n, lin in lineage_of.values()}
+        missing = [t for t in taxa if t not in by_name]
+        if missing:
+            sys.exit("ERROR: no lineage for %d of %d taxa (e.g. %s); "
+                     "reports and counts disagree"
+                     % (len(missing), len(taxa), ", ".join(missing[:3])))
+        with open(a.tax_out, "w") as out:
+            out.write("taxonomy_id\ttaxon\t"
+                      + "\t".join(n for _, n in PRIMARY_RANKS) + "\n")
+            for t in taxa:
+                out.write("%s\t%s\t%s\n"
+                          % (taxid_of[t], t, "\t".join(by_name[t])))
+        sys.stderr.write("%s taxonomy: %d taxa from %d reports -> %s\n"
+                         % (a.level, len(taxa), len(reports), a.tax_out))
 
     cells = len(taxa) * len(order)
     sys.stderr.write(
