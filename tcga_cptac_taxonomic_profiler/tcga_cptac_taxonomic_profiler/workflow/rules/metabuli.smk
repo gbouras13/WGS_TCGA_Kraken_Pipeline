@@ -12,7 +12,7 @@ rule run_metabuli:
     was retracted over.
 
     --precise 1 selects the short-read preset. The report is emitted in Kraken2
-    format, so it feeds the existing kraken-biom path unchanged.
+    format, so it feeds the existing report-parsing path unchanged.
 
     CLI (confirmed against metabuli 1.2.0):
       metabuli classify <query file(s)> <DB dir> <out dir> <job ID> [options]
