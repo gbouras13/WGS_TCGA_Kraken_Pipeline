@@ -109,12 +109,21 @@ rule run_concoct:
         # (it writes subprocess bytes straight to sys.stderr). CONCOCT 1.1.0 is
         # unmaintained, so rather than patch a shipped script the coverage table
         # is derived from the jgi depth file already built for MetaBAT2.
-        # depth.txt is: contigName, contigLen, totalAvgDepth, then per-BAM
-        # depth and -var column pairs. Keep contigName plus the depth columns.
-        awk 'BEGIN{{FS=OFS="\t"}}
-             {{ printf "%s", $1; for(i=4;i<=NF;i+=2) printf "%s%s", OFS, $i; printf "\n" }}' \
-            {input.depth} > coverage_table.tsv
-        echo "coverage table: $(wc -l < coverage_table.tsv) rows, $(head -1 coverage_table.tsv | awk '{{print NF-1}}') samples" >> {log}
+        #
+        # depth.txt columns: 1=contigName 2=contigLen 3=totalAvgDepth then
+        # per-BAM (depth, var) pairs. CONCOCT wants contigName + the depth
+        # columns, i.e. 1,4,6,8,...
+        #
+        # Built with cut rather than awk on purpose: snakemake passes shell
+        # blocks through python .format(), so a backslash-t or backslash-n in an
+        # awk program is interpreted THERE and awk receives a literal tab or
+        # newline - which silently breaks the program mid-string. cut defaults to
+        # tab-delimited, so no escape sequences are needed anywhere.
+        NCOL=$(head -1 {input.depth} | awk '{{print NF}}')
+        COLS=1
+        for i in $(seq 4 2 "$NCOL"); do COLS="$COLS,$i"; done
+        cut -f"$COLS" {input.depth} > coverage_table.tsv
+        echo "coverage table: $(wc -l < coverage_table.tsv) rows from $NCOL depth columns; cols=$COLS" >> {log}
 
         # Run on whole contigs. The cut-up step is optional and would require
         # regenerating coverage against the chunk names.
@@ -224,11 +233,16 @@ rule run_comebin:
         # COMEBin has NO minimum-contig-length option -- its -l is the loss
         # function temperature, not a length. So the catalogue is filtered here
         # instead, ensuring COMEBin bins the same contig set as the other four.
+        # Length-filter the catalogue so COMEBin bins the same contig set as the
+        # others. Uses ORS (default newline) rather than a backslash-n literal:
+        # snakemake formats shell blocks through python, so backslash escapes in
+        # an awk program are interpreted there and awk receives a real newline,
+        # which breaks the program mid-string. Same trap that broke CONCOCT.
         zcat {input.catalogue} \
-          | awk -v m={params.min_contig} 'BEGIN{{RS=">";ORS=""}} NR>1{{
-                h=$0; sub(/\n.*/,"",h);
-                seq=$0; sub(/^[^\n]*\n/,"",seq); gsub(/\n/,"",seq);
-                if (length(seq)>=m) print ">"h"\n"seq"\n" }}' \
+          | awk -v m={params.min_contig} '
+                /^>/ {{ if (h != "" && length(s) >= m) print h ORS s; h=$0; s=""; next }}
+                     {{ s = s $0 }}
+                END  {{ if (h != "" && length(s) >= m) print h ORS s }}' \
           > {params.outdir}/catalogue.fna
         echo "comebin input contigs >= {params.min_contig}: $(grep -c '^>' {params.outdir}/catalogue.fna)" >> {log}
         run_comebin.sh -a {params.outdir}/catalogue.fna \
