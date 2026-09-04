@@ -176,6 +176,18 @@ rule run_semibin2:
         config.resources.big.cpu
     shell:
         """
+        # Clear previous output first. This rule is not idempotent otherwise:
+        # an earlier multi_easy_bin attempt left samples/S*.fa behind, the
+        # normalisation below picked those up instead of the real output, and
+        # Binette was handed 30 stale bins whose contigs carried no S<n>: prefix
+        # and predated the 1500 bp catalogue. It failed with "41504 contigs from
+        # the input bins were not found in the contigs file".
+        if [ -d {params.outdir} ]; then
+            rm -rf {params.outdir}.prev
+            mv {params.outdir} {params.outdir}.prev
+        fi
+        mkdir -p {params.outdir}
+
         SemiBin2 single_easy_bin \
             --input-fasta {input.catalogue} \
             --input-bam {input.bams} \
@@ -183,15 +195,26 @@ rule run_semibin2:
             --min-len {params.min_contig} \
             --threads {threads} > {log} 2>&1
 
-        # NORMALISE: multi_easy_bin writes per-sample bins to
-        # OUTDIR/samples/SAMPLE/output_bins/, not a flat bins/ directory.
-        # Binette takes explicit --bin_dirs, so every binner is normalised to
-        # OUTDIR/bins to remove any dependence on a tool's internal layout.
+        # NORMALISE to OUTDIR/bins. single_easy_bin writes output_bins/ and its
+        # bins are GZIPPED (SemiBin_0.fa.gz), which the old *.fa / *.fna /
+        # *.fasta glob silently missed - the reason the stale files above were
+        # picked up in the first place. Decompress into bins/ so the contents do
+        # not depend on whether the caller can read gzip.
         mkdir -p {params.outdir}/bins
-        find {params.outdir} -path "{params.outdir}/bins" -prune -o \
-             -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
-          | while read f; do ln -sf "$f" "{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
-        echo "normalised bins: $(ls {params.outdir}/bins 2>/dev/null | wc -l)" >> {log}
+        find {params.outdir} -path "{params.outdir}/bins" -prune -o -type f \
+             -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print \
+             -o -name "*.fa.gz" -print -o -name "*.fna.gz" -print -o -name "*.fasta.gz" -print 2>/dev/null \
+          | while read f; do
+                b=$(basename "$f"); b=${{b%.gz}}
+                t="{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$b"
+                case "$f" in *.gz) zcat "$f" > "$t" ;; *) cp -f "$f" "$t" ;; esac
+            done
+        n=$(find {params.outdir}/bins -maxdepth 1 -name "*.fa" -print -o -maxdepth 1 -name "*.fna" -print -o -maxdepth 1 -name "*.fasta" -print 2>/dev/null | wc -l)
+        echo "normalised bins: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: SemiBin2 produced no bins; refusing to write semibin2.flag" >> {log}
+            exit 1
+        fi
         touch {output.flag}
         """
 
@@ -381,5 +404,17 @@ rule run_binette:
             --contamination_weight {params.contamination_weight} \
             --threads {threads} >> {log} 2>&1
         rm -f {params.outdir}/catalogue.fna
+
+        # Binette exits 0 even when it aborts. It failed here with
+        #   ValueError: 41504 contigs from the input bins were not found in the
+        #   contigs file
+        # printed a traceback, returned 0, and this rule touched the flag over
+        # an output directory containing nothing but temporary_files. Check for
+        # the real output instead of trusting the exit code.
+        if [ ! -s {params.outdir}/final_bins_quality_reports.tsv ]; then
+            echo "ERROR: binette produced no final_bins_quality_reports.tsv" >> {log}
+            ls -la {params.outdir} >> {log} 2>&1
+            exit 1
+        fi
         touch {output.flag}
         """
