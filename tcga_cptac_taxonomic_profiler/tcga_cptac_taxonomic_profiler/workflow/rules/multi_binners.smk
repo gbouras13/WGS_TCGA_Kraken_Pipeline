@@ -191,17 +191,7 @@ rule run_semibin2:
         find {params.outdir} -path "{params.outdir}/bins" -prune -o \
              -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
           | while read f; do ln -sf "$f" "{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
-        # Verify before flagging. run_comebin.sh prints "Data augmentation
-        # exited with status 1" and then EXITS 0, so bash strict mode does not
-        # catch it: the rule ran to completion, normalised nothing, touched the
-        # flag, and snakemake recorded COMPLETED with zero bins produced. Never
-        # trust this wrapper's exit code - check for output instead.
-        n=$(find {params.outdir}/bins -maxdepth 1 -name "*.fa" -print -o -maxdepth 1 -name "*.fna" -print -o -maxdepth 1 -name "*.fasta" -print 2>/dev/null | wc -l)
-        echo "normalised bins: $n" >> {log}
-        if [ "$n" -eq 0 ]; then
-            echo "ERROR: COMEBin produced no bins; refusing to write comebin.flag" >> {log}
-            exit 1
-        fi
+        echo "normalised bins: $(ls {params.outdir}/bins 2>/dev/null | wc -l)" >> {log}
         touch {output.flag}
         """
 
@@ -283,7 +273,17 @@ rule run_comebin:
         find {params.outdir} -path "{params.outdir}/bins" -prune -o \
              -name "*.fa" -print -o -name "*.fna" -print -o -name "*.fasta" -print 2>/dev/null \
           | while read f; do ln -sf "$f" "{params.outdir}/bins/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
-        echo "normalised bins: $(ls {params.outdir}/bins 2>/dev/null | wc -l)" >> {log}
+        # Verify before flagging. run_comebin.sh prints "Data augmentation
+        # exited with status 1" and then EXITS 0, so bash strict mode does not
+        # catch it: the rule ran to completion, normalised nothing, touched the
+        # flag, and snakemake recorded COMPLETED with zero bins produced. Never
+        # trust this wrapper's exit code - check for output instead.
+        n=$(find {params.outdir}/bins -maxdepth 1 -name "*.fa" -print -o -maxdepth 1 -name "*.fna" -print -o -maxdepth 1 -name "*.fasta" -print 2>/dev/null | wc -l)
+        echo "normalised bins: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: COMEBin produced no bins; refusing to write comebin.flag" >> {log}
+            exit 1
+        fi
         touch {output.flag}
         """
 
