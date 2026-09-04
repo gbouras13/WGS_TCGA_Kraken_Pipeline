@@ -132,3 +132,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Local project assessment, not for the public repo
+HANDOVER.md
