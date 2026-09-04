@@ -140,6 +140,21 @@ rule run_vamb:
         # In the examples below, the option --minfasta 200000 is set, meaning that all bins with a size of 200 kbp or more will be output as FASTA files.
         """
 
+        # VAMB 4.x refuses to write into an existing --outdir:
+        #     if out_dir.exists(): raise FileExistsError(out_dir)
+        # so this rule was not re-runnable. Snakemake wants to re-run it whenever
+        # vamb.flag is invalidated - which is exactly what happened when
+        # min_contig_length went 1000 -> 1500 - and it would have died instantly
+        # on the FileExistsError, with the real reason buried in a traceback.
+        #
+        # Roll the previous run aside rather than deleting it. VAMB output is
+        # ~260 MB, so keeping one generation is cheap insurance against throwing
+        # away a good bin set on an accidental re-run.
+        if [ -d {params.outdir} ]; then
+            rm -rf {params.outdir}.prev
+            mv {params.outdir} {params.outdir}.prev
+        fi
+
         vamb --outdir {params.outdir} --fasta {input.catalogue} --bamfiles {input.bams} -o {params.separator} -m {params.min_contig_length} --minfasta {params.minfasta}
         touch {output.outtouch}
         
