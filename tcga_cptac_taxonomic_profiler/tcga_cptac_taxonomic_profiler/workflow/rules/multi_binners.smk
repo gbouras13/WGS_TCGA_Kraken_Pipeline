@@ -78,7 +78,9 @@ rule run_concoct:
     """
     input:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
-        bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
+        # Reuse the jgi depth table rather than concoct_coverage_table.py, which
+        # is broken on modern python (see the shell block).
+        depth = os.path.join(METABAT2_RESULTS, 'depth.txt')
     output:
         flag = os.path.join(FLAGS, 'concoct.flag')
     params:
@@ -101,20 +103,47 @@ rule run_concoct:
         mkdir -p {params.outdir}/bins
         cd {params.outdir}
         zcat {input.catalogue} > catalogue.fna
-        cut_up_fasta.py catalogue.fna -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa 2>> {log}
-        concoct_coverage_table.py contigs_10K.bed {input.bams} > coverage_table.tsv 2>> {log}
-        concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv \
+
+        # concoct_coverage_table.py is broken under modern python:
+        #   TypeError: write() argument must be str, not bytes
+        # (it writes subprocess bytes straight to sys.stderr). CONCOCT 1.1.0 is
+        # unmaintained, so rather than patch a shipped script the coverage table
+        # is derived from the jgi depth file already built for MetaBAT2.
+        # depth.txt is: contigName, contigLen, totalAvgDepth, then per-BAM
+        # depth and -var column pairs. Keep contigName plus the depth columns.
+        awk 'BEGIN{{FS=OFS="\t"}}
+             {{ printf "%s", $1; for(i=4;i<=NF;i+=2) printf "%s%s", OFS, $i; printf "\n" }}' \
+            {input.depth} > coverage_table.tsv
+        echo "coverage table: $(wc -l < coverage_table.tsv) rows, $(head -1 coverage_table.tsv | awk '{{print NF-1}}') samples" >> {log}
+
+        # Run on whole contigs. The cut-up step is optional and would require
+        # regenerating coverage against the chunk names.
+        concoct --composition_file catalogue.fna --coverage_file coverage_table.tsv \
             -l {params.min_contig} \
             -b concoct_out --threads {threads} >> {log} 2>&1
-        merge_cutup_clustering.py concoct_out_clustering_gt1000.csv > clustering_merged.csv 2>> {log}
+        merge_cutup_clustering.py concoct_out_clustering_gt{params.min_contig}.csv > clustering_merged.csv 2>> {log} || \
+          cp concoct_out_clustering_gt{params.min_contig}.csv clustering_merged.csv
         extract_fasta_bins.py catalogue.fna clustering_merged.csv --output_path bins >> {log} 2>&1
-        rm -f catalogue.fna contigs_10K.fa
+        rm -f catalogue.fna
         touch {output.flag}
         """
 
 
 rule run_semibin2:
-    """SemiBin2 multi-sample mode. Among the best performers in recent benchmarks."""
+    """SemiBin2 in co-assembly mode. Among the best performers in recent benchmarks.
+
+    Uses single_easy_bin, NOT multi_easy_bin. multi_easy_bin splits the
+    concatenated catalogue back into per-sample sub-assemblies on the separator,
+    then trains per sample -- and in this cohort some samples retain too few
+    contigs after the 1500 bp filter, which crashes training with
+
+        ValueError: operands could not be broadcast together with shapes (0,30)
+
+    That will only get worse on the full 336, where many blood normals carry
+    almost no microbial sequence. single_easy_bin treats the catalogue as one
+    co-assembly with N BAMs, which is exactly how VAMB, MetaBAT2 and CONCOCT
+    treat it -- so all four now bin the same object as well as the same contigs.
+    """
     input:
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz'),
         bams = expand(os.path.join(VAMB_BAMS, '{sample}_sorted.bam'), sample=SAMPLES)
@@ -138,11 +167,10 @@ rule run_semibin2:
         config.resources.big.cpu
     shell:
         """
-        SemiBin2 multi_easy_bin \
+        SemiBin2 single_easy_bin \
             --input-fasta {input.catalogue} \
             --input-bam {input.bams} \
             --output {params.outdir} \
-            --separator {params.separator} \
             --min-len {params.min_contig} \
             --threads {threads} > {log} 2>&1
 
