@@ -287,7 +287,7 @@ rule run_binette:
         # writes samples/{sample}/output_bins/, and COMEBin's nesting is
         # version-dependent).
         bin_dirs = " ".join([
-            os.path.join(VAMB_RESULTS, 'bins'),
+            os.path.join(VAMB_RESULTS, 'bins_flat'),
             os.path.join(METABAT2_RESULTS, 'bins'),
             os.path.join(CONCOCT_RESULTS, 'bins'),
             os.path.join(SEMIBIN2_RESULTS, 'bins'),
@@ -315,17 +315,32 @@ rule run_binette:
         mkdir -p {params.outdir}
 
         # VAMB is the one binner not normalised in its own rule (it predates
-        # these). Normalise here so all five inputs are consistent.
-        mkdir -p {params.vamb_results}/bins
-        find {params.vamb_results} -path "{params.vamb_results}/bins" -prune -o \
-             -name "*.fna" -print -o -name "*.fa" -print 2>/dev/null \
-          | while read f; do ln -sf "$f" "{params.vamb_results}/bins/$(basename "$f")"; done
+        # these), and it is also the only one whose native layout is NOT flat:
+        # it writes bins/<sample>/*.fna, because the samples_with_bins
+        # checkpoint globs bins/*/ for per-sample directories.
+        #
+        # The previous version of this block pruned bins/ and searched the rest
+        # of VAMB_RESULTS - i.e. it excluded the only directory containing any
+        # fasta, and silently linked nothing. Binette then received a directory
+        # holding 21 sub-directories and no genomes.
+        #
+        # Flatten into a SEPARATE bins_flat/ so the checkpoint's bins/*/ layout
+        # is left intact. The path-hash prefix matches what every other binner
+        # here does; VAMB's names happened to be unique across all 30 samples in
+        # the subset test (145 files, 145 distinct basenames), but flattening a
+        # per-sample tree on that assumption is not worth the risk.
+        mkdir -p {params.vamb_results}/bins_flat
+        find {params.vamb_results}/bins -mindepth 2 -name "*.fna" -print -o -name "*.fa" -print 2>/dev/null \
+          | while read f; do ln -sf "$f" "{params.vamb_results}/bins_flat/$(echo "$f" | md5sum | cut -c1-8)_$(basename "$f")"; done
 
         # Fail loudly on an empty bin set. Binette accepts an empty --bin_dirs
         # entry without complaint, which would silently reduce the consensus
         # from five binners to fewer and be very hard to notice afterwards.
+        # Count FASTA FILES, not directory entries. `ls | wc -l` counted
+        # VAMB's 21 per-sample sub-directories as 21 bins and let an
+        # effectively empty bin set through the check it exists to prevent.
         for d in {params.bin_dirs}; do
-            n=$(ls "$d" 2>/dev/null | wc -l)
+            n=$(find "$d" -maxdepth 1 -name "*.fa" -print -o -maxdepth 1 -name "*.fna" -print -o -maxdepth 1 -name "*.fasta" -print 2>/dev/null | wc -l)
             echo "bin_dir $d -> $n bins" >> {log}
             if [ "$n" -eq 0 ]; then
                 echo "ERROR: $d contains no bins; refusing to run a degraded consensus" >> {log}
