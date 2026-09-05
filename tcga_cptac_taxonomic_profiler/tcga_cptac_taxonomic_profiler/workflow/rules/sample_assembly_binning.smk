@@ -291,14 +291,24 @@ rule gtdbtk_ani:
     input:
         samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag'),
-        checkm2 = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv")
+        checkm2 = os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv"),
+        # ALL_MAGS is what --genome_dir reads, and stage_hq_med_mags rewrites it
+        # from the Binette consensus. Without this dependency the two race: GTDB-Tk
+        # can classify the legacy per-sample bins, or have the directory replaced
+        # underneath it mid-run.
+        all_mags = os.path.join(FLAGS, 'all_mags.flag')
     output:
         out_tsv = os.path.join(GTDB_MASH_OUTDIR, 'gtdbtk.ani_summary.tsv') 
     threads:
         config.resources.big.cpu
     resources:
         mem_mb = config.resources.big.mem,
-        time = config.resources.med.time
+        time = config.resources.med.time,
+        # Without this snakemake hands the job node-local scratch. gtdbtk ani_rep
+        # sketches 143,614 reference genomes and ran out of space on
+        # /mnt/tmp_local with disk_mb=1000 - the same failure that killed 17
+        # SingleM jobs (RERUN.md).
+        tmpdir = config.tmpdir
     conda:
         os.path.join("..", "envs", "gtdbtk.yaml")
     benchmark:
@@ -322,14 +332,16 @@ rule gtdbtk_classify_wf:
     input:
         samples_with_bins_f,
         outtouch = os.path.join(FLAGS, 'checkm2.flag'),
-        out_tsv = os.path.join(GTDB_MASH_OUTDIR, 'gtdbtk.ani_summary.tsv') 
+        out_tsv = os.path.join(GTDB_MASH_OUTDIR, 'gtdbtk.ani_summary.tsv'),
+        all_mags = os.path.join(FLAGS, 'all_mags.flag')
     output:
         outtouch = os.path.join(FLAGS, 'gtdb.flag')
     threads:
         config.resources.big.cpu
     resources:
         mem_mb = config.resources.big.mem,
-        time = config.resources.med.time
+        time = config.resources.med.time,
+        tmpdir = config.tmpdir
     conda:
         os.path.join("..", "envs", "gtdbtk.yaml")
     benchmark:
