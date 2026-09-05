@@ -416,6 +416,49 @@ a follow-up.
    mirroring the sylph/metabuli stages.
 5. Pre-build the env on the login node before submitting.
 
+## Traps that cost a submission on the full run
+
+Both of these passed every test on the 30-sample subset and failed on the full
+336-sample run. Neither is specific to this project.
+
+**Pre-build environments against the target set you will actually run.**
+`--conda-create-envs-only` only creates environments for rules in the DAG it is
+given. The subset runs had targeted individual flags and so never reached the
+CheckM2 or GTDB-Tk rules; their environments were never created. The full run's
+driver then reached CheckM2 on a compute node and died:
+
+    CondaHTTPError: HTTP 000 CONNECTION FAILED for repo.anaconda.com
+    Creating conda environment .../envs/checkm2.yaml
+
+Compute nodes have no internet. Worse, SLURM recorded the driver as
+`COMPLETED 0:0` — the scheduler's state said nothing was wrong, and only the
+job's stderr showed the failure.
+
+**Declare a rule's real product as an output, not just its flag.** A rule that
+ends in `touch flag` and declares only that flag hides its actual outputs from
+the DAG. When a downstream rule takes one of those files as input, snakemake
+sees a file no rule produces and the entire DAG build fails:
+
+    MissingInputException in rule stage_hq_med_mags
+        affected files: .../final_bins_quality_reports.tsv
+
+This is invisible while a previous run has left the file on disk, which is why
+it survived every subset test. It appears only against a clean output directory
+— that is, on the real run.
+
+**Conda resolves GPU packages against the BUILD host.** An environment needing
+CUDA pytorch, solved on a login node whose driver is older than the compute
+nodes', silently gets a CPU build: no error, no warning, just a job that is
+inexplicably slow later. Environments cannot be built on compute nodes (no
+internet), so set `CONDA_OVERRIDE_CUDA` to the version the job's hardware
+supports, and verify afterwards rather than assuming:
+
+    <env>/bin/python -c "import torch; print(torch.version.cuda, torch.cuda.is_available())"
+
+Related: on this cluster `-p a100cpu` is the CPU-only side of the A100 nodes
+(its QOS sets `gres/gpu=0`), so a GPU request there is rejected with
+`QOSMaxGRESPerNode`. GPU work belongs on `a100`, `newa100` or `singlegpu`.
+
 ## Stage sequence
 
 Each stage takes the previous stage's output directory as `--input`. Add
