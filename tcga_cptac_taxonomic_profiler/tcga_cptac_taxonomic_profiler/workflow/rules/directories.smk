@@ -62,6 +62,7 @@ GTDB_MASH_OUTDIR = os.path.join(GTDB_OUTDIR, 'MASH')
 
 # BAKTA
 BAKTA = os.path.join(RESULTS, 'BAKTA')
+BAKTFOLD = os.path.join(RESULTS, 'BAKTFOLD')
 
 # PHISPY
 PHISPY = os.path.join(RESULTS, 'PHISPY')

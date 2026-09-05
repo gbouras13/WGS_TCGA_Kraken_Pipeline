@@ -447,3 +447,55 @@ rule run_binette:
         fi
         touch {output.flag}
         """
+
+
+rule stage_hq_med_mags:
+    """Carry the medium- and high-quality Binette bins into ALL_MAGS.
+
+    This is the hand-off from binning to annotation, and it did not previously
+    exist. ALL_MAGS was populated by get_hq_bins from the older per-sample
+    CheckM2/VAMB path, so once Binette became the consensus binner the
+    annotation workflow (bakta, baktfold, PhiSpy) had no input at all.
+
+    Thresholds come from config so they are visible and adjustable:
+    completeness >= binning.mag_min_completeness and contamination <
+    binning.mag_max_contamination. Defaults 50 and 10 - the usual medium
+    boundary, which also admits everything high. On the 30-sample subset that is
+    108 of 116 bins (77 high, 31 medium).
+    """
+    input:
+        flag = os.path.join(FLAGS, 'binette.flag'),
+        report = os.path.join(BINETTE_RESULTS, 'final_bins_quality_reports.tsv')
+    output:
+        flag = os.path.join(FLAGS, 'all_mags.flag')
+    params:
+        script = os.path.join(workflow.basedir, 'scripts', 'select_hq_med_mags.py'),
+        bin_dir = os.path.join(BINETTE_RESULTS, 'final_bins'),
+        out_dir = ALL_MAGS,
+        min_comp = config.binning.mag_min_completeness,
+        max_cont = config.binning.mag_max_contamination
+    log:
+        os.path.join(LOGS, 'binners', 'stage_hq_med_mags.log')
+    resources:
+        mem_mb = config.resources.sml.mem,
+        time = config.resources.sml.time
+    threads:
+        1
+    shell:
+        """
+        rm -rf {params.out_dir}
+        python3 {params.script} \
+            --report {input.report} \
+            --bin-dir {params.bin_dir} \
+            --out-dir {params.out_dir} \
+            --min-completeness {params.min_comp} \
+            --max-contamination {params.max_cont} >> {log} 2>&1
+
+        n=$(find {params.out_dir} -maxdepth 1 -name "*.fna" -print 2>/dev/null | wc -l)
+        echo "staged MAGs: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: no MAGs staged; refusing to write all_mags.flag" >> {log}
+            exit 1
+        fi
+        touch {output.flag}
+        """

@@ -1,0 +1,14 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # baktfold annotates the hypothetical proteins bakta leaves unnamed, by
+  # converting them to 3Di tokens with ProstT5 and searching structures with
+  # foldseek. It consumes bakta's JSON output, so run_bakta must declare the
+  # .json - see rules/bakta.smk.
+  #
+  # Not pinned to a minor version: it is new enough that the useful direction is
+  # forward. Record the built version from the environment, not from this file
+  # (see RERUN.md on environments re-solving).
+  - baktfold

@@ -55,6 +55,8 @@ SampleAssemblyBins = [
     os.path.join(FLAGS, 'semibin2.flag'),
     os.path.join(FLAGS, 'comebin.flag'),
     os.path.join(FLAGS, 'binette.flag'),
+    # hands the medium/high-quality consensus bins to the annotation workflow
+    os.path.join(FLAGS, 'all_mags.flag'),
     os.path.join(FLAGS, 'checkm2.flag'),
     os.path.join(CHECKM2_RESULTS, "combined_check2_quality_report_hq.tsv"),
     os.path.join(FLAGS, 'gtdb.flag')

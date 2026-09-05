@@ -43,6 +43,10 @@ databases:
     gtdb: '/hpcfs/users/a1667917/GTDB/release226/'
     # Existing 84 GB install, schema v6.0 (2025-02-24), requires bakta >=1.11
     bakta: '/home/a1667917/a1667917/bakta_db/db'
+    # baktfold structural annotation database (ProstT5 + foldseek indices for
+    # SwissProt/AFDB/PDB/CATH). Install on the LOGIN node - compute nodes have
+    # no internet:  baktfold database -d <this path>
+    baktfold: '/hpcfs/users/a1667917/metagenomics_dbs/baktfold_db'
     # SingleM is on GTDB R232, not R226 like Metabuli and GTDB-Tk. singlem
     # >=0.21.4 is required (earlier versions treat DIAMOND's stderr as fatal)
     # and hard-rejects the R226 metapackage. SingleM contributes a microbial
@@ -92,6 +96,16 @@ deacon:
 
 
 binning:
+    # Which Binette consensus bins are carried into annotation (ALL_MAGS).
+    # The usual convention, and MIMAG's quantitative half:
+    #   high    completeness >  90, contamination <  5
+    #   medium  completeness >= 50, contamination < 10
+    # Only the quantitative criteria are applied at this point; the rRNA/tRNA
+    # half of MIMAG needs bakta, which runs downstream, and mimag.py combines
+    # them. On the 30-sample subset this selects 108 of 116 bins (77 high,
+    # 31 medium).
+    mag_min_completeness: 50
+    mag_max_contamination: 10
     # 1500, not 1000. MetaBAT2 refuses outright below 1500
     #   "[Error!] Contig length < 1500 is not allowed to be used for binning."
     # and SemiBin2's internal default of 2500 left it with an empty matrix
