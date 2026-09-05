@@ -3,12 +3,28 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  # baktfold annotates the hypothetical proteins bakta leaves unnamed, by
-  # converting them to 3Di tokens with ProstT5 and searching structures with
-  # foldseek. It consumes bakta's JSON output, so run_bakta must declare the
-  # .json - see rules/bakta.smk.
+  # baktfold annotates the hypothetical proteins bakta leaves unnamed: it
+  # converts them to 3Di tokens with the ProstT5 protein language model and
+  # searches structures with foldseek. It consumes bakta's JSON, so run_bakta
+  # declares the .json - see rules/bakta.smk.
   #
-  # Not pinned to a minor version: it is new enough that the useful direction is
-  # forward. Record the built version from the environment, not from this file
-  # (see RERUN.md on environments re-solving).
+  # *** BUILD THIS ENVIRONMENT WITH CONDA_OVERRIDE_CUDA SET. ***
+  #
+  #     CONDA_OVERRIDE_CUDA=12.2 <cli> annotate ... --conda-create-envs-only
+  #
+  # Conda resolves the pytorch variant against the BUILD host's __cuda virtual
+  # package. The login node reports __cuda=11.6 (driver 510.47.03) while the
+  # GPU compute nodes run driver 535 (see the CUDAcompat/12.2-535.161.08
+  # module), and current pytorch CUDA builds need 11.8 or newer. Solved on the
+  # login node without the override, conda silently falls back to
+  #
+  #     pytorch-2.13.0-cpu_mkl_py314   -> zero cuda/nvidia packages
+  #
+  # which is not an error, produces no warning, and leaves ProstT5 running on
+  # CPU against an 807 GB foldseek database. Envs cannot be built on the compute
+  # nodes instead - they have no internet - so the override is the only way to
+  # solve for the hardware the job will actually run on.
+  #
+  # Verify after building, do not assume:
+  #     <env>/bin/python -c "import torch; print(torch.version.cuda)"
   - baktfold
