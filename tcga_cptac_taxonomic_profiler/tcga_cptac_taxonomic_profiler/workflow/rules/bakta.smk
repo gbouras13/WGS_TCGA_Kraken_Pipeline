@@ -27,7 +27,17 @@ rule run_bakta:
         db=config.databases.bakta,
     shell:
         """
-        bakta --db {params.db} --output {params.outdir} -f -t {threads}  {input.mag}
+        # Redirect to {log}. Without this the rule declared a log it never
+        # wrote to, and bakta's own errors landed only in the scheduler's
+        # stderr - which is how a pyhmmer incompatibility looked like silent
+        # failure across 127 of 128 MAGs.
+        bakta --db {params.db} --output {params.outdir} -f -t {threads} {input.mag} >> {log} 2>&1
+
+        # Verify rather than trust the exit code.
+        if [ ! -s {output.json} ]; then
+            echo "ERROR: bakta produced no JSON for {wildcards.mag}" >> {log}
+            exit 1
+        fi
         """
 
 rule run_baktfold:

@@ -21,7 +21,8 @@ rule phispy:
         os.path.join(LOGS, 'phispy', "{mag}.log")
     shell:
         """
-        phispy {input.gbk} --output_choice 512 -o {params.outdir} --phage_genes 0
+        # Redirect to {log} - the rule declared one and never wrote to it.
+        phispy {input.gbk} --output_choice 512 -o {params.outdir} --phage_genes 0 >> {log} 2>&1
         """
 
 
