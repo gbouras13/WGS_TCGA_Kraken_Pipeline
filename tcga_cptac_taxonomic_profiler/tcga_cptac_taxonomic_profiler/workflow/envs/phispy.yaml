@@ -4,4 +4,23 @@ channels:
   - defaults
 dependencies:
   - phispy =4.2.21
-
+  # PhiSpy 4.2.21 (2022) imports pkg_resources, which ships with setuptools and
+  # was REMOVED in setuptools 81. The environment solved to setuptools 84, so
+  # every invocation died before doing any work:
+  #
+  #     File ".../PhiSpyModules/makeTest.py", line 5, in <module>
+  #         import pkg_resources
+  #     ModuleNotFoundError: No module named 'pkg_resources'
+  #
+  # This is not just an import to satisfy: classification.py and
+  # helper_functions.py use pkg_resources.resource_stream and resource_exists to
+  # read PhiSpy's own bundled training data, so there is no shim - it needs the
+  # real thing.
+  #
+  # Pinned below 81 rather than to an exact version: 80.10.2 is current on
+  # conda-forge and the constraint states the actual requirement, so it keeps
+  # working as long as the 80.x line does.
+  #
+  # Same shape as the spades (python <3.12) and concoct (python <3.13) pins in
+  # RERUN.md: a 2019-2022 tool outliving the environment it was written for.
+  - setuptools <81
