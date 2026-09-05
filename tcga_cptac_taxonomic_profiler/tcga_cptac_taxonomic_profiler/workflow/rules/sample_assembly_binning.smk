@@ -323,8 +323,13 @@ rule gtdbtk_ani:
         """
         export GTDBTK_DATA_PATH={params.GTDBTK_DATA_PATH}
 
-        gtdbtk ani_rep --genome_dir {params.combined_mag_directory} --out_dir {params.mashdir} --cpus {threads}
+        gtdbtk ani_rep --genome_dir {params.combined_mag_directory} \
+            --out_dir {params.mashdir} --cpus {threads} >> {log} 2>&1
 
+        if [ ! -s {output.out_tsv} ]; then
+            echo "ERROR: gtdbtk ani_rep produced no ani_summary" >> {log}
+            exit 1
+        fi
         """
 
 
@@ -357,7 +362,27 @@ rule gtdbtk_classify_wf:
         """
         export GTDBTK_DATA_PATH={params.GTDBTK_DATA_PATH}
 
-        gtdbtk classify_wf --genome_dir {params.combined_mag_directory}  --out_dir {params.outdir} --cpus {threads}   --mash_db {params.mashdir}  --force
+        # --mash_db is NOT a classify_wf argument in GTDB-Tk 2.6.1. It was
+        # dropped when 2.4 replaced mash with skani for the ANI screen, and
+        # passing it made gtdbtk print a usage error and stop - while still
+        # returning 0, so the rule touched its flag and snakemake recorded the
+        # job COMPLETED in ten seconds having classified nothing:
+        #
+        #     gtdbtk: error: unrecognized arguments: --mash_db .../MASH
+        #     Finished job 0.  1 of 1 steps (100%) done
+        #
+        # The ANI screen classify_wf performs is its own; it does not consume the
+        # ani_rep output. Use --skip_ani_screen to skip it deliberately.
+        gtdbtk classify_wf --genome_dir {params.combined_mag_directory} \
+            --out_dir {params.outdir} --cpus {threads} --force >> {log} 2>&1
 
+        # Verify rather than trust the exit code. Five tools in this workflow
+        # return 0 on failure; gtdbtk is the fifth.
+        n=$(find {params.outdir} -name "*summary.tsv" -size +0 2>/dev/null | wc -l)
+        echo "gtdbtk summary tables written: $n" >> {log}
+        if [ "$n" -eq 0 ]; then
+            echo "ERROR: gtdbtk classify_wf produced no summary table" >> {log}
+            exit 1
+        fi
         touch {output.outtouch}
         """
