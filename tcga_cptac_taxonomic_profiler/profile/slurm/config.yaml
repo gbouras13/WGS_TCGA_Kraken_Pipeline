@@ -18,7 +18,15 @@ default-resources:
   # run_baktfold sets it (see config.yaml: resources.gpu). The default is a
   # no-op flag rather than an empty string, because an empty substitution would
   # leave a bare gap that some sbatch versions parse as a missing argument.
-  - slurm_extra=--nice=0
+  #
+  # THE QUOTES ARE LOAD-BEARING. Snakemake evaluates default-resources values as
+  # PYTHON EXPRESSIONS, so a bare --nice=0 raises
+  #     WorkflowError: Failed to evaluate default resources value '--nice=0'
+  #     SyntaxError: invalid syntax
+  # and takes down every rule that does not override the value. It surfaces only
+  # when a rule is actually submitted, so the DAG builds fine and the driver dies
+  # seconds later.
+  - slurm_extra="--nice=0"
 jobs: 50
 latency-wait: 30
 local-cores: 8
