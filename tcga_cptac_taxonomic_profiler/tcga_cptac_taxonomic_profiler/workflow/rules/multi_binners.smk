@@ -355,7 +355,13 @@ rule run_binette:
         comebin = os.path.join(FLAGS, 'comebin.flag'),
         catalogue = os.path.join(VAMB_CATALOGUE, 'catalogue.fna.gz')
     output:
-        flag = os.path.join(FLAGS, 'binette.flag')
+        flag = os.path.join(FLAGS, 'binette.flag'),
+        # Declared so stage_hq_med_mags can depend on it. Without this snakemake
+        # sees the report as a file no rule produces and the whole DAG build
+        # fails with MissingInputException - which it does not do while a
+        # previous run has left the file lying there, so it only surfaces on a
+        # clean output directory.
+        report = os.path.join(BINETTE_RESULTS, 'final_bins_quality_reports.tsv')
     params:
         outdir = BINETTE_RESULTS,
         checkm2_db = config.databases.checkm2,
@@ -440,7 +446,7 @@ rule run_binette:
         # printed a traceback, returned 0, and this rule touched the flag over
         # an output directory containing nothing but temporary_files. Check for
         # the real output instead of trusting the exit code.
-        if [ ! -s {params.outdir}/final_bins_quality_reports.tsv ]; then
+        if [ ! -s {output.report} ]; then
             echo "ERROR: binette produced no final_bins_quality_reports.tsv" >> {log}
             ls -la {params.outdir} >> {log} 2>&1
             exit 1
