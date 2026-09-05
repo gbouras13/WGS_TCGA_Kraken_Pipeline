@@ -11,3 +11,14 @@ dependencies:
   # and a newer bakta may require schema 7 -- which would mean another 84 GB
   # download. 1.11.x is the range the installed database explicitly supports.
   - bakta >=1.11,<1.12
+  # pyhmmer held below 0.12. bakta 1.11.4 treats pyhmmer hit names as bytes:
+  #
+  #     orf = orf_by_aa_digest[hit.name.decode()]
+  #     AttributeError: 'str' object has no attribute 'decode'
+  #
+  # pyhmmer returns str from 0.12 onwards, so every bakta run dies partway
+  # through - in orf.detect_spurious or cds.predict_pfam depending on the
+  # genome. The bakta conda package declares no pyhmmer bound at all, so the
+  # solver takes the newest and the environment is broken by default. 127 of
+  # 128 MAGs failed this way on 2026-09-05 before the pin.
+  - pyhmmer <0.12
