@@ -9,9 +9,16 @@ cluster:
     --parsable
     --output=logs/{rule}/{jobid}.out
     --error=logs/{rule}/{jobid}.err
+    {resources.slurm_extra}
 default-resources:
   - mem_mb=4000
   - time=1320
+  # Pass-through for per-rule sbatch flags. This submission line has no
+  # --partition and no --gres, so a rule needing a GPU could not ask for one.
+  # run_baktfold sets it (see config.yaml: resources.gpu). The default is a
+  # no-op flag rather than an empty string, because an empty substitution would
+  # leave a bare gap that some sbatch versions parse as a missing argument.
+  - slurm_extra=--nice=0
 jobs: 50
 latency-wait: 30
 local-cores: 8

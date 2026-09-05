@@ -23,7 +23,21 @@ resources:
         mem: 4000
         cpu: 1
         time: 5        # Max runtime in minutes for small jobs (used for grouped jobs; relevant for scheduler)
-    gpu: # for semibin sned to gpu
+    gpu:
+        # partition/slurm below were added for a SemiBin2 GPU run and were never
+        # wired up - the slurm profile's sbatch line had no --partition and no
+        # --gres at all, so nothing could request a GPU. slurm_extra is the
+        # pass-through that now does, via resources.slurm_extra in the profile.
+        #
+        # -p a100cpu is the CPU-ONLY side of the A100 nodes: its QOS sets
+        # gres/gpu=0, so a GPU request there is rejected with QOSMaxGRESPerNode.
+        # GPU work must go to a100, newa100 or singlegpu.
+        #
+        # p3-gpu-48 is excluded: on 2026-09-05 it failed a trivial matmul with
+        #   CUDA error: uncorrectable ECC error encountered
+        # while the identical job on p2-gpu-29 succeeded. Failing GPU memory,
+        # not software. Drop the exclusion once the node is repaired or drained.
+        slurm_extra: '-p singlegpu --gres=gpu:1 --exclude=p3-gpu-48'
         partition: 'a100'
         slurm: 'gres=gpu:1'
         mem: 32000

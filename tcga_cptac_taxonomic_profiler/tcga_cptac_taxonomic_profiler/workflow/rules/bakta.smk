@@ -50,7 +50,11 @@ rule run_baktfold:
         config.resources.med.cpu
     resources:
         mem_mb = config.resources.med.mem,
-        time = config.resources.med.time
+        time = config.resources.med.time,
+        # Sends this rule to a GPU partition; every other rule takes the profile
+        # default, which is a no-op flag. Verified 2026-09-05 on p2-gpu-29: the
+        # environment reports cuda available True and completes a GPU matmul.
+        slurm_extra = config.resources.gpu.slurm_extra
     conda:
         os.path.join("..", "envs", "baktfold.yaml")
     benchmark:
@@ -62,7 +66,8 @@ rule run_baktfold:
         db = config.databases.baktfold
     shell:
         """
-        baktfold run -i {input.json} -o {params.outdir} -f -t {threads} -d {params.db} >> {log} 2>&1
+        baktfold run -i {input.json} -o {params.outdir} -f -t {threads} -d {params.db} \
+            --foldseek-gpu >> {log} 2>&1
 
         # Verify rather than trust the exit code - four tools in this workflow
         # return 0 on failure (see RERUN.md).
